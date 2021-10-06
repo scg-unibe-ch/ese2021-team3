@@ -65,7 +65,6 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 	</details>
 
-
 	<details>
 		<summary>Response</summary>
 
@@ -97,7 +96,6 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 	</details>
 
-
 	<details>
 		<summary>Response</summary>
 
@@ -121,12 +119,11 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 	```json
 		{
-			"filename": "File",
+			"filename": "File"
 		}
 	```
 
 	</details>
-
 
 	<details>
 		<summary>Response</summary>
@@ -136,7 +133,7 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 	```json
 	{
-		"imageId": "number"
+		"imageId": "number",
 		"fileName": "string",
 		"todoItem": "number",
 		"updatedAt": "string",
@@ -156,7 +153,6 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 	</details>
 
-
 	<details>
 		<summary>Response</summary>
 
@@ -165,7 +161,7 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 	```json
 	{
-		"imageId": "number"
+		"imageId": "number",
 		"fileName": "string",
 		"todoItem": "number",
 		"updatedAt": "string",
@@ -260,7 +256,7 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 	```json
 	{
 		"userName":"string",
-		"password":"stiring"
+		"password":"string"
 	}
 
 	```
@@ -329,8 +325,8 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 			"userId":"string",
 			"userName":"string",
 			"password":"stirng(hashed)"
-		},
-		...
+		}
+		
 	]
 
 	```
@@ -341,8 +337,7 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 	<details>
 		<summary>Request</summary>
 
-
-	Header: Authorization: Bearer  + `token`
+		Header: Authorization: Bearer  + `token`
 	</details>
 
 	<details>
@@ -362,7 +357,6 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 - GET
 	<details>
 		<summary>Request</summary>
-
 
 	Header: Authorization: Bearer  + `token`
 	</details>
@@ -384,10 +378,7 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 - GET
 	<details>
 		<summary>Response</summary>
-
-		Code: 200
+  		Code: 200
 		Body:
-	```text
-	<h1>Welcome to the ESE-2021 Course</h1><span style=\"font-size:100px;\">&#127881;</span>
-	```
-	</details>
+		<h1>Welcome to the ESE-2021 Course</h1><span style="font-size:100px;"> &#127881; </span>
+  	</details>
