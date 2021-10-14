@@ -1,3 +1,5 @@
+// public address: string | undefined;
+
 export class User {
   constructor(
     public userId: number,
@@ -5,9 +7,9 @@ export class User {
     public password: string,
     public firstName: string,
     public lastName: string,
-    public email: string,
-    public address: string,
-    public birthdate: Date,
-    public phoneNumber: number,
+    public email: string, // = "asdf@getMaxListeners.com",
+    public address: string,// | undefined,
+    public birthdate: number,
+    public phoneNumber: string,
   ) {}
 }

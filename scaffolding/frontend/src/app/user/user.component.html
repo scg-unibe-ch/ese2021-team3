@@ -4,7 +4,8 @@
     <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username">
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password">
+    <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password"> 
+     <!-- (ngModelChange)=" invalid = validatePassword()"> -->
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" placeholder="First Name" name="firstName" [(ngModel)]="userToRegister.firstName">
@@ -22,10 +23,16 @@
     <input matInput type="date" placeholder="Birthdate" name="birthdate" [(ngModel)]="userToRegister.birthdate">
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="number" placeholder="Phone Number" name="phoneNumber" [(ngModel)]="userToRegister.phoneNumber">
+    <input matInput type="tel" placeholder="Phone Number" name="phoneNumber" [(ngModel)]="userToRegister.phoneNumber">
   </mat-form-field>
   
-  <button mat-flat-button color="primary" (click)="registerUser()">Register</button>
+  <button mat-flat-button color="primary" (click)="registerUser()"
+  [disabled]="userToRegister.username === '' || userToRegister.password === ''">Register</button>
+
+  <div *ngIf="userToRegister.username === '' || userToRegister.password === ''" style="color:red">
+    Nope
+  </div>
+
 </mat-card>
 
 <mat-card>
@@ -54,3 +61,5 @@
   <button mat-flat-button color="primary" (click)="accessAdminEndpoint()">Admin Endpoint</button>
   {{ endpointMsgAdmin }}
 </mat-card>
+
+

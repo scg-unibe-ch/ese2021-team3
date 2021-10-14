@@ -15,9 +15,9 @@ export class UserComponent {
 
   user: User | undefined;
 
-  userToRegister: User = new User(0, '', '', '', '','','', new Date('0001-01-01'),0);
+  userToRegister: User = new User(0, '', '', '', '','','', 0,'');
 
-  userToLogin: User = new User(0, '', '', '', '','','', new Date('0001-01-01'), 0);
+  userToLogin: User = new User(0, '', '', '', '','','', 0, '');
 
   endpointMsgUser: string = '';
   endpointMsgAdmin: string = '';
@@ -38,16 +38,33 @@ export class UserComponent {
   registerUser(): void {
     this.httpClient.post(environment.endpointURL + "user/register", {
       userName: this.userToRegister.username,
-      password: this.userToRegister.password,
       firstName: this.userToRegister.firstName,
       lastName: this.userToRegister.lastName,
       email: this.userToRegister.email,
       address: this.userToRegister.address,
-      birthday: this.userToRegister.birthdate,
-      phoneNumber: this.userToRegister.phoneNumber,
-    }).subscribe(() => {
-      this.userToRegister.username = this.userToRegister.password = '';
-    });
+      phone: String(this.userToRegister.phoneNumber),
+      birthday: Number(this.userToRegister.birthdate),
+      password: this.userToRegister.password,
+
+      // "userName": this.userToRegister.username,
+      // "firstName": this.userToRegister.firstName,
+      // "lastName": this.userToRegister.lastName,
+      // "email": this.userToRegister.email,
+      // "address": this.userToRegister.address,
+      // "phone": String(this.userToRegister.phoneNumber),
+      // "birthday": Number(this.userToRegister.birthdate),
+      // "password": this.userToRegister.password,
+    }).subscribe(
+      // (res: any) => { }
+
+      // (res: any) => {
+      //   this.endpointMsgUser = "Succesfully registered!";
+      // },
+
+     // () => {
+      //this.userToRegister.username = this.userToRegister.password = '';
+    //}
+    );
   }
 
   loginUser(): void {
@@ -62,7 +79,7 @@ export class UserComponent {
 
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName, 
-        res.user.password, res.user.firstName, res.unser.lastName,res.user.address, 
+        res.user.password, res.user.firstName, res.user.lastName,res.user.address, 
         res.user.email, res.user.birthdate, res.user.phoneNumber));
     });
   }
