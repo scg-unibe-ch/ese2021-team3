@@ -15,12 +15,14 @@ export class UserComponent {
 
   user: User | undefined;
 
-  userToRegister: User = new User(0, '', '', '', '','','', 0,'');
+  userToRegister: User = new User(0, '', '', '', '','','', '','');
 
-  userToLogin: User = new User(0, '', '', '', '','','', 0, '');
+  userToLogin: User = new User(0, '', '', '', '','','', '', '');
 
   endpointMsgUser: string = '';
   endpointMsgAdmin: string = '';
+  registrationMsg: string = '';
+  loginMsg: string = '';
 
   constructor(
     public httpClient: HttpClient,
@@ -36,6 +38,7 @@ export class UserComponent {
   }
 
   registerUser(): void {
+    this.resetErrorMsg();
     this.httpClient.post(environment.endpointURL + "user/register", {
       userName: this.userToRegister.username,
       firstName: this.userToRegister.firstName,
@@ -43,20 +46,14 @@ export class UserComponent {
       email: this.userToRegister.email,
       address: this.userToRegister.address,
       phone: String(this.userToRegister.phoneNumber),
-      birthday: Number(this.userToRegister.birthdate),
+      birthday: Number(new Date(this.userToRegister.birthdate)),
       password: this.userToRegister.password,
+    }).subscribe((res: any) => { 
+      ; },
 
-      // "userName": this.userToRegister.username,
-      // "firstName": this.userToRegister.firstName,
-      // "lastName": this.userToRegister.lastName,
-      // "email": this.userToRegister.email,
-      // "address": this.userToRegister.address,
-      // "phone": String(this.userToRegister.phoneNumber),
-      // "birthday": Number(this.userToRegister.birthdate),
-      // "password": this.userToRegister.password,
-    }).subscribe(
-      // (res: any) => { }
-
+    (err) => {
+      this.registrationMsg = err.error.message.message;
+    }
       // (res: any) => {
       //   this.endpointMsgUser = "Succesfully registered!";
       // },
@@ -68,6 +65,7 @@ export class UserComponent {
   }
 
   loginUser(): void {
+    this.resetErrorMsg();
     this.httpClient.post(environment.endpointURL + "user/login", {
       userName: this.userToLogin.username,
       password: this.userToLogin.password
@@ -81,7 +79,11 @@ export class UserComponent {
       this.userService.setUser(new User(res.user.userId, res.user.userName, 
         res.user.password, res.user.firstName, res.user.lastName,res.user.address, 
         res.user.email, res.user.birthdate, res.user.phoneNumber));
-    });
+    },
+    (err) => {
+      this.loginMsg = err.error.message.message;
+    }
+    );
   }
 
   logoutUser(): void {
@@ -106,5 +108,10 @@ export class UserComponent {
     }, () => {
       this.endpointMsgAdmin = "Unauthorized";
     });
+  }
+
+  resetErrorMsg(): void {
+    this.registrationMsg = "";
+    this.loginMsg = "";
   }
 }

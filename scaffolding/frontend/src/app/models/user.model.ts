@@ -7,9 +7,9 @@ export class User {
     public password: string,
     public firstName: string,
     public lastName: string,
-    public email: string, // = "asdf@getMaxListeners.com",
-    public address: string,// | undefined,
-    public birthdate: number,
+    public email: string,
+    public address: string,
+    public birthdate: string,
     public phoneNumber: string,
   ) {}
 }

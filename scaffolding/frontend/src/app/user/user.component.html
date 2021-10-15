@@ -1,4 +1,25 @@
 <mat-card>
+  <h3>Login</h3>
+
+  <div *ngIf="!loggedIn">
+    <mat-form-field>
+      <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToLogin.username">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
+  </div>
+
+  <div *ngIf="loggedIn">
+    <button mat-flat-button color="warn" (click)="logoutUser()">Logout</button>
+  </div>
+  <div *ngIf= "loginMsg !== ''" style="color:red">
+    {{ loginMsg }}
+  </div>
+</mat-card>
+
+<mat-card *ngIf="!loggedIn">
   <h3>Registration</h3>
   <mat-form-field>
     <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToRegister.username">
@@ -30,27 +51,12 @@
   [disabled]="userToRegister.username === '' || userToRegister.password === ''">Register</button>
 
   <div *ngIf="userToRegister.username === '' || userToRegister.password === ''" style="color:red">
-    Nope
+    Nope! Username and password, please.
+  </div>
+  <div *ngIf= "registrationMsg !== ''" style="color:red">
+    {{ registrationMsg }}
   </div>
 
-</mat-card>
-
-<mat-card>
-  <h3>Login</h3>
-
-  <div *ngIf="!loggedIn">
-    <mat-form-field>
-      <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="userToLogin.username">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
-    </mat-form-field>
-    <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
-  </div>
-
-  <div *ngIf="loggedIn">
-    <button mat-flat-button color="warn" (click)="logoutUser()">Logout</button>
-  </div>
 </mat-card>
 
 <mat-card>
