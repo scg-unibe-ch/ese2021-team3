@@ -40,30 +40,34 @@ export class UserComponent {
   registerUser(): void {
     this.resetErrorMsg();
     this.checkPassword(this.userToRegister.password);
-    this.httpClient.post(environment.endpointURL + "user/register", {
-      userName: this.userToRegister.username,
-      firstName: this.userToRegister.firstName,
-      lastName: this.userToRegister.lastName,
-      email: this.userToRegister.email,
-      address: this.userToRegister.address,
-      phone: String(this.userToRegister.phoneNumber),
-      birthday: Number(new Date(this.userToRegister.birthdate)),
-      password: this.userToRegister.password,
-    }).subscribe((res: any) => {
-        ;
-      },
+    if (!this.registrationMsg || this.registrationMsg.length === 0) {
 
-      (err) => {
-        this.registrationMsg = err.error.message.message;
-      }
-      // (res: any) => {
-      //   this.endpointMsgUser = "Succesfully registered!";
-      // },
+      this.httpClient.post(environment.endpointURL + "user/register", {
+        userName: this.userToRegister.username,
+        firstName: this.userToRegister.firstName,
+        lastName: this.userToRegister.lastName,
+        email: this.userToRegister.email,
+        address: this.userToRegister.address,
+        phone: String(this.userToRegister.phoneNumber),
+        birthday: Number(new Date(this.userToRegister.birthdate)),
+        password: this.userToRegister.password,
+      }).subscribe((res: any) => {
+          ;
+        },
 
-      // () => {
-      //this.userToRegister.username = this.userToRegister.password = '';
-      //}
-    );
+        (err) => {
+          this.registrationMsg = err.error.message.message;
+        }
+        // (res: any) => {
+        //   this.endpointMsgUser = "Succesfully registered!";
+        // },
+
+        // () => {
+        //this.userToRegister.username = this.userToRegister.password = '';
+        //}
+      );
+    }
+
   }
 
   loginUser(): void {
