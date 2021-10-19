@@ -322,18 +322,47 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
     <details>
         <summary>Response</summary>
 
-        Code: 200 || 403
+        Code: 200
         Body:
     ```json
     {
-        "user": {
-            "userId":"string",
-            "userName":"string",
-            "password":"string(hashed)"
-        },
-        "token":"string"
+      "user": {
+        "userId": 1,
+        "userName": "Nora",
+        "firstName": "Nora",
+        "lastName": "Nora",
+        "email": "ddd",
+        "address": "street",
+        "phone": "123",
+        "birthday": 12122000,
+        "password": "$2b$12$TDIbNFTDA6W/8.yorAOvauPdrBaUSPku2iyX9pMQTlEyRRhEP6gvS",
+        "admin": false,
+        "createdAt": "2021-10-13T12:51:56.790Z",
+        "updatedAt": "2021-10-13T12:51:56.790Z"
+     },
+     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik5vcmEiLCJ1c2VySWQiOjEsImFkbWluIjpmYWxzZSwiaWF0IjoxNjM0MTMwNTk4LCJleHAiOjE2MzQxMzc3OTh9.sKgZGDjrdPQlFPAgx2T0v9gl_SeK6F7GxWG4OHwbH7c"
     }
 
+    ```
+        Code: 500
+        Body:
+    ```json
+  {
+    "message": {
+      "error": "usernameNotFound",
+      "message": "username not found"
+      }
+  }
+    ```
+        Code: 500
+        Body:
+    ```json
+  {
+    "message": {
+      "error": "wrongPassword",
+      "message": "wrong Password"
+   	  }
+  }
     ```
     </details>
 
