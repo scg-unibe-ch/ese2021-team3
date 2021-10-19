@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {User} from '../models/user.model';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {UserService} from '../services/user.service';
+import { Component } from '@angular/core';
+import { User } from '../models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -39,7 +39,7 @@ export class UserComponent {
 
   registerUser(): void {
     this.resetErrorMsg();
-    
+
     this.checkRegistration(this.userToRegister);
     if (!this.registrationMsg || this.registrationMsg.length === 0) {
 
@@ -53,8 +53,8 @@ export class UserComponent {
         birthday: this.userToRegister.birthdate.length == 0 ? 0 : Number(new Date(this.userToRegister.birthdate)),
         password: this.userToRegister.password,
       }).subscribe((res: any) => {
-          this.registrationMsg = this.userToRegister.username + " is now registered."
-        },
+        this.registrationMsg = this.userToRegister.username + " is now registered."
+      },
         (err) => {
           this.registrationMsg = err.error.message.message;
         }
@@ -63,10 +63,16 @@ export class UserComponent {
 
   }
   checkRegistration(user: User) {
-    // if (!user.birthdate || user.birthdate.length == 0){
-    //   this.registrationMsg += "Please "
-    // }
-    this.checkPassword(user.password);
+    if (!user.username || user.username.length == 0) {
+      this.registrationMsg = "Username is a required field";
+    } else {
+      if (!user.email || user.email.length == 0) {
+        this.registrationMsg = "Email is a required field";
+      } else {
+        this.checkPassword(user.password);
+      }
+    }
+
   }
 
   loginUser(): void {
@@ -75,16 +81,16 @@ export class UserComponent {
       userName: this.userToLogin.username,
       password: this.userToLogin.password
     }).subscribe((res: any) => {
-        this.userToLogin.username = this.userToLogin.password = '';
+      this.userToLogin.username = this.userToLogin.password = '';
 
-        localStorage.setItem('userName', res.user.userName);
-        localStorage.setItem('userToken', res.token);
+      localStorage.setItem('userName', res.user.userName);
+      localStorage.setItem('userToken', res.token);
 
-        this.userService.setLoggedIn(true);
-        this.userService.setUser(new User(res.user.userId, res.user.userName,
-          res.user.password, res.user.firstName, res.user.lastName, res.user.address,
-          res.user.email, res.user.birthdate, res.user.phoneNumber));
-      },
+      this.userService.setLoggedIn(true);
+      this.userService.setUser(new User(res.user.userId, res.user.userName,
+        res.user.password, res.user.firstName, res.user.lastName, res.user.address,
+        res.user.email, res.user.birthdate, res.user.phoneNumber));
+    },
       (err) => {
         this.loginMsg = err.error.message.message;
       }
@@ -149,27 +155,27 @@ export class UserComponent {
       this.registrationMsg = "Please enter a password with at least 8 charachters.";
       validPassword = false;
     }
-      else {
+    else {
       this.registrationMsg = "The password must contain at least one character for each of the following:";
-      if (!lowerRegex.test(password)){
+      if (!lowerRegex.test(password)) {
         this.registrationMsg += " lowercase letter,";
         validPassword = false;
       }
-      if (!upperRegex.test(password)){
+      if (!upperRegex.test(password)) {
         this.registrationMsg += " uppercase letter,";
         validPassword = false;
       }
-      if (!numericRegex.test(password)){
+      if (!numericRegex.test(password)) {
         this.registrationMsg += " number,";
         validPassword = false;
       }
-      if (!specialRegex.test(password)){
+      if (!specialRegex.test(password)) {
         this.registrationMsg += " special character,";
         validPassword = false;
       }
-      this.registrationMsg = this.registrationMsg.substring(0,this.registrationMsg.length - 1)+".";
+      this.registrationMsg = this.registrationMsg.substring(0, this.registrationMsg.length - 1) + ".";
     }
-    if (validPassword){
+    if (validPassword) {
       this.registrationMsg = "";
     }
   }
