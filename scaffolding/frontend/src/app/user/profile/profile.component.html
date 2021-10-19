@@ -1,6 +1,10 @@
-<h1>{{ userToShow.username }}'s Profile</h1>
-<mat-card *ngIf="!loggedIn">
+<h1>{{ this.userToShow.username }}'s Profile</h1>
+<mat-card>
   <h3>User Information</h3>
+  Email: {{ this.userToShow.email }} <br>
+  First name: {{ this.userToShow.firstName }} <br>
+  Last name: {{ this.userToShow.lastName }} <br>
+  Birthdate: {{ this.userToShow.birthdate }} <br>
   
 </mat-card>
 

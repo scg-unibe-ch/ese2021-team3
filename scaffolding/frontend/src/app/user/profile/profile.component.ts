@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 
@@ -8,9 +8,10 @@ import { UserService } from '../../services/user.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit{
   loggedIn: boolean | undefined;
 
+  @Input()
   user: User | undefined;
 
   userToShow: User = new User(0, '', '', '', '', '', '', '', '');
@@ -20,27 +21,14 @@ export class ProfileComponent {
     public userService: UserService
   ) {
     // Listen for changes
-    userService.loggedIn$.subscribe(res => this.loggedIn = res);
-    userService.user$.subscribe(res => this.user = res);
+    // userService.loggedIn$.subscribe(res => this.loggedIn = res);
+    // userService.user$.subscribe(res => this.user = res);
 
-    // Current value
-    this.loggedIn = userService.getLoggedIn();
-    this.user = userService.getUser();
   }
-
-  @Output()
-  update = new EventEmitter<User>();
-
-  @Output()
-  delete = new EventEmitter<User>();
-
-  updateItem(): void {
-    // Emits event to parent component that TodoItem got updated
-    this.update.emit(this.user);
-  }
-
-  deleteItem(): void {
-    // Emits event to parent component that TodoItem got deleted
-    this.delete.emit(this.user);
+  ngOnInit(): void {
+    this.loggedIn = this.userService.getLoggedIn();
+    this.user = this.userService.getUser();
+    this.userToShow = this.user ?? this.userToShow;
+    
   }
 }
