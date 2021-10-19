@@ -21,7 +21,11 @@ export class UserService {
                 if (userDuplicate == null) { // Creates new user if user doesn't exist.
                     return User.create(user).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
                 } else { // Returns error if user already created
-                    return Promise.reject({error: 'already_exists', message: userDuplicate.userName + ' already exists'});
+                    if (userDuplicate.userName === user.userName) {
+                        return Promise.reject({error: 'username_already_exists', message: userDuplicate.userName + ' already exists'});
+                    } else {
+                        return Promise.reject({error: 'email_already_exists', message: userDuplicate.email + ' already exists'});
+                    }
                 }
             })
             .catch(err => Promise.reject({ message: err }));

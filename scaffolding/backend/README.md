@@ -248,89 +248,147 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 ### `/user`
 - POST `/register`
-	<details>
-		<summary>Request</summary>
+    <details>
+        <summary>Request</summary>
 
-		Code: 200
-		Body:
-	```json
-	{
-		"userName":"string",
-		"password":"string"
-	}
+        Code: 200
+        Body:
+    ```json
+    {
+        "userName":"string",
+        "password":"string"
+    }
 
-	```
-	</details>
-	<details>
-		<summary>Response</summary>
+    ```
+    </details>
+    <details>
+        <summary>Response</summary>
 
-		Code: 200
-		Body:
-	```json
-	{
-		"userId": "number",
-		"userName":"string",
-		"password":"string(hashed)"
-	}
+        Code: 200
+        Body:
+    ```json
+    {
+       "admin": false,
+    "userId": 1,
+    "userName": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "email": "string",
+    "address": "string",
+    "phone": "string",
+    "birthday": 324234234,
+    "password": "string-hashed",
+    "updatedAt": "2021-10-19T12:59:12.710Z",
+    "createdAt": "2021-10-19T12:59:12.710Z"
+  }
 
-	```
-	</details>
+    ```
+      Code: 500
+      Body:
+    ```json
+  {
+    "message": {
+        "error": "username_already_exists",
+        "message": "fdm1 already exists"
+      }
+  }
+    ```
+      Code: 500
+      Body:
+    ```json
+  {
+    "message": {
+        "error": "email_already_exists",
+        "message": "x@y.com already exists"
+      }
+  }
+    ```
+    </details>
 
 - POST `/login`
-	<details>
-		<summary>Request</summary>
+    <details>
+        <summary>Request</summary>
 
-		Code: 200
-		Body:
-	```json
-	{
-		"userName":"string",
-		"password":"string"
-	}
+        Code: 200
+        Body:
+    ```json
+    {
+        "userName":"string",
+        "password":"string"
+    }
 
-	```
-	</details>
-	<details>
-		<summary>Response</summary>
+    ```
+    </details>
+    <details>
+        <summary>Response</summary>
 
-		Code: 200 || 403
-		Body:
-	```json
-	{
-		"user": {
-			"userId":"string",
-			"userName":"string",
-			"password":"string(hashed)"
-		},
-		"token":"string"
-	}
+        Code: 200
+        Body:
+    ```json
+    {
+      "user": {
+        "userId": 1,
+        "userName": "Nora",
+        "firstName": "Nora",
+        "lastName": "Nora",
+        "email": "ddd",
+        "address": "street",
+        "phone": "123",
+        "birthday": 12122000,
+        "password": "$2b$12$TDIbNFTDA6W/8.yorAOvauPdrBaUSPku2iyX9pMQTlEyRRhEP6gvS",
+        "admin": false,
+        "createdAt": "2021-10-13T12:51:56.790Z",
+        "updatedAt": "2021-10-13T12:51:56.790Z"
+     },
+     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik5vcmEiLCJ1c2VySWQiOjEsImFkbWluIjpmYWxzZSwiaWF0IjoxNjM0MTMwNTk4LCJleHAiOjE2MzQxMzc3OTh9.sKgZGDjrdPQlFPAgx2T0v9gl_SeK6F7GxWG4OHwbH7c"
+    }
 
-	```
-	</details>
+    ```
+        Code: 500
+        Body:
+    ```json
+  {
+    "message": {
+      "error": "usernameNotFound",
+      "message": "username not found"
+      }
+  }
+    ```
+        Code: 500
+        Body:
+    ```json
+  {
+    "message": {
+      "error": "wrongPassword",
+      "message": "wrong Password"
+   	  }
+  }
+    ```
+    </details>
 
 - GET
-	<details>
-		<summary>Response</summary>
+    <details>
+        <summary>Response</summary>
 
-		Code: 200
-		Body:
-	```json
-	[
-		{
-			"userId":"string",
-			"userName":"string",
-			"password":"stirng(hashed)"
-		},
-		{
-			"userId":"string",
-			"userName":"string",
-			"password":"stirng(hashed)"
-		}
+        Code: 200
+        Body:
+    ```json
+    [
+        {
+            "userId":"string",
+            "userName":"string",
+            "password":"stirng(hashed)"
+        },
+        {
+            "userId":"string",
+            "userName":"string",
+            "password":"stirng(hashed)"
+        }
 		
-	]
+    ]
 
-	```
-	</details>
+    ```
+    </details>
 
 ### `/secured`
 - GET
