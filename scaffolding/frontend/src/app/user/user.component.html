@@ -9,6 +9,7 @@
       <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToLogin.password">
     </mat-form-field>
     <button mat-flat-button color="primary" (click)="loginUser()">Login</button>
+    <!-- [disabled]="userToLogin.username === '' || userToLogin.password === ''"-->
   </div>
 
   <div *ngIf="loggedIn">
@@ -26,7 +27,6 @@
   </mat-form-field>
   <mat-form-field>
     <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="userToRegister.password"> 
-     <!-- (ngModelChange)=" invalid = validatePassword()"> -->
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" placeholder="First Name" name="firstName" [(ngModel)]="userToRegister.firstName">
@@ -47,12 +47,7 @@
     <input matInput type="tel" placeholder="Phone Number" name="phoneNumber" [(ngModel)]="userToRegister.phoneNumber">
   </mat-form-field>
   
-  <button mat-flat-button color="primary" (click)="registerUser()"
-  [disabled]="userToRegister.username === '' || userToRegister.password === ''">Register</button>
-
-  <div *ngIf="userToRegister.username === '' || userToRegister.password === ''" style="color:red">
-    Nope! Username and password, please.
-  </div>
+  <button mat-flat-button color="primary" (click)="registerUser()">Register</button>
   <div *ngIf= "registrationMsg !== ''" style="color:red">
     {{ registrationMsg }}
   </div>

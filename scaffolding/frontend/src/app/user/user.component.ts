@@ -39,35 +39,34 @@ export class UserComponent {
 
   registerUser(): void {
     this.resetErrorMsg();
-    this.checkPassword(this.userToRegister.password);
+    
+    this.checkRegistration(this.userToRegister);
     if (!this.registrationMsg || this.registrationMsg.length === 0) {
 
       this.httpClient.post(environment.endpointURL + "user/register", {
-        userName: this.userToRegister.username,
+        userName: this.userToRegister.username.toLowerCase(),
         firstName: this.userToRegister.firstName,
         lastName: this.userToRegister.lastName,
         email: this.userToRegister.email,
         address: this.userToRegister.address,
         phone: String(this.userToRegister.phoneNumber),
-        birthday: Number(new Date(this.userToRegister.birthdate)),
+        birthday: this.userToRegister.birthdate.length == 0 ? 0 : Number(new Date(this.userToRegister.birthdate)),
         password: this.userToRegister.password,
       }).subscribe((res: any) => {
-          ;
+          this.registrationMsg = this.userToRegister.username + " is now registered."
         },
-
         (err) => {
           this.registrationMsg = err.error.message.message;
         }
-        // (res: any) => {
-        //   this.endpointMsgUser = "Succesfully registered!";
-        // },
-
-        // () => {
-        //this.userToRegister.username = this.userToRegister.password = '';
-        //}
       );
     }
 
+  }
+  checkRegistration(user: User) {
+    // if (!user.birthdate || user.birthdate.length == 0){
+    //   this.registrationMsg += "Please "
+    // }
+    this.checkPassword(user.password);
   }
 
   loginUser(): void {
@@ -121,27 +120,57 @@ export class UserComponent {
     this.loginMsg = "";
   }
 
-
   checkPassword(password: string): void {
-    //to check if the string
-    // contains uppercase, lowercase
-    // special character & numeric value
-    var pattern = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
+
+    // contains lowercase, uppercase, numeric and special characters
+    // var pattern = new RegExp(
+    //   "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
+    // );
+
+    var lowerRegex = new RegExp(
+      "(?=.*[a-z]).+$"
     );
 
+    var upperRegex = new RegExp(
+      "(?=.*[A-Z])"
+    );
 
-    // If the string is empty
-    // then print No
-    if (!password || password.length === 0) {
-      this.registrationMsg = "Please enter a password"
+    var numericRegex = new RegExp(
+      "(?=.*\\d).+$"
+    );
+
+    var specialRegex = new RegExp(
+      "(?=.*[-+_!@#$%^&*.,?]).+$"
+    );
+
+    var validPassword = true;
+
+    if (!password || password.length < 8) {
+      this.registrationMsg = "Please enter a password with at least 8 charachters.";
+      validPassword = false;
     }
-    if (!pattern.test(password)) {
-      this.registrationMsg = "The Password must contain at least one upper-/ lowercase Letter a number and special character"
-
+      else {
+      this.registrationMsg = "The password must contain at least one character for each of the following:";
+      if (!lowerRegex.test(password)){
+        this.registrationMsg += " lowercase letter,";
+        validPassword = false;
+      }
+      if (!upperRegex.test(password)){
+        this.registrationMsg += " uppercase letter,";
+        validPassword = false;
+      }
+      if (!numericRegex.test(password)){
+        this.registrationMsg += " number,";
+        validPassword = false;
+      }
+      if (!specialRegex.test(password)){
+        this.registrationMsg += " special character,";
+        validPassword = false;
+      }
+      this.registrationMsg = this.registrationMsg.substring(0,this.registrationMsg.length - 1);
     }
-
+    if (validPassword){
+      this.registrationMsg = "";
+    }
   }
-
-
 }
