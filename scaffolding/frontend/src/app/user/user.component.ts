@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { User } from '../models/user.model';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { UserService } from '../services/user.service';
+import {Component} from '@angular/core';
+import {User} from '../models/user.model';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -15,9 +15,9 @@ export class UserComponent {
 
   user: User | undefined;
 
-  userToRegister: User = new User(0, '', '', '', '','','', '','');
+  userToRegister: User = new User(0, '', '', '', '', '', '', '', '');
 
-  userToLogin: User = new User(0, '', '', '', '','','', '', '');
+  userToLogin: User = new User(0, '', '', '', '', '', '', '', '');
 
   endpointMsgUser: string = '';
   endpointMsgAdmin: string = '';
@@ -39,29 +39,35 @@ export class UserComponent {
 
   registerUser(): void {
     this.resetErrorMsg();
-    this.httpClient.post(environment.endpointURL + "user/register", {
-      userName: this.userToRegister.username,
-      firstName: this.userToRegister.firstName,
-      lastName: this.userToRegister.lastName,
-      email: this.userToRegister.email,
-      address: this.userToRegister.address,
-      phone: String(this.userToRegister.phoneNumber),
-      birthday: Number(new Date(this.userToRegister.birthdate)),
-      password: this.userToRegister.password,
-    }).subscribe((res: any) => { 
-      ; },
+    this.checkPassword(this.userToRegister.password);
+    if (!this.registrationMsg || this.registrationMsg.length === 0) {
 
-    (err) => {
-      this.registrationMsg = err.error.message.message;
+      this.httpClient.post(environment.endpointURL + "user/register", {
+        userName: this.userToRegister.username,
+        firstName: this.userToRegister.firstName,
+        lastName: this.userToRegister.lastName,
+        email: this.userToRegister.email,
+        address: this.userToRegister.address,
+        phone: String(this.userToRegister.phoneNumber),
+        birthday: Number(new Date(this.userToRegister.birthdate)),
+        password: this.userToRegister.password,
+      }).subscribe((res: any) => {
+          ;
+        },
+
+        (err) => {
+          this.registrationMsg = err.error.message.message;
+        }
+        // (res: any) => {
+        //   this.endpointMsgUser = "Succesfully registered!";
+        // },
+
+        // () => {
+        //this.userToRegister.username = this.userToRegister.password = '';
+        //}
+      );
     }
-      // (res: any) => {
-      //   this.endpointMsgUser = "Succesfully registered!";
-      // },
 
-     // () => {
-      //this.userToRegister.username = this.userToRegister.password = '';
-    //}
-    );
   }
 
   loginUser(): void {
@@ -70,19 +76,19 @@ export class UserComponent {
       userName: this.userToLogin.username,
       password: this.userToLogin.password
     }).subscribe((res: any) => {
-      this.userToLogin.username = this.userToLogin.password = '';
+        this.userToLogin.username = this.userToLogin.password = '';
 
-      localStorage.setItem('userName', res.user.userName);
-      localStorage.setItem('userToken', res.token);
+        localStorage.setItem('userName', res.user.userName);
+        localStorage.setItem('userToken', res.token);
 
-      this.userService.setLoggedIn(true);
-      this.userService.setUser(new User(res.user.userId, res.user.userName, 
-        res.user.password, res.user.firstName, res.user.lastName,res.user.address, 
-        res.user.email, res.user.birthdate, res.user.phoneNumber));
-    },
-    (err) => {
-      this.loginMsg = err.error.message.message;
-    }
+        this.userService.setLoggedIn(true);
+        this.userService.setUser(new User(res.user.userId, res.user.userName,
+          res.user.password, res.user.firstName, res.user.lastName, res.user.address,
+          res.user.email, res.user.birthdate, res.user.phoneNumber));
+      },
+      (err) => {
+        this.loginMsg = err.error.message.message;
+      }
     );
   }
 
@@ -114,4 +120,28 @@ export class UserComponent {
     this.registrationMsg = "";
     this.loginMsg = "";
   }
+
+
+  checkPassword(password: string): void {
+    //to check if the string
+    // contains uppercase, lowercase
+    // special character & numeric value
+    var pattern = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
+    );
+
+
+    // If the string is empty
+    // then print No
+    if (!password || password.length === 0) {
+      this.registrationMsg = "Please enter a password"
+    }
+    if (!pattern.test(password)) {
+      this.registrationMsg = "The Password must contain at least one upper-/ lowercase Letter a number and special character"
+
+    }
+
+  }
+
+
 }
