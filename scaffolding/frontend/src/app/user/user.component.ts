@@ -167,7 +167,7 @@ export class UserComponent {
         this.registrationMsg += " special character,";
         validPassword = false;
       }
-      this.registrationMsg = this.registrationMsg.substring(0,this.registrationMsg.length - 1);
+      this.registrationMsg = this.registrationMsg.substring(0,this.registrationMsg.length - 1)+".";
     }
     if (validPassword){
       this.registrationMsg = "";

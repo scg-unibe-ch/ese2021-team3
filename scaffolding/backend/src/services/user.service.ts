@@ -22,9 +22,11 @@ export class UserService {
                     return User.create(user).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
                 } else { // Returns error if user already created
                     if (userDuplicate.userName === user.userName) {
-                        return Promise.reject({error: 'username_already_exists', message: userDuplicate.userName + ' already exists'});
+                        return Promise.reject(
+                            {error: 'username_already_exists', message: 'Username ' + userDuplicate.userName + ' already exists.'});
                     } else {
-                        return Promise.reject({error: 'email_already_exists', message: userDuplicate.email + ' already exists'});
+                        return Promise.reject(
+                            {error: 'email_already_exists', message: 'Email ' + userDuplicate.email + ' already in use.'});
                     }
                 }
             })
@@ -40,13 +42,13 @@ export class UserService {
         })
         .then(user => {
             if (user == null) {
-                return Promise.reject({error: 'usernameNotFound', message: 'username not found'});
+                return Promise.reject({error: 'usernameNotFound', message: 'Username not found.'});
             }
             if (bcrypt.compareSync(loginRequestee.password, user.password)) {// compares the hash with the password from the login request
                 const token: string = jwt.sign({ userName: user.userName, userId: user.userId, admin: user.admin }, secret, { expiresIn: '2h' });
                 return Promise.resolve({ user, token });
             } else {
-                return Promise.reject({error: 'wrongPassword', message: 'wrong password' });
+                return Promise.reject({error: 'wrongPassword', message: 'Wrong password.' });
             }
         })
         .catch(err => Promise.reject({ message: err }));
