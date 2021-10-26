@@ -234,7 +234,7 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 - GET
 	<details>
 		<summary>Response</summary>
-
+		
 		Code: 200
 		Body:
 	```json
@@ -245,6 +245,55 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 	}
 	```
 	</details>
+### `/post`
+  - POST `/create`
+    <details>
+        <summary>Request</summary>
+
+          Header: Authorization: Bearer  + `token`
+          Body:
+      ```json
+      {
+          "title":"string",
+          "text":"string",
+          "image":"string"
+      }
+
+      ```
+    </details>
+
+    <details>
+        <summary>Response</summary>
+		
+        Code: 200 
+        Body:
+    ```json
+    {
+        "postId": 4,
+        "title": "string",
+        "text": "string",
+        "image": "string",
+        "userId": 1,
+        "updatedAt": "2021-10-26T12:08:13.091Z",
+        "createdAt": "2021-10-26T12:08:13.091Z"
+    }
+    ```
+        Code: 500
+        Body:
+    ```json
+    {
+        "error": "titleIsEmpty",
+        "message": "Title cannot be emtpy"
+	   }
+    ```
+        Code: 403
+	    Body:
+	```json
+    {
+       "message": "Unauthorized"
+    }
+    ```
+    </details>
 
 ### `/user`
 - POST `/register`

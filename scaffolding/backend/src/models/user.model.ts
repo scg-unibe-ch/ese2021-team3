@@ -1,5 +1,14 @@
 import { TodoItem, TodoItemAttributes, TodoItemCreationAttributes } from './todoitem.model';
-import {Optional, Model, Sequelize, DataTypes, IntegerDataType} from 'sequelize';
+import {
+    Optional,
+    Model,
+    Sequelize,
+    DataTypes,
+    IntegerDataType,
+    Association,
+    HasManyGetAssociationsMixin
+} from 'sequelize';
+import {Post} from './post.model';
 
 export interface UserAttributes {
     userId: number;
@@ -17,6 +26,11 @@ export interface UserAttributes {
 export interface UserCreationAttributes extends Optional<UserAttributes, 'userId'> { }
 
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+
+    public static associations: {
+        posts: Association<User, Post>;
+    };
+
     userId!: number;
     userName!: string;
     firstName!: string;
@@ -27,6 +41,11 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
     birthday!: number;
     password!: string;
     admin!: boolean;
+
+
+    public getPosts!: HasManyGetAssociationsMixin<Post>;
+
+
     public static initialize(sequelize: Sequelize) {
         User.init({
             userId: {
@@ -77,4 +96,12 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
             }
         );
     }
+
+    public static createAssociations() {
+        User.hasMany(Post, {
+            as: 'Posts',
+            foreignKey: 'userId'
+        });
+    }
+
 }
