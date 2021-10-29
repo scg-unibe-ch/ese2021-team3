@@ -294,6 +294,58 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
     }
     ```
     </details>
+
+  - POST `/:id/edit`
+      <details>
+            <summary>Request</summary>
+
+	      Header: Authorization: Bearer  + `token`
+	      Body:
+	  ```json
+      {
+          "title":"string",
+          "text":"string",
+          "image":"string" //If image is changed, it will automatically change to null 
+      }
+
+      ```
+      </details>
+
+      <details>
+          <summary>Response</summary>
+
+          Code: 200 
+          Body:
+      ```json
+      {
+          "postId": 4,
+          "title": "string",
+          "text": "string",
+          "image": "URL_to_image",
+          "userId": 1,
+          "updatedAt": "2021-10-26T12:08:13.091Z",
+          "createdAt": "2021-10-26T12:08:13.091Z"
+      }
+      ```
+          Code: 500
+          Body:
+      ```json
+      {
+          "error": "Post_not_found",
+          "message": "Cant find Post nr."
+         }
+      ```
+          Code: 500
+          Body:
+      ```json
+      {
+    	 "error": "not_authorized",
+         "message": "Youre not authorized to modify post: <nr>"
+      }
+      ```
+      </details>
+
+
   - POST `/:id/image`
     <details>
         <summary>Request</summary>

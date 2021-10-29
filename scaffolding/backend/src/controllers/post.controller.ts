@@ -19,6 +19,16 @@ postController.post('/create',
     }
 );
 
+postController.post('/:id/edit',
+    (req: Request, res: Response) => {
+        req.body.userId = req.body.tokenPayload.userId;
+        req.body.postId = req.params.id;
+        postService.edit(req.body).then(post => res.send(post)).catch(err => {
+            res.status(500).send(err);
+        });
+    }
+);
+
 postController.post('/:id/image', (req: MulterRequest, res: Response) => {
     req.body.userId = req.body.tokenPayload.userId;
     postService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));

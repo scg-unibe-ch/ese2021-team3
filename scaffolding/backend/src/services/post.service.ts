@@ -14,6 +14,28 @@ export class PostService {
         }
     }
 
+    public edit(post: PostAttributes): Promise<PostAttributes> {
+        return Post.findByPk(post.postId)
+            .then(found => {
+                if (!found) {
+                    return Promise.reject({error: 'Post_not_found', message: 'Cant find Post nr.' + post.postId});
+                } else {
+                    if (found.userId !== post.userId) {
+                        return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify post: ' + post.postId});
+                    }
+                    return new Promise<PostAttributes>((resolve, reject) => {
+                        if (post.image !== undefined) {
+                            post.image = null;
+                        }
+                        found.update(post);
+                        resolve(found);
+                    });
+                }
+            });
+    }
+
+
+
     public addImage(req: MulterRequest): Promise<PostAttributes> {
         return Post.findByPk(req.params.id)
             .then(found => {
@@ -28,6 +50,9 @@ export class PostService {
                         upload.single('image')(req, null, (error: any) => {
                             if ((error === undefined) && (req.file !== undefined)) {
                                 found.image = '/images/' + req.file.filename;
+                                found.update({
+                                    image: found.image
+                                });
                                 resolve(found);
                             } else {
                                 reject({error: 'Upload_Error', message: 'Cant upload image!'});
