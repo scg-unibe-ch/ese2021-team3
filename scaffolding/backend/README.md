@@ -284,13 +284,73 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
     {
         "error": "titleIsEmpty",
         "message": "Title cannot be emtpy"
-	   }
+       }
     ```
         Code: 403
+        Body:
+    ```json
+    {
+       "message": "Unauthorized"
+    }
+    ```
+    </details>
+  - POST `/:id/image`
+    <details>
+        <summary>Request</summary>
+
+          Please use "form-data" as a body format.
+
+          Header: Authorization: Bearer  + `token`
+          Body:
+      ```json
+      {
+          "image":"<Bilddatei>"
+      }
+
+      ```
+    </details>
+
+    <details>
+        <summary>Response</summary>
+
+        Code: 200 
+        Body:
+    ```json
+    {
+        "postId": 4,
+        "title": "string",
+        "text": "string",
+        "image": "URL_to_image",
+        "userId": 1,
+        "updatedAt": "2021-10-26T12:08:13.091Z",
+        "createdAt": "2021-10-26T12:08:13.091Z"
+    }
+    ```
+    	- Post don't exists in database:
+        Code: 500
+        Body:
+    ```json
+    {
+        "error": "Post_not_found",
+        "message": "Cant find Post nr.<xy>"
+	   }
+    ```
+        - User isn't autorized to edit this Post:
+        Code: 500
+        Body:
+    ```json
+    {
+       "error": "not_authorized",
+       "message": "Youre not authorized to modify post: 2"
+    }
+    ```
+    	- No Image in Post or wrong format:
+        Code: 500
 	    Body:
 	```json
     {
-       "message": "Unauthorized"
+       "error": "Upload_error",
+       "message": "Cant upload image"
     }
     ```
     </details>
