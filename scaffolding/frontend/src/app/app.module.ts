@@ -19,6 +19,8 @@ import { UserComponent } from './user/user.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ProfileComponent } from './user/profile/profile.component';
 import { AppRoutingModule } from './app-routing.module';
+import { BoardComponent } from './board/board.component';
+import { PostComponent } from './board/post/post.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { AppRoutingModule } from './app-routing.module';
     TodoListComponent,
     TodoItemComponent,
     UserComponent,
-    ProfileComponent
+    ProfileComponent,
+    BoardComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

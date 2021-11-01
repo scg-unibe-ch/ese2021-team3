@@ -6,12 +6,9 @@
 
 <mat-tab-group selectedIndex="0">
 <mat-tab label="Board">
-  <mat-card *ngIf="loggedIn">
-    <!-- post creation, should only appear if logged in -->
-  </mat-card>
-  <mat-card>
-    <!-- display posts, app-board -->
-  </mat-card>
+  <app-board [user]="user">
+  </app-board>
+  
 
 </mat-tab>
 
