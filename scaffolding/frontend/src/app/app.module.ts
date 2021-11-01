@@ -18,6 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserComponent } from './user/user.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ProfileComponent } from './user/profile/profile.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ProfileComponent } from './user/profile/profile.component';
     MatButtonModule,
     MatListModule,
     FormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    AppRoutingModule
   ],
   providers: [
     {
