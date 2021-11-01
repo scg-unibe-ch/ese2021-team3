@@ -1,7 +1,4 @@
-<p>board works!</p>
-
 <mat-card *ngIf="user">
-  <!-- post creation, should only appear if logged in -->
   <h3>New Post</h3>
   <mat-form-field>
     <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="newPost.title">
@@ -12,21 +9,13 @@
   <mat-form-field>
     <input matInput type="text" placeholder="Image" name="image" [(ngModel)]="newPost.image">
   </mat-form-field>
-
   <button mat-flat-button color="primary" (click)="createPost()">Create</button>
-
 </mat-card>
 
 <mat-card>
-  <!-- List of TodoItemComponents displaying all items of list -->
-  <mat-list>
-    <mat-list-item *ngFor="let post of posts">
-      <p>
-        <app-post [post]="post" ></app-post>
-      </p>
-    </mat-list-item>
-  </mat-list>
-
+    <mat-card *ngFor="let post of posts">
+      <app-post [post]="post"></app-post>
+    </mat-card>
   <div *ngIf="posts.length === 0">
     No posts available.
   </div>

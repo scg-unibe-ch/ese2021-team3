@@ -1,7 +1,15 @@
 <div *ngIf="post">
-    <p>{{ post.title }} </p>
-    <p>{{ post.text }} </p>
-    <p>{{ post.image }} </p>
+    <h2>
+        {{ post.title }}
+    </h2>
+    <h4>
+        by {{ username }}
+    </h4>
+    <mat-divider [inset]="true"></mat-divider>
+    <p>
+        {{ post.text }}
+    </p>
+    <p>
+        Image: {{ post.image }}
+    </p>
 </div>
-
-
