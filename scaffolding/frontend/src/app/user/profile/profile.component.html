@@ -1,12 +1,29 @@
-<h1>{{ this.userToShow.username }}'s Profile</h1>
-<mat-card>
-  <h3>User Information</h3>
-  Email: {{ this.userToShow.email }} <br>
-  First name: {{ this.userToShow.firstName }} <br>
-  Last name: {{ this.userToShow.lastName }} <br>
-  Birthdate: {{ this.userToShow.birthdate }} <br>
-  
-</mat-card>
+<div *ngIf="user">
+  <h1>{{ user.username | uppercase }}'s Profile</h1>
+  <mat-card>
+    <h3>User Information</h3>
+    
+    <div>
+      <label for="firstname">First name: </label>
+      <input id="firstname" [(ngModel)]="user.firstName" placeholder="firstName">
+      <label for="lastname">Last name: </label>
+      <input id="lastname" [(ngModel)]="user.lastName" placeholder="lastName">
+
+    </div>
+    <div>
+      <span>Email: </span>
+      {{user.email}}
+      
+    </div>
+    <div>
+      <span>Birthdate: </span>
+      {{user.birthdate}}
+
+    </div>
+  </mat-card>
+
+</div>
+
 
 
 

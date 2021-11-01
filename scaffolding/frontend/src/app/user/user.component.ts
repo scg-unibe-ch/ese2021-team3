@@ -88,8 +88,8 @@ export class UserComponent {
 
       this.userService.setLoggedIn(true);
       this.userService.setUser(new User(res.user.userId, res.user.userName,
-        res.user.password, res.user.firstName, res.user.lastName, res.user.address,
-        res.user.email, new Date(res.user.birthday).toDateString(), res.user.phoneNumber));
+        res.user.password, res.user.firstName, res.user.lastName,
+        res.user.email, res.user.address, new Date(res.user.birthday).toDateString(), res.user.phoneNumber));
     },
       (err) => {
         this.loginMsg = err.error.message.message;
