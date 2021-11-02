@@ -256,7 +256,8 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
       {
           "title":"string",
           "text":"string",
-          "image":"string"
+          "image":"string",
+    	  "category": ["category1","category2","category3"]
       }
 
       ```
@@ -273,6 +274,11 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
         "title": "string",
         "text": "string",
         "image": "string",
+        "category": [
+        	"category1",
+        	"category2",
+        	"category3"
+    	],
         "userId": 1,
         "updatedAt": "2021-10-26T12:08:13.091Z",
         "createdAt": "2021-10-26T12:08:13.091Z"
@@ -330,6 +336,11 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
           "title": "string",
           "text": "string",
           "image": "URL_to_image",
+    	  "category": [
+        	"category1",
+        	"category2",
+        	"category3"
+    	  ],
           "userId": 1,
           "updatedAt": "2021-10-26T12:08:13.091Z",
           "createdAt": "2021-10-26T12:08:13.091Z"

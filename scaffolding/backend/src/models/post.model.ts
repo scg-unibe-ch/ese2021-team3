@@ -8,6 +8,7 @@ export interface PostAttributes {
     title: string;
     text: string;
     image: string;
+    category: string[];
 }
 
 export interface PostCreationAttributes extends Optional<PostAttributes, 'postId'> {  }
@@ -18,6 +19,7 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     postId: number;
     text: string;
     title: string;
+    category: string[];
 
     public static initialize(sequelize: Sequelize) {
         Post.init({
@@ -40,6 +42,10 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
             },
             image: {
                 type: DataTypes.STRING,
+                allowNull: true
+            },
+            category: {
+                type: DataTypes.JSON,
                 allowNull: true
             }
         },
