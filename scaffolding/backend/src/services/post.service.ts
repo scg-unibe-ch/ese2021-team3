@@ -10,7 +10,7 @@ export class PostService {
     public create(post: PostAttributes): Promise<PostAttributes> {
         return this.isAdmin(post.userId).then(isAdmin => {
             if (!isAdmin) { /*Reject request if user is admin*/
-                if (post.title == null) {
+                if ((post.title == null) || (post.title === '')) {
                     return Promise.reject({error: 'titleIsEmpty', message: 'Title cannot be emtpy' });
                 } else {
                     return Post.create(post).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
