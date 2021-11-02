@@ -4,7 +4,14 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-tab-group selectedIndex="1">
+<mat-tab-group selectedIndex="0">
+<mat-tab label="Board">
+  <app-board [user]="user">
+  </app-board>
+  
+
+</mat-tab>
+
   <mat-tab label="Todo List Example">
     <mat-card>
       <mat-form-field>
@@ -26,6 +33,6 @@
   </mat-tab>
 
   <mat-tab *ngIf="loggedIn" label="Profile">
-    <app-user-profile></app-user-profile>
+    <app-profile [user] = "user"></app-profile>
   </mat-tab>
 </mat-tab-group>

@@ -1,0 +1,22 @@
+<mat-card *ngIf="user">
+  <h3>New Post</h3>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="newPost.title">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Text" name="text" [(ngModel)]="newPost.text">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Image" name="image" [(ngModel)]="newPost.image">
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="createPost()">Create</button>
+</mat-card>
+
+<mat-card>
+    <mat-card *ngFor="let post of posts">
+      <app-post [post]="post"></app-post>
+    </mat-card>
+  <div *ngIf="posts.length === 0">
+    No posts available.
+  </div>
+</mat-card>
