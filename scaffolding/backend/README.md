@@ -286,6 +286,14 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
         "message": "Title cannot be emtpy"
        }
     ```
+        Code: 500
+	    Body:
+	```json
+    {
+        "error": "not_authorized",
+        "message": "Admins are not authorized to create Posts"
+    }
+    ```
         Code: 403
         Body:
     ```json

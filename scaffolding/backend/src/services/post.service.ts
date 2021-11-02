@@ -3,15 +3,21 @@ import {MulterRequest} from '../models/multerRequest.model';
 import {ItemImage, ItemImageAttributes} from '../models/itemImage.model';
 import {TodoItem} from '../models/todoitem.model';
 import {upload} from '../middlewares/fileFilter';
+import {User} from '../models/user.model';
 
 export class PostService {
     // CRUD Operations
     public create(post: PostAttributes): Promise<PostAttributes> {
-        if (post.title == null) {
-            return Promise.reject({error: 'titleIsEmpty', message: 'Title cannot be emtpy' });
-        } else {
-            return Post.create(post).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
-        }
+        return this.isAdmin(post.userId).then(isAdmin => {
+            if (!isAdmin) { /*Reject request if user is admin*/
+                if (post.title == null) {
+                    return Promise.reject({error: 'titleIsEmpty', message: 'Title cannot be emtpy' });
+                } else {
+                    return Post.create(post).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
+                }
+            }
+            return Promise.reject({error: 'not_authorized', message: 'Admins are not authorized to create Posts' });
+        });
     }
 
     public edit(post: PostAttributes): Promise<PostAttributes> {
@@ -20,15 +26,20 @@ export class PostService {
                 if (!found) {
                     return Promise.reject({error: 'Post_not_found', message: 'Cant find Post nr.' + post.postId});
                 } else {
-                    if (found.userId !== post.userId) {
-                        return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify post: ' + post.postId});
-                    }
-                    return new Promise<PostAttributes>((resolve, reject) => {
-                        if (post.image !== undefined) {
-                            post.image = null;
+                    return this.isAdmin(post.userId).then( isAdmin => {
+                        if ((found.userId !== post.userId) && (!isAdmin)) { /*Check if user is owner of Post or Admin*/
+                            // tslint:disable-next-line:max-line-length
+                            return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify post: ' + post.postId});
                         }
-                        found.update(post);
-                        resolve(found);
+                        return new Promise<PostAttributes>((resolve, reject) => {
+                            if (post.image !== undefined) {
+                                // tslint:disable-next-line:max-line-length
+                                post.image = null; /*Remove image URL if anything is changed in image attribut (Only backend is able to define URL's)*/
+                            }
+                            post.userId = found.userId; /*To surpress overwrite of userid in case of an admin is editing the post*/
+                            found.update(post);
+                            resolve(found);
+                        });
                     });
                 }
             });
@@ -62,6 +73,16 @@ export class PostService {
                 }
             });
             /*.catch(err => Promise.reject({error: 'Upload_Error', message: 'Cant upload image! '}));*/
+    }
+
+    private async isAdmin(userId: number): Promise<boolean> {
+        return User.findByPk(userId).then(found => {
+            if (!found) {
+                return false;
+            } else {
+                return found.admin;
+            }
+        });
     }
 
 }
