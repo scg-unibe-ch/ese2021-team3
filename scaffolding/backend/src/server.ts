@@ -4,6 +4,7 @@ import { TodoItemController } from './controllers/todoitem.controller';
 import { TodoListController } from './controllers/todolist.controller';
 import { UserController } from './controllers/user.controller';
 import { SecuredController } from './controllers/secured.controller';
+import { VoteController } from './controllers/vote.controller';
 import { Sequelize } from 'sequelize';
 import { TodoList } from './models/todolist.model';
 import { TodoItem } from './models/todoitem.model';
@@ -15,6 +16,7 @@ import {AdminController} from './controllers/admin.controller';
 import {ItemImage} from './models/itemImage.model';
 import {PostController} from './controllers/post.controller';
 import {Post} from './models/post.model';
+import {Vote} from './models/vote.model';
 
 
 export class Server {
@@ -31,11 +33,14 @@ export class Server {
         User.initialize(this.sequelize);
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
+        Vote.initialize(this.sequelize);
         TodoItem.createAssociations();
         TodoList.createAssociations();
         ItemImage.createAssociations();
         User.createAssociations();
         Post.createAssociations();
+        Vote.createAssociations();
+
 
 
 
@@ -73,6 +78,7 @@ export class Server {
             .use('/secured', SecuredController)
             .use('/admin', AdminController)
             .use('/post', PostController)
+            .use('/vote', VoteController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             .use('/images', express.static('./uploads'))

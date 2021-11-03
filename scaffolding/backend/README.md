@@ -425,7 +425,77 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
     }
     ```
     </details>
+### `/vote`
+- POST `/create`
+  <details>
+      <summary>Request</summary>
 
+        Header: Authorization: Bearer  + `token`
+        Body:
+    ```json
+    {
+        "postId":1,
+        "vote":1 //can be 1,0,-1 will automatically update the vote if changed.
+    }
+
+    ```
+  </details>
+
+  <details>
+      <summary>Response</summary>
+
+      Code: 200 
+      Body:
+  ```json
+  {
+    "voteId": 1,
+    "postId": 1,
+    "userId": 1,
+    "vote": 1,
+    "createdAt": "2021-11-03T16:40:27.638Z",
+    "updatedAt": "2021-11-03T16:49:56.814Z"
+  }
+  ```
+      Code: 500
+      Body: //only occurs if a call is made without change of vote attribut
+  ```json
+  {
+      "error": "already_voted",
+      "message": "Youve already voted on this post"
+  }
+  ```
+      Code: 500
+      Body: 
+  ```json
+  {
+      "error": "post_doesnt_exist",
+      "message": "Post doesnt exist"
+  }
+  ```
+      Code: 500
+      Body: 
+  ```json
+  {
+      "error": "wrong_vote_number",
+      "message": "You can only vote 1,0,-1"
+  }
+  ```
+      Code: 500
+      Body:
+  ```json
+  {
+      "error": "not_authorized",
+      "message": "Admins are not authorized to create Posts"
+  }
+  ```
+      Code: 403
+      Body:
+  ```json
+  {
+     "message": "Unauthorized"
+  }
+  ```
+  </details>
 ### `/user`
 - POST `/register`
     <details>

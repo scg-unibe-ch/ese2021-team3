@@ -10,7 +10,7 @@ const postService = new PostService();
 
 // postController.use(verifyToken);
 
-postController.post('/create',
+postController.post('/create', verifyToken,
     (req: Request, res: Response) => {
         req.body.userId = req.body.tokenPayload.userId;
         postService.create(req.body).then(post => res.send(post)).catch(err => {

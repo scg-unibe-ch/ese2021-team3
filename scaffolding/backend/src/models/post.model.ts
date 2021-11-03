@@ -1,6 +1,15 @@
-import {Optional, Model, Sequelize, DataTypes, IntegerDataType} from 'sequelize';
+import {
+    Optional,
+    Model,
+    Sequelize,
+    DataTypes,
+    IntegerDataType,
+    Association,
+    HasManyGetAssociationsMixin
+} from 'sequelize';
 import {TodoList} from './todolist.model';
 import {User} from './user.model';
+import {Vote} from './vote.model';
 
 export interface PostAttributes {
     postId: number;
@@ -14,12 +23,19 @@ export interface PostAttributes {
 export interface PostCreationAttributes extends Optional<PostAttributes, 'postId'> {  }
 
 export class Post extends Model<PostAttributes, PostCreationAttributes> implements PostAttributes {
+
+    public static associations: {
+        votes: Association<Post, Vote>;
+    };
+
     image: string;
     userId: number;
     postId: number;
     text: string;
     title: string;
     category: string[];
+
+    public getVotes!: HasManyGetAssociationsMixin<Vote>;
 
     public static initialize(sequelize: Sequelize) {
         Post.init({
@@ -61,6 +77,11 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
             as: 'User',
             onDelete: 'cascade',
             foreignKey: 'userId'
+        });
+
+        Post.hasMany(Vote, {
+            as: 'votes',
+            foreignKey: 'postId'
         });
     }
 }
