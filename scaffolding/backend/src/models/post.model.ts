@@ -17,6 +17,8 @@ export interface PostAttributes {
     title: string;
     text: string;
     image: string;
+    vote?: number;
+    myVote?: number;
     category: string[];
 }
 
@@ -33,6 +35,8 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     postId: number;
     text: string;
     title: string;
+    vote?: number;
+    myVote?: number;
     category: string[];
 
     public getVotes!: HasManyGetAssociationsMixin<Vote>;

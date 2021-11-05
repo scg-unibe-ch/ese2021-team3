@@ -5,6 +5,38 @@ import {Op} from 'sequelize';
 
 
 export class VoteService {
+    public async calculateVotes(postId: number): Promise<number> {
+        return Vote.findAll({
+            where: {
+                    postId: postId
+            }
+        }).then(votes => {
+            let voteCount = 0;
+            votes.forEach((vote) => {
+                voteCount += vote.vote;
+            });
+            return voteCount;
+        })
+        .catch(err => Promise.reject({ message: err }));
+    }
+
+    public async voteOfUser(postId: number, userId: number): Promise<number> {
+        return Vote.findOne({
+            where: {
+                [Op.and]: [
+                    { userId: userId },
+                    { postId: postId }
+                ]
+            }
+        }).then(vote => {
+            if (!vote) {
+                return 0;
+            }
+            return vote.vote;
+        })
+        .catch(err => Promise.reject({ message: err }));
+    }
+
     public create(vote: VoteAttributes): Promise<VoteAttributes> {
         return this.isAdmin(vote.userId).then(isAdmin => {
             if (!isAdmin) { /*Reject request if user is admin*/

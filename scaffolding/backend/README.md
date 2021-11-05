@@ -425,6 +425,58 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
     }
     ```
     </details>
+- GET `/get`
+  <details>
+      <summary>Request</summary>
+
+        Body:
+    ```json
+    {
+        "userId":1 //Optional, only if feedback about the users votes are needed
+    }
+
+    ```
+  </details>
+
+  <details>
+      <summary>Response</summary>
+
+      Code: 200 
+      Body:
+  ```json
+  [
+    {
+        "postId": 1,
+        "userId": 1,
+        "title": "test",
+        "text": "testetst",
+        "image": "URL",
+        "category": [
+            "test",
+            "test2"
+        ],
+        "createdAt": "2021-11-03T16:38:31.527Z",
+        "updatedAt": "2021-11-03T16:38:31.527Z",
+        "vote": 1,
+        "myVote": 1 //Only appears if userId is defined in body
+    },
+    {
+        "postId": 2,
+        "userId": 1,
+        "title": "test",
+        "text": "testetst",
+        "image": "URL",
+        "category": [
+            "test",
+            "test2"
+        ],
+        "createdAt": "2021-11-05T09:36:38.297Z",
+        "updatedAt": "2021-11-05T09:36:38.297Z",
+        "vote": -1,
+        "myVote": -1 //Only appears if userId is defined in body
+    }
+  ]
+  ```
 ### `/vote`
 - POST `/create`
   <details>
@@ -684,9 +736,9 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 
 ### `/`
 - GET
-	<details>
+    <details>
 		<summary>Response</summary>
   		Code: 200
 		Body:
 		<h1>Welcome to the ESE-2021 Course</h1><span style="font-size:100px;"> &#127881; </span>
-  	</details>
+    </details>

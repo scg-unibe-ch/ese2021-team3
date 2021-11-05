@@ -4,9 +4,11 @@ import {PostService} from '../services/post.service';
 import {verifyToken} from '../middlewares/checkAuth';
 import {MulterRequest} from '../models/multerRequest.model';
 import {Post} from '../models/post.model';
+import {VoteService} from '../services/vote.service';
 
 const postController: Router = express.Router();
 const postService = new PostService();
+const voteService = new VoteService();
 
 // postController.use(verifyToken);
 
@@ -38,7 +40,15 @@ postController.post('/:id/image', verifyToken, (req: MulterRequest, res: Respons
 postController.get('/get',
     (req: Request, res: Response) => {
         Post.findAll()
-            .then(list => res.status(200).send(list))
+            .then(async list => {
+                for (const post of list) {
+                    post.setDataValue('vote', await voteService.calculateVotes(post.postId));
+                    if (req.body.userId !== undefined) {
+                        post.setDataValue('myVote', await voteService.voteOfUser(post.postId, req.body.userId));
+                    }
+                }
+                res.status(200).send(list);
+            })
             .catch(err => res.status(500).send(err));
     }
 );
