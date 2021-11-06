@@ -1,26 +1,39 @@
-<mat-card *ngIf="user">
+<mat-card *ngIf="user" style="max-width: 600px">
   <h3>New Post</h3>
   <mat-form-field>
     <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="newPost.title">
   </mat-form-field>
+  <br>
   <mat-form-field>
     <input matInput type="text" placeholder="Text" name="text" [(ngModel)]="newPost.text">
   </mat-form-field>
-
-  <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
-  <button type="button" mat-raised-button (click)="fileInput.click()">Select Image</button>
-
-  <button mat-flat-button color="primary" (click)="createPost()">Create</button>
-  <div *ngIf="postingMsg !== ''" style="color:red">
+  <mat-card-actions>
+    <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
+    <button mat-raised-button (click)="fileInput.click()">Select Image</button>
+    <button mat-flat-button color="primary" (click)="createPost()">Create</button>
+  </mat-card-actions>
+  <mat-card-content *ngIf="postingMsg !== ''" style="color:red">
     {{ postingMsg }}
-  </div>
+  </mat-card-content>
 </mat-card>
 
-<mat-card>
-  <mat-card *ngFor="let post of posts.reverse()">
-    <app-post [post]="post"></app-post>
-  </mat-card>
-  <div *ngIf="posts.length === 0">
-    No posts available.
-  </div>
+<mat-card *ngFor="let post of posts.reverse()" style="max-width: 600px">
+  <app-post [post]="post"></app-post>
+  <mat-card-actions>
+    <button mat-icon-button (click)="upvote(post)" *ngIf="this.user">
+      <mat-icon>thumb_up</mat-icon>
+    </button>
+    <button mat-icon-button (click)="downvote(post)" *ngIf="this.user">
+      <mat-icon>thumb_down</mat-icon>
+    </button>
+    <button mat-icon-button (click)="edit(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="delete(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
+<mat-card *ngIf="posts.length === 0">
+  No posts available.
 </mat-card>

@@ -26,7 +26,9 @@ export class BoardComponent implements OnInit {
   constructor(
     public httpClient: HttpClient,
     public userService: UserService
-  ) { }
+  ) {
+    userService.user$.subscribe(res => this.user = res);
+   }
 
   ngOnInit(): void {
     this.getUsers();
@@ -106,6 +108,19 @@ export class BoardComponent implements OnInit {
         this.postingMsg = err.error.message;
       }
     );
+  }
+
+  upvote(post:Post){
+    console.log(post);
+  }
+  downvote(post:Post){
+    console.log(post);    
+  }
+  edit(post:Post){
+    console.log(post);
+  }
+  delete(post:Post){
+    console.log(post);
   }
 }
 
