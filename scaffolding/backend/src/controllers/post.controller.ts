@@ -32,7 +32,19 @@ postController.post('/:id/edit', verifyToken,
     }
 );
 
-postController.post('/:id/image', verifyToken, (req: MulterRequest, res: Response) => {
+postController.delete('/:id', verifyToken,
+    (req: Request, res: Response) => {
+        req.body.userId = req.body.tokenPayload.userId;
+        req.body.postId = req.params.id;
+        postService.delete(req.body).then(post => res.send(post)).catch(err => {
+            res.status(500).send(err);
+        });
+    }
+);
+
+postController.post('/:id/image', verifyToken,
+    // tslint:disable-next-line:no-shadowed-variable
+    (req: MulterRequest, res: Response) => {
     req.body.userId = req.body.tokenPayload.userId;
     postService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
 });
@@ -49,6 +61,16 @@ postController.get('/get',
                 }
                 res.status(200).send(list);
             })
+            .catch(err => res.status(500).send(err));
+    }
+);
+
+postController.post('/getfiltered',
+    (req: Request, res: Response) => {
+        const requestedCategory = req.body.category;
+        const { Op } = require('sequelize');
+        Post.findAll( { where: { category: requestedCategory }})
+            .then(list => res.status(200).send(list))
             .catch(err => res.status(500).send(err));
     }
 );
