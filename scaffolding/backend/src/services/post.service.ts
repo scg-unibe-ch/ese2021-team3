@@ -60,7 +60,7 @@ export class PostService {
                     return new Promise<PostAttributes>((resolve, reject) => {
                         upload.single('image')(req, null, (error: any) => {
                             if ((error === undefined) && (req.file !== undefined)) {
-                                found.image = '/images/' + req.file.filename;
+                                found.image = 'images/' + req.file.filename;
                                 found.update({
                                     image: found.image
                                 });

@@ -1,15 +1,24 @@
 <div *ngIf="post">
-    <h2>
-        {{ post.title }}
-    </h2>
-    <h4>
-        by {{ post.username }}
-    </h4>
-    <mat-divider [inset]="true"></mat-divider>
-    <p>
-        {{ post.text }}
-    </p>
-    <p>
-        Image: {{ post.image }}
-    </p>
+    <mat-card-content>
+        <mat-card-header>
+
+        </mat-card-header>
+        <mat-card-title>
+            {{ post.title }}
+
+        </mat-card-title>
+        <mat-card-subtitle>
+            by {{ post.username }}
+
+        </mat-card-subtitle>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-card *ngIf="post.text!=''">
+            {{ post.text }}
+
+        </mat-card>
+    </mat-card-content>
+
+    <mat-card *ngIf="post.image">
+        <img mat-card-image [src]="this.imgsrc+post.image">
+    </mat-card>
 </div>

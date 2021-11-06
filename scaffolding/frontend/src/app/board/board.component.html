@@ -6,19 +6,20 @@
   <mat-form-field>
     <input matInput type="text" placeholder="Text" name="text" [(ngModel)]="newPost.text">
   </mat-form-field>
-  <mat-form-field>
-    <input matInput type="text" placeholder="Image" name="image" [(ngModel)]="newPost.image">
-  </mat-form-field>
+
+  <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
+  <button type="button" mat-raised-button (click)="fileInput.click()">Select Image</button>
+
   <button mat-flat-button color="primary" (click)="createPost()">Create</button>
-  <div *ngIf= "postingMsg !== ''" style="color:red">
+  <div *ngIf="postingMsg !== ''" style="color:red">
     {{ postingMsg }}
   </div>
 </mat-card>
 
 <mat-card>
-    <mat-card *ngFor="let post of posts.reverse()">
-      <app-post [post]="post"></app-post>
-    </mat-card>
+  <mat-card *ngFor="let post of posts.reverse()">
+    <app-post [post]="post"></app-post>
+  </mat-card>
   <div *ngIf="posts.length === 0">
     No posts available.
   </div>

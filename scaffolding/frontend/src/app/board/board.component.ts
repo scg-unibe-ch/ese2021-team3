@@ -12,10 +12,13 @@ import { UserService } from '../services/user.service';
 })
 export class BoardComponent implements OnInit {
 
-  newPost= new Post(0,0,"","","", [], "");
+  newPost = new Post(0, 0, "", "", "", [], "");
   postingMsg = "";
-  posts: Post[] = [] ;
+  posts: Post[] = [];
   users: { [id: number]: string; } = {};
+  selectedFile?: File;
+  target?: HTMLInputElement;
+
 
   @Input()
   user?: User;
@@ -33,8 +36,7 @@ export class BoardComponent implements OnInit {
   getUsers() {
     this.httpClient.get(environment.endpointURL + "user", {}
     ).subscribe(
-      (res:any) => {
-        console.log(res);
+      (res: any) => {
         try {
           for (let i = 0; i < res.length; i++) {
             this.users[res[i].userId] = res[i].userName;
@@ -47,18 +49,14 @@ export class BoardComponent implements OnInit {
   }
 
   getPosts() {
-    this.httpClient.get(environment.endpointURL + "post/get", { }
+    this.httpClient.get(environment.endpointURL + "post/get", {}
     ).subscribe(
-      (res:any) => {
-        console.log(res);
+      (res: any) => {
         try {
           for (let i = 0; i < res.length; i++) {
-            console.log(this.users[res[i].userId]);
-
-            this.posts.push( 
-            new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, this.users[res[i].userId])
+            this.posts.push(
+              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, this.users[res[i].userId])
             )
-
           }
         } catch (error) {
           console.log(error);
@@ -67,22 +65,47 @@ export class BoardComponent implements OnInit {
     )
   }
 
-  createPost(){
+  createPost() {
     this.httpClient.post(environment.endpointURL + "post/create", {
       title: this.newPost.title,
       text: this.newPost.text,
-      image: this.newPost.image,
-      
+      image: ""
+
     }).subscribe((res: any) => {
       this.newPost.username = this.users[res.userId];
-      this.posts.push(this.newPost);
-      this.newPost= new Post(0,0,"","","", [], "");
+      this.newPost.postId = Number(res.postId);
+      if (this.selectedFile) {
+        this.uploadImage(this.newPost.postId);
+      } else {
+        this.posts.push(this.newPost);
+        this.newPost = new Post(0, 0, "", "", "", [], "");
+      }
     },
       (err) => {
         this.postingMsg = err.error.message;
       }
     );
-
   }
 
+  onFileSelected(event: any) {
+    this.target = event.target;
+    this.selectedFile = event.target.files[0];
+  }
+
+  uploadImage(postId: number) {
+    const formData = new FormData();
+    formData.append('image', this.selectedFile ?? "");
+    this.httpClient.post(environment.endpointURL + "post/" + postId + "/image",
+      formData
+    ).subscribe((res: any) => {
+      this.newPost.image = res.fileName;
+      this.posts.push(this.newPost);
+      this.newPost = new Post(0, 0, "", "", "", [], "");
+    },
+      (err) => {
+        this.postingMsg = err.error.message;
+      }
+    );
+  }
 }
+
