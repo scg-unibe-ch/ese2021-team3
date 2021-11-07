@@ -4,13 +4,14 @@ top: 0px;
 bottom: 0px;
 left: 0;
 width: 300px">
-  <mat-sidenav #sidenav mode="side" opened="true" style="display: flex;
+  <mat-sidenav #sidenav mode="side" opened="true" style="
+  /* display: flex; */
   align-items: center;
   justify-content: center;
-  background: rgba(255, 0, 0, 0.5);
+  /* background: rgba(255, 0, 0, 0.5); */
   ">
   </mat-sidenav>
-  <mat-sidenav-content style="background: cornflowerblue;">
+  <mat-sidenav-content>
     <mat-card>
       <mat-card-content>
         <span>
@@ -23,7 +24,6 @@ width: 300px">
 
 <mat-sidenav-container style="
 position: absolute; 
-right: 0%;
 right: 0;
 width: 300px">
   <mat-sidenav #sidenav mode="side" opened="true" style="
@@ -40,7 +40,8 @@ width: 300px">
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<mat-card *ngIf="user" style="max-width: 600px">
+<div style="min-height: 500px;">
+<mat-card *ngIf="user" style="max-width: 600px;">
   <mat-card-header>
     <div mat-card-avatar
       style="background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); background-size: cover">
@@ -75,7 +76,6 @@ width: 300px">
     {{ postingMsg }}
   </mat-card-content>
 </mat-card>
-
 <mat-card *ngFor="let post of posts.reverse()" style="max-width: 600px;">
   <app-post [post]="post"></app-post>
   <mat-card-actions>
@@ -96,3 +96,4 @@ width: 300px">
 <mat-card *ngIf="posts.length === 0">
   No posts available.
 </mat-card>
+</div>
