@@ -12,10 +12,10 @@
     </mat-card-header>
     <mat-divider inset></mat-divider>
     <p></p>
-    <mat-card-content *ngIf="post.text!=''">
+    <mat-card-content *ngIf="post.text!=''" style="text-overflow: ellipsis; overflow-x: hidden;" >
         {{ post.text }}
     </mat-card-content>
-    <mat-card-content *ngIf="post.image">
+    <mat-card-content *ngIf="post.image" style="padding: 12px;">
         <p></p>
         <img mat-card-image *ngIf="post.image" [src]="this.imgsrc+post.image">
     </mat-card-content>

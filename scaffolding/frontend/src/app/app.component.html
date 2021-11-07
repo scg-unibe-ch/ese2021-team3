@@ -1,38 +1,30 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>ESE-2021 Frontend Scaffolding</span>
+    <span>
+      <h1>Insert Title Here</h1>
+    </span>
   </mat-toolbar-row>
 </mat-toolbar>
-
-<mat-tab-group selectedIndex="0">
-<mat-tab label="Board">
-  <app-board [user]="user">
-  </app-board>
-  
-
-</mat-tab>
-
-  <mat-tab label="Todo List Example">
+<mat-tab-group style="align-items: right;">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>home</mat-icon>
+    </ng-template>
+    <div style="box-sizing: border-box; display: flex; justify-content: center;">
+      <app-board [user]="user"></app-board>
+    </div>
+  </mat-tab>
+  <mat-tab label="Todo List">
     <mat-card>
       <mat-form-field>
         <input matInput placeholder="List Name" [(ngModel)]="newTodoListName" name="name">
       </mat-form-field>
-      <button mat-flat-button color="primary" (click)="createList()" [disabled]="newTodoListName === ''">Create new list</button>
+      <button mat-flat-button color="primary" (click)="createList()" [disabled]="newTodoListName === ''">Create new
+        list</button>
     </mat-card>
-
-    <app-todo-list
-      *ngFor="let todoList of todoLists"
-      [todoList]="todoList"
-      (update)="updateList($event)"
-      (delete)="deleteList($event)"
-    ></app-todo-list>
+    <app-todo-list *ngFor="let todoList of todoLists" [todoList]="todoList" (update)="updateList($event)"
+      (delete)="deleteList($event)"></app-todo-list>
   </mat-tab>
-
-  <mat-tab label="Authentication">
-    <app-user></app-user>
-  </mat-tab>
-
-  <mat-tab *ngIf="loggedIn" label="Profile">
-    <app-profile [user] = "user"></app-profile>
+  <mat-tab *ngIf="user && user.isAdmin" label="Admin Zone">
   </mat-tab>
 </mat-tab-group>

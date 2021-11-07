@@ -1,26 +1,20 @@
 <div *ngIf="user">
-    <h1>{{ user.username | uppercase }}'s Profile</h1>
     <mat-card>
-        <h3>User Information</h3>
-        
-        <div>
+        <mat-card-title>
+            {{ user.username | uppercase }}'s Profile
+        </mat-card-title>
+        <mat-card-content>
+            <p>First name: {{ user.firstName }}</p>
+            <p>Last name: {{ user.lastName }}</p>
+            <p>Address: {{ user.address }}</p>
+            <p>Email: {{user.email}}</p>
+            <p>Birthdate: {{user.birthdate}}</p>
+        </mat-card-content>
+        <!-- <div>
             <label for="firstname">First name: </label>
             <input id="firstname" [(ngModel)]="user.firstName" placeholder="firstName">
             <label for="lastname">Last name: </label>
             <input id="lastname" [(ngModel)]="user.lastName" placeholder="lastName">
-            
-        </div>
-        <div>
-            <span>Email: </span>
-            {{user.email}}
-            
-        </div>
-        <div>
-            <span>Birthdate: </span>
-            {{user.birthdate}}
-            
-        </div>
-        <p>profile works!</p>
+        </div> -->
     </mat-card>
-  
-  </div>
+</div>

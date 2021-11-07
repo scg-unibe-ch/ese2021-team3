@@ -22,6 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BoardComponent } from './board/board.component';
 import { PostComponent } from './board/post/post.component';
 import { MatIconModule } from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MatIconModule } from '@angular/material/icon';
     FormsModule,
     MatCheckboxModule,
     AppRoutingModule,
-    MatIconModule
+    MatIconModule,
+    MatSidenavModule
   ],
   providers: [
     {
