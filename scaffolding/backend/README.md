@@ -235,6 +235,43 @@
     }
   ]
   ```
+- GET `/:id/single`
+  <details>
+      <summary>Request</summary>
+
+        Body:
+    ```json
+    {
+        "userId":1 //Optional, only if feedback about the users votes are needed
+    }
+
+    ```
+  </details>
+
+  <details>
+      <summary>Response</summary>
+
+      Code: 200 
+      Body:
+  ```json
+ 
+    {
+        "postId": 1,
+        "userId": 1,
+        "title": "test",
+        "text": "testetst",
+        "image": "URL",
+        "category": [
+            "test",
+            "test2"
+        ],
+        "createdAt": "2021-11-03T16:38:31.527Z",
+        "updatedAt": "2021-11-03T16:38:31.527Z",
+        "vote": 1,
+        "myVote": 1, //Only appears if userId is defined in body
+        "userName": "userName"
+    }
+  ```
 ### `/vote`
 - POST `/create`
   <details>

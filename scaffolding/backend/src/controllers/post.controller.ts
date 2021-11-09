@@ -56,4 +56,16 @@ postController.get('/get',
     }
 );
 
+postController.get('/:id/single', (req: Request, res: Response) => {
+    Post.findByPk(req.params.id).then(async post => {
+            post.setDataValue('vote', await voteService.calculateVotes(post.postId));
+            post.setDataValue('userName', await userService.getNameForUserID(post.userId));
+            if (req.body.userId !== undefined) {
+                post.setDataValue('myVote', await voteService.voteOfUser(post.postId, req.body.userId));
+            }
+            res.status(200).send(post);
+        })
+        .catch(err => res.status(500).send(err));
+});
+
 export const PostController: Router = postController;
