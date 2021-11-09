@@ -11,5 +11,6 @@ export class User {
     public address: string,
     public birthdate: string,
     public phoneNumber: string,
+    public isAdmin: boolean = false
   ) {}
 }

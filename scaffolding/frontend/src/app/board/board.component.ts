@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { POSTS } from '../mocks/mock-posts';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
@@ -13,9 +12,13 @@ import { UserService } from '../services/user.service';
 })
 export class BoardComponent implements OnInit {
 
-  newPost= new Post(0,0,"","","");
+  newPost = new Post(0, 0, "", "", "", [], "");
   postingMsg = "";
-  posts = POSTS;
+  posts: Post[] = [];
+  users: { [id: number]: string; } = {};
+  selectedFile?: File;
+  target?: HTMLInputElement;
+
 
   @Input()
   user?: User;
@@ -23,27 +26,101 @@ export class BoardComponent implements OnInit {
   constructor(
     public httpClient: HttpClient,
     public userService: UserService
-  ) { }
+  ) {
+    userService.user$.subscribe(res => this.user = res);
+   }
 
   ngOnInit(): void {
-
-
+    this.getUsers();
+    this.getPosts();
   }
 
-  createPost(){
+  getUsers() {
+    this.httpClient.get(environment.endpointURL + "user", {}
+    ).subscribe(
+      (res: any) => {
+        try {
+          for (let i = 0; i < res.length; i++) {
+            this.users[res[i].userId] = res[i].userName;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    )
+  }
+
+  getPosts() {
+    this.httpClient.get(environment.endpointURL + "post/get", {}
+    ).subscribe(
+      (res: any) => {
+        try {
+          for (let i = 0; i < res.length; i++) {
+            this.posts.push(
+              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, this.users[res[i].userId])
+            )
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    )
+  }
+
+  createPost() {
     this.httpClient.post(environment.endpointURL + "post/create", {
       title: this.newPost.title,
       text: this.newPost.text,
-      image: this.newPost.image,
-      
+      image: ""
+
     }).subscribe((res: any) => {
-      this.postingMsg =  this.newPost.title;
+      this.newPost.username = this.users[res.userId];
+      this.newPost.postId = Number(res.postId);
+      if (this.selectedFile) {
+        this.uploadImage(this.newPost.postId);
+      } else {
+        this.posts.push(this.newPost);
+        this.newPost = new Post(0, 0, "", "", "", [], "");
+      }
     },
       (err) => {
-        this.postingMsg = err.error.message.message;
+        this.postingMsg = err.error.message;
       }
     );
-
   }
 
+  onFileSelected(event: any) {
+    this.target = event.target;
+    this.selectedFile = event.target.files[0];
+  }
+
+  uploadImage(postId: number) {
+    const formData = new FormData();
+    formData.append('image', this.selectedFile ?? "");
+    this.httpClient.post(environment.endpointURL + "post/" + postId + "/image",
+      formData
+    ).subscribe((res: any) => {
+      this.newPost.image = res.fileName;
+      this.posts.push(this.newPost);
+      this.newPost = new Post(0, 0, "", "", "", [], "");
+    },
+      (err) => {
+        this.postingMsg = err.error.message;
+      }
+    );
+  }
+
+  upvote(post:Post){
+    console.log(post);
+  }
+  downvote(post:Post){
+    console.log(post);    
+  }
+  edit(post:Post){
+    console.log(post);
+  }
+  delete(post:Post){
+    console.log(post);
+  }
 }
+

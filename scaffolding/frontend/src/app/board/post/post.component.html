@@ -1,15 +1,22 @@
 <div *ngIf="post">
-    <h2>
-        {{ post.title }}
-    </h2>
-    <h4>
-        by {{ username }}
-    </h4>
-    <mat-divider [inset]="true"></mat-divider>
-    <p>
+    <mat-card-header>
+        <div mat-card-avatar
+            style="background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); background-size: cover">
+        </div>
+        <mat-card-title>
+            {{ post.title }}
+        </mat-card-title>
+        <mat-card-subtitle>
+            by {{ post.username }}
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider inset></mat-divider>
+    <p></p>
+    <mat-card-content *ngIf="post.text!=''" style="text-overflow: ellipsis; overflow-x: hidden;" >
         {{ post.text }}
-    </p>
-    <p>
-        Image: {{ post.image }}
-    </p>
+    </mat-card-content>
+    <mat-card-content *ngIf="post.image" style="padding: 12px;">
+        <p></p>
+        <img mat-card-image *ngIf="post.image" [src]="this.imgsrc+post.image">
+    </mat-card-content>
 </div>

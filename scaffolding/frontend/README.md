@@ -68,3 +68,5 @@ These are links to some of the files that we have implemented/modified when deve
   Frontend Framework
 - [Angular Material](https://material.angular.io/)  
   Material Design Components
+- [Material Icons (Google Fonts)](https://fonts.google.com/icons)
+`<mat-icon>thumb_up</mat-icon>` = 👍

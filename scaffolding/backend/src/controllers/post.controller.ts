@@ -5,10 +5,12 @@ import {verifyToken} from '../middlewares/checkAuth';
 import {MulterRequest} from '../models/multerRequest.model';
 import {Post} from '../models/post.model';
 import {VoteService} from '../services/vote.service';
+import {UserService} from '../services/user.service';
 
 const postController: Router = express.Router();
 const postService = new PostService();
 const voteService = new VoteService();
+const userService = new UserService();
 
 // postController.use(verifyToken);
 
@@ -55,6 +57,7 @@ postController.get('/get',
             .then(async list => {
                 for (const post of list) {
                     post.setDataValue('vote', await voteService.calculateVotes(post.postId));
+                    post.setDataValue('userName', await userService.getNameForUserID(post.userId));
                     if (req.body.userId !== undefined) {
                         post.setDataValue('myVote', await voteService.voteOfUser(post.postId, req.body.userId));
                     }
@@ -78,5 +81,17 @@ postController.post('/getfiltered',
             .catch(err => res.status(500).send(err));
     }
 );
+
+postController.get('/:id/single', (req: Request, res: Response) => {
+    Post.findByPk(req.params.id).then(async post => {
+            post.setDataValue('vote', await voteService.calculateVotes(post.postId));
+            post.setDataValue('userName', await userService.getNameForUserID(post.userId));
+            if (req.body.userId !== undefined) {
+                post.setDataValue('myVote', await voteService.voteOfUser(post.postId, req.body.userId));
+            }
+            res.status(200).send(post);
+        })
+        .catch(err => res.status(500).send(err));
+});
 
 export const PostController: Router = postController;

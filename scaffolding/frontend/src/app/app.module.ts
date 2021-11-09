@@ -21,6 +21,8 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BoardComponent } from './board/board.component';
 import { PostComponent } from './board/post/post.component';
+import { MatIconModule } from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,7 @@ import { PostComponent } from './board/post/post.component';
     UserComponent,
     ProfileComponent,
     BoardComponent,
-    PostComponent
+    PostComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,9 @@ import { PostComponent } from './board/post/post.component';
     MatListModule,
     FormsModule,
     MatCheckboxModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatIconModule,
+    MatSidenavModule
   ],
   providers: [
     {
