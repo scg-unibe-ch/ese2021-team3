@@ -3,6 +3,7 @@ import { LoginResponse, LoginRequest } from '../models/login.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {Op} from 'sequelize';
+import {Vote} from '../models/vote.model';
 
 export class UserService {
 
@@ -52,6 +53,17 @@ export class UserService {
             }
         })
         .catch(err => Promise.reject({ message: err }));
+    }
+
+    public async getNameForUserID(userID: number): Promise<string> {
+        return User.findOne({
+            where: {
+                userId: userID
+            }
+        }).then(user => {
+            return user.userName;
+        })
+            .catch(err => Promise.reject({ message: err }));
     }
 
     public getAll(): Promise<User[]> {
