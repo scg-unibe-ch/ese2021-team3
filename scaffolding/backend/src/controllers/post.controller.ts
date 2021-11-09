@@ -67,9 +67,13 @@ postController.get('/get',
 
 postController.post('/getfiltered',
     (req: Request, res: Response) => {
-        const requestedCategory = req.body.category;
         const { Op } = require('sequelize');
-        Post.findAll( { where: { category: requestedCategory }})
+        Post.findAll( { where: {
+                category: {
+                    [Op.substring]: req.body.category
+                 }
+        }
+        })
             .then(list => res.status(200).send(list))
             .catch(err => res.status(500).send(err));
     }
