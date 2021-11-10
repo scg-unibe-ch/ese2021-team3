@@ -2,8 +2,8 @@ import { UserAttributes, User } from '../models/user.model';
 import { LoginResponse, LoginRequest } from '../models/login.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {Op} from 'sequelize';
-import {Vote} from '../models/vote.model';
+import { Op } from 'sequelize';
+import { Vote } from '../models/vote.model';
 
 export class UserService {
 
@@ -12,7 +12,7 @@ export class UserService {
         user.password = bcrypt.hashSync(user.password, saltRounds); // hashes the password, never store passwords as plaintext
         return User.findOne({
             where: {
-                    [Op.or]: [
+                [Op.or]: [
                     { userName: user.userName },
                     { email: user.email }
                 ]
@@ -24,10 +24,10 @@ export class UserService {
                 } else { // Returns error if user already created
                     if (userDuplicate.userName === user.userName) {
                         return Promise.reject(
-                            {error: 'username_already_exists', message: 'Username ' + userDuplicate.userName + ' already exists.'});
+                            { error: 'username_already_exists', message: 'Username ' + userDuplicate.userName + ' already exists.' });
                     } else {
                         return Promise.reject(
-                            {error: 'email_already_exists', message: 'Email ' + userDuplicate.email + ' already in use.'});
+                            { error: 'email_already_exists', message: 'Email ' + userDuplicate.email + ' already in use.' });
                     }
                 }
             })
@@ -41,18 +41,19 @@ export class UserService {
                 userName: loginRequestee.userName
             }
         })
-        .then(user => {
-            if (user == null) {
-                return Promise.reject({error: 'usernameNotFound', message: 'Username not found.'});
-            }
-            if (bcrypt.compareSync(loginRequestee.password, user.password)) {// compares the hash with the password from the login request
-                const token: string = jwt.sign({ userName: user.userName, userId: user.userId, admin: user.admin }, secret, { expiresIn: '2h' });
-                return Promise.resolve({ user, token });
-            } else {
-                return Promise.reject({error: 'wrongPassword', message: 'Wrong password.' });
-            }
-        })
-        .catch(err => Promise.reject({ message: err }));
+            .then(user => {
+                if (user == null) {
+                    return Promise.reject({ error: 'usernameNotFound', message: 'Username not found.' });
+                }
+                if (bcrypt.compareSync(loginRequestee.password, user.password)) {
+                    // compares the hash with the password from the login request
+                    const token: string = jwt.sign({ userName: user.userName, userId: user.userId, admin: user.admin }, secret, { expiresIn: '2h' });
+                    return Promise.resolve({ user, token });
+                } else {
+                    return Promise.reject({ error: 'wrongPassword', message: 'Wrong password.' });
+                }
+            })
+            .catch(err => Promise.reject({ message: err }));
     }
 
     public async getNameForUserID(userID: number): Promise<string> {
@@ -68,5 +69,11 @@ export class UserService {
 
     public getAll(): Promise<User[]> {
         return User.findAll();
+    }
+
+    public getUser(userId: number): Promise<User> {
+        return User.findByPk(userId)
+            .then(user => Promise.resolve(user))
+            .catch(err => Promise.reject({ message: err }));
     }
 }

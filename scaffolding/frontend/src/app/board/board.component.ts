@@ -28,26 +28,10 @@ export class BoardComponent implements OnInit {
     public userService: UserService
   ) {
     userService.user$.subscribe(res => this.user = res);
-   }
-
-  ngOnInit(): void {
-    this.getUsers();
-    this.getPosts();
   }
 
-  getUsers() {
-    this.httpClient.get(environment.endpointURL + "user", {}
-    ).subscribe(
-      (res: any) => {
-        try {
-          for (let i = 0; i < res.length; i++) {
-            this.users[res[i].userId] = res[i].userName;
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    )
+  ngOnInit(): void {
+    this.getPosts();
   }
 
   getPosts() {
@@ -57,7 +41,7 @@ export class BoardComponent implements OnInit {
         try {
           for (let i = 0; i < res.length; i++) {
             this.posts.push(
-              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, this.users[res[i].userId])
+              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, res[i].userName)
             )
           }
         } catch (error) {
@@ -74,7 +58,8 @@ export class BoardComponent implements OnInit {
       image: ""
 
     }).subscribe((res: any) => {
-      this.newPost.username = this.users[res.userId];
+      this.newPost.userId = this.user?.userId ?? 0;
+      this.newPost.username = this.user?.username;
       this.newPost.postId = Number(res.postId);
       if (this.selectedFile) {
         this.uploadImage(this.newPost.postId);
@@ -110,16 +95,16 @@ export class BoardComponent implements OnInit {
     );
   }
 
-  upvote(post:Post){
+  upvote(post: Post) {
     console.log(post);
   }
-  downvote(post:Post){
-    console.log(post);    
-  }
-  edit(post:Post){
+  downvote(post: Post) {
     console.log(post);
   }
-  delete(post:Post){
+  edit(post: Post) {
+    console.log(post);
+  }
+  delete(post: Post) {
     console.log(post);
   }
 }
