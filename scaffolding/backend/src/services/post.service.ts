@@ -1,7 +1,5 @@
 import {PostAttributes, Post} from '../models/post.model';
 import {MulterRequest} from '../models/multerRequest.model';
-import {ItemImage, ItemImageAttributes} from '../models/itemImage.model';
-import {TodoItem} from '../models/todoitem.model';
 import {upload} from '../middlewares/fileFilter';
 import {User} from '../models/user.model';
 
@@ -45,7 +43,25 @@ export class PostService {
             });
     }
 
-
+    public delete(post: PostAttributes): Promise<PostAttributes> {
+        return Post.findByPk(post.postId)
+            .then(found => {
+                if (!found) {
+                    return Promise.reject({error: 'Post_not_found', message: 'Cant find Post nr.' + post.postId});
+                } else {
+                    return this.isAdmin(post.userId).then( isAdmin => {
+                        if ((found.userId !== post.userId) && (!isAdmin)) { /*Check if user is owner of Post or Admin*/
+                            // tslint:disable-next-line:max-line-length
+                            return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify post: ' + post.postId});
+                        }
+                        return new Promise<PostAttributes>((resolve, reject) => {
+                            found.destroy();
+                            resolve(found);
+                        });
+                    });
+                }
+            });
+    }
 
     public addImage(req: MulterRequest): Promise<PostAttributes> {
         return Post.findByPk(req.params.id)
@@ -84,5 +100,4 @@ export class PostService {
             }
         });
     }
-
 }

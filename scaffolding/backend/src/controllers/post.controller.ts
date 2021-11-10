@@ -5,10 +5,12 @@ import {verifyToken} from '../middlewares/checkAuth';
 import {MulterRequest} from '../models/multerRequest.model';
 import {Post} from '../models/post.model';
 import {VoteService} from '../services/vote.service';
+import {UserService} from '../services/user.service';
 
 const postController: Router = express.Router();
 const postService = new PostService();
 const voteService = new VoteService();
+const userService = new UserService();
 
 // postController.use(verifyToken);
 
@@ -32,7 +34,19 @@ postController.post('/:id/edit', verifyToken,
     }
 );
 
-postController.post('/:id/image', verifyToken, (req: MulterRequest, res: Response) => {
+postController.delete('/:id', verifyToken,
+    (req: Request, res: Response) => {
+        req.body.userId = req.body.tokenPayload.userId;
+        req.body.postId = req.params.id;
+        postService.delete(req.body).then(post => res.send(post)).catch(err => {
+            res.status(500).send(err);
+        });
+    }
+);
+
+postController.post('/:id/image', verifyToken,
+    // tslint:disable-next-line:no-shadowed-variable
+    (req: MulterRequest, res: Response) => {
     req.body.userId = req.body.tokenPayload.userId;
     postService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
 });
@@ -43,6 +57,7 @@ postController.get('/get',
             .then(async list => {
                 for (const post of list) {
                     post.setDataValue('vote', await voteService.calculateVotes(post.postId));
+                    post.setDataValue('userName', await userService.getNameForUserID(post.userId));
                     if (req.body.userId !== undefined) {
                         post.setDataValue('myVote', await voteService.voteOfUser(post.postId, req.body.userId));
                     }
@@ -52,5 +67,31 @@ postController.get('/get',
             .catch(err => res.status(500).send(err));
     }
 );
+
+postController.post('/getfiltered',
+    (req: Request, res: Response) => {
+        const { Op } = require('sequelize');
+        Post.findAll( { where: {
+                category: {
+                    [Op.substring]: req.body.category
+                 }
+        }
+        })
+            .then(list => res.status(200).send(list))
+            .catch(err => res.status(500).send(err));
+    }
+);
+
+postController.get('/:id/single', (req: Request, res: Response) => {
+    Post.findByPk(req.params.id).then(async post => {
+            post.setDataValue('vote', await voteService.calculateVotes(post.postId));
+            post.setDataValue('userName', await userService.getNameForUserID(post.userId));
+            if (req.body.userId !== undefined) {
+                post.setDataValue('myVote', await voteService.voteOfUser(post.postId, req.body.userId));
+            }
+            res.status(200).send(post);
+        })
+        .catch(err => res.status(500).send(err));
+});
 
 export const PostController: Router = postController;

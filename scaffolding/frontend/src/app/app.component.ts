@@ -85,7 +85,11 @@ export class AppComponent implements OnInit {
     const userToken = localStorage.getItem('userToken');
 
     // Set boolean whether a user is logged in or not
-    this.userService.setLoggedIn(!!userToken);
+    this.userService.setLoggedIn(!!userToken); //this does not actually do anything
+    //does token stay in storage after validity? maybe just take out the whole logged in logic, valid user should be enough
+
+    this.userService.setUserByToken(); 
+    //token not necessary as parameter because already injected in the request's header by auth.interceptor.ts
 
   }
 }
