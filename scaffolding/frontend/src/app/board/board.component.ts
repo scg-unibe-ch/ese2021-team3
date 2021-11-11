@@ -107,7 +107,7 @@ export class BoardComponent implements OnInit {
     console.log(post);
   }
 
-  delete(post: Post): void {
+  deletePost(post: Post): void {
     this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
       this.posts.splice(this.posts.indexOf(post), 1);
     });
