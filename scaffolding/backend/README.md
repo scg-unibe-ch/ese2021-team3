@@ -296,44 +296,39 @@
     ```json
     {
     "category":"cat"
-    } 
+    }
     ```
   </details>
-  
-  <details>
-    <summary>Response</summary>
-    
+    <details>
+        <summary>Response</summary>
+
 ```json
-[
-  {
-    "postId": 1,
-    "userId": 1,
-    "title": "Tims funny cat Post",
-    "text": null,
-    "image": null,
-    "category": [
-      "cat",
-      "funny"
-    ],
-    "createdAt": "2021-11-13T12:34:47.075Z",
-    "updatedAt": "2021-11-13T12:34:47.075Z"
-  },
-  {
-    "postId": 2,
-    "userId": 1,
-    "title": "Tims ordinary cat Post",
-    "text": null,
-    "image": null,
-    "category": [
-      "cat"
-    ],
-    "createdAt": "2021-11-13T12:35:04.266Z",
-    "updatedAt": "2021-11-13T12:35:04.266Z"
-  }
-]
-
+    {
+        "postId": 1,
+        "userId": 1,
+        "title": "Tims funny cat Post",
+        "text": null,
+        "image": null,
+        "category": [
+            "cat",
+            "funny"
+        ],
+        "createdAt": "2021-11-13T12:34:47.075Z",
+        "updatedAt": "2021-11-13T12:34:47.075Z"
+    },
+    {
+        "postId": 2,
+        "userId": 1,
+        "title": "Tims ordinary cat Post",
+        "text": null,
+        "image": null,
+        "category": [
+            "cat"
+        ],
+        "createdAt": "2021-11-13T12:35:04.266Z",
+        "updatedAt": "2021-11-13T12:35:04.266Z"
+    }
 ```
-
 
 </details>
   
