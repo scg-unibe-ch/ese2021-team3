@@ -153,14 +153,14 @@
         "createdAt": "2021-10-26T12:08:13.091Z"
     }
     ```
-    	- Post don't exists in database:
+        - Post don't exists in database:
         Code: 500
         Body:
     ```json
     {
         "error": "Post_not_found",
         "message": "Cant find Post nr.<xy>"
-	   }
+       }
     ```
         - User isn't autorized to edit this Post:
         Code: 500
@@ -171,107 +171,174 @@
        "message": "Youre not authorized to modify post: 2"
     }
     ```
-    	- No Image in Post or wrong format:
+        - No Image in Post or wrong format:
         Code: 500
-	    Body:
-	```json
+        Body:
+    ```json
     {
        "error": "Upload_error",
        "message": "Cant upload image"
     }
     ```
     </details>
-- GET `/get`
-  <details>
-      <summary>Request</summary>
+  - GET `/get`
+    <details>
+        <summary>Request</summary>
 
+          Body:
+      ```json
+      {
+          "userId":1 //Optional, only if feedback about the users votes are needed
+      }
+
+      ```
+    </details>
+
+    <details>
+        <summary>Response</summary>
+
+        Code: 200 
         Body:
     ```json
-    {
-        "userId":1 //Optional, only if feedback about the users votes are needed
-    }
-
+    [
+      {
+          "postId": 1,
+          "userId": 1,
+          "title": "test",
+          "text": "testetst",
+          "image": "URL",
+          "category": [
+              "test",
+              "test2"
+          ],
+          "createdAt": "2021-11-03T16:38:31.527Z",
+          "updatedAt": "2021-11-03T16:38:31.527Z",
+          "vote": 1,
+          "myVote": 1, //Only appears if userId is defined in body
+          "userName": "userName"
+      },
+      {
+          "postId": 2,
+          "userId": 1,
+          "title": "test",
+          "text": "testetst",
+          "image": "URL",
+          "category": [
+              "test",
+              "test2"
+          ],
+          "createdAt": "2021-11-05T09:36:38.297Z",
+          "updatedAt": "2021-11-05T09:36:38.297Z",
+          "vote": -1,
+          "myVote": -1, //Only appears if userId is defined in body
+          "userName": "userName"
+      }
+    ]
     ```
-  </details>
+  - GET `/:id/single`
+    <details>
+        <summary>Request</summary>
 
-  <details>
-      <summary>Response</summary>
+          Body:
+      ```json
+      {
+          "userId":1 //Optional, only if feedback about the users votes are needed
+      }
 
-      Code: 200 
-      Body:
-  ```json
-  [
-    {
-        "postId": 1,
-        "userId": 1,
-        "title": "test",
-        "text": "testetst",
-        "image": "URL",
-        "category": [
-            "test",
-            "test2"
-        ],
-        "createdAt": "2021-11-03T16:38:31.527Z",
-        "updatedAt": "2021-11-03T16:38:31.527Z",
-        "vote": 1,
-        "myVote": 1, //Only appears if userId is defined in body
-        "userName": "userName"
-    },
-    {
-        "postId": 2,
-        "userId": 1,
-        "title": "test",
-        "text": "testetst",
-        "image": "URL",
-        "category": [
-            "test",
-            "test2"
-        ],
-        "createdAt": "2021-11-05T09:36:38.297Z",
-        "updatedAt": "2021-11-05T09:36:38.297Z",
-        "vote": -1,
-        "myVote": -1, //Only appears if userId is defined in body
-        "userName": "userName"
-    }
-  ]
-  ```
-- GET `/:id/single`
-  <details>
-      <summary>Request</summary>
+      ```
+    </details>
 
+    <details>
+        <summary>Response</summary>
+
+        Code: 200 
         Body:
     ```json
-    {
-        "userId":1 //Optional, only if feedback about the users votes are needed
-    }
-
-    ```
-  </details>
-
-  <details>
-      <summary>Response</summary>
-
-      Code: 200 
-      Body:
-  ```json
  
+      {
+          "postId": 1,
+          "userId": 1,
+          "title": "test",
+          "text": "testetst",
+          "image": "URL",
+          "category": [
+              "test",
+              "test2"
+          ],
+          "createdAt": "2021-11-03T16:38:31.527Z",
+          "updatedAt": "2021-11-03T16:38:31.527Z",
+          "vote": 1,
+          "myVote": 1, //Only appears if userId is defined in body
+          "userName": "userName"
+      }
+    ```
+    </details>
+  
+  - DELETE `/:id`
+    <details>
+        <summary>Request</summary>
+    
+    Header: Authorization: Bearer  + `token`
+    Body:
+      ```json
+      {
+          "postId":1
+      }
+
+      ```
+      </details>
+  
+  - GET `post/getfiltered`
+    <details>
+    <summary>Request</summary>
+
+      Body:
+    ```json
     {
-        "postId": 1,
-        "userId": 1,
-        "title": "test",
-        "text": "testetst",
-        "image": "URL",
-        "category": [
-            "test",
-            "test2"
-        ],
-        "createdAt": "2021-11-03T16:38:31.527Z",
-        "updatedAt": "2021-11-03T16:38:31.527Z",
-        "vote": 1,
-        "myVote": 1, //Only appears if userId is defined in body
-        "userName": "userName"
-    }
-  ```
+    "category":"cat"
+    } 
+    ```
+  </details>
+  
+  <details>
+    <summary>Response</summary>
+    
+```json
+[
+  {
+    "postId": 1,
+    "userId": 1,
+    "title": "Tims funny cat Post",
+    "text": null,
+    "image": null,
+    "category": [
+      "cat",
+      "funny"
+    ],
+    "createdAt": "2021-11-13T12:34:47.075Z",
+    "updatedAt": "2021-11-13T12:34:47.075Z"
+  },
+  {
+    "postId": 2,
+    "userId": 1,
+    "title": "Tims ordinary cat Post",
+    "text": null,
+    "image": null,
+    "category": [
+      "cat"
+    ],
+    "createdAt": "2021-11-13T12:35:04.266Z",
+    "updatedAt": "2021-11-13T12:35:04.266Z"
+  }
+]
+
+```
+
+
+</details>
+  
+
+
 ### `/vote`
 - POST `/create`
   <details>
