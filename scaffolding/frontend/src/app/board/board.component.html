@@ -23,7 +23,7 @@ width: 300px">
 </mat-sidenav-container>
 
 <mat-sidenav-container style="
-position: absolute; 
+position: absolute;
 right: 0;
 width: 300px">
   <mat-sidenav #sidenav mode="side" opened="true" style="
@@ -88,7 +88,7 @@ width: 300px">
     <button mat-icon-button (click)="edit(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="delete(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
+    <button mat-icon-button (click)="deletePost(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>

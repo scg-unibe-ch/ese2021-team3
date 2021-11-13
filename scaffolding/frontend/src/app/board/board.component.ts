@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit , EventEmitter, Output} from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
+
 
 @Component({
   selector: 'app-board',
@@ -22,6 +23,7 @@ export class BoardComponent implements OnInit {
 
   @Input()
   user?: User;
+
 
   constructor(
     public httpClient: HttpClient,
@@ -104,8 +106,11 @@ export class BoardComponent implements OnInit {
   edit(post: Post) {
     console.log(post);
   }
-  delete(post: Post) {
-    console.log(post);
+
+  deletePost(post: Post): void {
+    this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
+      this.posts.splice(this.posts.indexOf(post), 1);
+    });
   }
 }
 
