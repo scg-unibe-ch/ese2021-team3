@@ -181,7 +181,7 @@
     }
     ```
     </details>
-  - GET `/get`
+  - POST `/get`
     <details>
         <summary>Request</summary>
 

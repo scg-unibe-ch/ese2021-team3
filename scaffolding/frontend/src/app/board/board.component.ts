@@ -29,21 +29,32 @@ export class BoardComponent implements OnInit {
     public httpClient: HttpClient,
     public userService: UserService
   ) {
-    userService.user$.subscribe(res => this.user = res);
+    userService.user$.subscribe(res => {
+      this.user = res
+      this.getPosts(); //Reload posts after user is logged in to get "myVote"
+    })
   }
 
   ngOnInit(): void {
-    this.getPosts();
+    this.getPosts()
   }
 
   getPosts() {
-    this.httpClient.get(environment.endpointURL + "post/get", {}
+    var body = {}
+    if (this.user !== undefined) {
+      body = {
+        userId: this.user?.userId! //Add userid to body if user is already logged in.
+      }
+    }
+
+    this.httpClient.post(environment.endpointURL + "post/get", body
     ).subscribe(
       (res: any) => {
         try {
+          this.posts = [] //Reset posts (to ensure not to duplicate post if recalled)
           for (let i = 0; i < res.length; i++) {
             this.posts.push(
-              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, res[i].userName)
+              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, res[i].userName, res[i].vote, res[i].myVote)
             )
           }
         } catch (error) {
@@ -98,11 +109,47 @@ export class BoardComponent implements OnInit {
   }
 
   upvote(post: Post) {
-    console.log(post);
+
+    this.httpClient.post(environment.endpointURL + "vote/create", {
+      postId: post.postId,
+      vote: 1
+    }).subscribe((res: any) => {
+        if (post.vote !== undefined) {
+          if (post.myVote === -1) {
+            post.vote += 2; //If already Voted negativ, remove two from votecount
+          } else {
+            post.vote += 1; //if not voted already add one to vote
+          }
+          post.myVote = 1; //Update myVote Attribut
+        }
+      },
+      (err) => {
+        this.postingMsg = err.error.message;
+      }
+    );
   }
+
   downvote(post: Post) {
-    console.log(post);
+
+    this.httpClient.post(environment.endpointURL + "vote/create", {
+      postId: post.postId,
+      vote: -1
+    }).subscribe((res: any) => {
+        if (post.vote !== undefined) {
+          if (post.myVote === 1) {
+            post.vote -= 2; //If already Voted positiv, remove two from vote
+          } else {
+            post.vote -= 1; //if not voted already remove one from vote
+          }
+          post.myVote = -1; //Update myVote Attribut
+        }
+      },
+      (err) => {
+        this.postingMsg = err.error.message;
+      }
+    );
   }
+
   edit(post: Post) {
     console.log(post);
   }

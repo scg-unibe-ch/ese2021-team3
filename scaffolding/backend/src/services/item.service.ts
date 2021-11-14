@@ -2,10 +2,13 @@ import {upload} from '../middlewares/fileFilter';
 import {TodoItem} from '../models/todoitem.model';
 import {ItemImage, ItemImageAttributes} from '../models/itemImage.model';
 import {MulterRequest} from '../models/multerRequest.model';
+import {Console} from 'inspector';
+import multer from 'multer';
 
 export class ItemService {
 
     public addImage(req: MulterRequest): Promise<ItemImageAttributes> {
+        console.log(req.params.id);
         return TodoItem.findByPk(req.params.id)
             .then(found => {
                 if (!found) {
@@ -15,12 +18,12 @@ export class ItemService {
                         upload.single('image')(req, null, (error: any) => {
                             ItemImage.create({ fileName: req.file.filename, todoItemId: found.todoItemId })
                                 .then(created => resolve(created))
-                                .catch(() => reject('Could not upload image!'));
+                                .catch(err => reject('Could not upload image! ' + err));
                         });
                     });
                 }
             })
-            .catch(() => Promise.reject('Could not upload image!'));
+            .catch(err => Promise.reject('Could not upload image!' + err));
     }
 
     public getImageItem(imageId: number): Promise<ItemImage> {

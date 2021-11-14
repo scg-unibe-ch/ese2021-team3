@@ -51,10 +51,11 @@ postController.post('/:id/image', verifyToken,
     postService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
 });
 
-postController.get('/get',
+postController.post('/get',
     (req: Request, res: Response) => {
         Post.findAll()
             .then(async list => {
+                console.log(req.body.userId);
                 for (const post of list) {
                     post.setDataValue('vote', await voteService.calculateVotes(post.postId));
                     post.setDataValue('userName', await userService.getNameForUserID(post.userId));

@@ -9,5 +9,7 @@ export class Post {
         public image: string,
         public category: string[],
         public username?: string,
+        public vote?: number,
+        public myVote?: number,
     ) { }
 }
