@@ -74,6 +74,7 @@ export class BoardComponent implements OnInit {
       this.newPost.userId = this.user?.userId ?? 0;
       this.newPost.username = this.user?.username;
       this.newPost.postId = Number(res.postId);
+      this.newPost.vote = 0; //Vote Post for newly created Post
       if (this.selectedFile) {
         this.uploadImage(this.newPost.postId);
       } else {
