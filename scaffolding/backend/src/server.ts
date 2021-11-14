@@ -17,6 +17,8 @@ import {ItemImage} from './models/itemImage.model';
 import {PostController} from './controllers/post.controller';
 import {Post} from './models/post.model';
 import {Vote} from './models/vote.model';
+import {Product} from './models/product.model';
+import {ProductController} from './controllers/product.controller';
 
 
 export class Server {
@@ -34,6 +36,8 @@ export class Server {
         ItemImage.initialize(this.sequelize);
         Post.initialize(this.sequelize);
         Vote.initialize(this.sequelize);
+        Product.initialize(this.sequelize);
+
         TodoItem.createAssociations();
         TodoList.createAssociations();
         ItemImage.createAssociations();
@@ -79,6 +83,7 @@ export class Server {
             .use('/admin', AdminController)
             .use('/post', PostController)
             .use('/vote', VoteController)
+            .use('/product', ProductController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             .use('/images', express.static('./uploads'))

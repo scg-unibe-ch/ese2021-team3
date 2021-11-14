@@ -98,7 +98,7 @@ export class BoardComponent implements OnInit {
     this.httpClient.post(environment.endpointURL + "post/" + postId + "/image",
       formData
     ).subscribe((res: any) => {
-      this.newPost.image = res.fileName;
+      this.newPost.image = res.image;
       this.posts.push(this.newPost);
       this.newPost = new Post(0, 0, "", "", "", [], "");
     },
