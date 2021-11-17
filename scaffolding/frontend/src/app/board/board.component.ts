@@ -130,8 +130,27 @@ export class BoardComponent implements OnInit {
     );
   }
 
-  downvote(post: Post) {
+  neutralvote(post: Post) {
+    this.httpClient.post(environment.endpointURL + "vote/create", {
+      postId: post.postId,
+      vote: 0
+    }).subscribe((res: any) => {
+        if (post.vote !== undefined) {
+          if (post.myVote === 1) {
+            post.vote -= 1; //If already Voted positiv, remove two from vote
+          } else {
+            post.vote += 1; //if not voted already remove one from vote
+          }
+          post.myVote = 0; //Update myVote Attribut
+        }
+      },
+      (err) => {
+        this.postingMsg = err.error.message;
+      }
+    );
+  }
 
+  downvote(post: Post) {
     this.httpClient.post(environment.endpointURL + "vote/create", {
       postId: post.postId,
       vote: -1

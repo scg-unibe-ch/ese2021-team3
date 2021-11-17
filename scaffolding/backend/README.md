@@ -204,11 +204,11 @@
       {
           "postId": 1,
           "userId": 1,
-          "title": "test",
+          "title": "tests",
           "text": "testetst",
           "image": "URL",
           "category": [
-              "test",
+              "tests",
               "test2"
           ],
           "createdAt": "2021-11-03T16:38:31.527Z",
@@ -220,11 +220,11 @@
       {
           "postId": 2,
           "userId": 1,
-          "title": "test",
+          "title": "tests",
           "text": "testetst",
           "image": "URL",
           "category": [
-              "test",
+              "tests",
               "test2"
           ],
           "createdAt": "2021-11-05T09:36:38.297Z",
@@ -258,11 +258,11 @@
         {
             "postId": 1,
             "userId": 1,
-            "title": "test",
+            "title": "tests",
             "text": "testetst",
             "image": "URL",
             "category": [
-                "test",
+                "tests",
                 "test2"
             ],
             "createdAt": "2021-11-03T16:38:31.527Z",

@@ -79,11 +79,14 @@ width: 300px">
 <mat-card *ngFor="let post of posts.reverse()" style="max-width: 600px;">
   <app-post [post]="post"></app-post>
   <mat-card-actions>
-    <button mat-icon-button (click)="upvote(post)" *ngIf="this.user" [disabled]="post.myVote === 1">
+    <button mat-icon-button (click)="upvote(post)" *ngIf="this.user && post.myVote !== 1">
       <mat-icon>thumb_up</mat-icon>
     </button>
-    <button mat-icon-button (click)="downvote(post)" *ngIf="this.user" [disabled]="post.myVote === -1">
+    <button mat-icon-button (click)="downvote(post)" *ngIf="this.user && post.myVote !== -1">
       <mat-icon>thumb_down</mat-icon>
+    </button>
+    <button mat-icon-button (click)="neutralvote(post)" *ngIf="this.user && post.myVote !== 0">
+      <mat-icon>thumbs_up_down</mat-icon>
     </button>
     {{ post.vote }}
     <button mat-icon-button (click)="edit(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">

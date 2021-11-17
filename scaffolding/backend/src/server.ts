@@ -19,6 +19,8 @@ import {Post} from './models/post.model';
 import {Vote} from './models/vote.model';
 import {Product} from './models/product.model';
 import {ProductController} from './controllers/product.controller';
+import {Order} from './models/order.model';
+import {OrderController} from './controllers/order.controller';
 
 
 export class Server {
@@ -37,6 +39,7 @@ export class Server {
         Post.initialize(this.sequelize);
         Vote.initialize(this.sequelize);
         Product.initialize(this.sequelize);
+        Order.initialize(this.sequelize);
 
         TodoItem.createAssociations();
         TodoList.createAssociations();
@@ -44,6 +47,8 @@ export class Server {
         User.createAssociations();
         Post.createAssociations();
         Vote.createAssociations();
+        Product.createAssociations();
+        Order.createAssociations();
 
 
 
@@ -84,6 +89,7 @@ export class Server {
             .use('/post', PostController)
             .use('/vote', VoteController)
             .use('/product', ProductController)
+            .use('/order', OrderController)
             .options('*', cors(options))
             .use(express.static('./src/public'))
             .use('/images', express.static('./uploads'))

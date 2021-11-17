@@ -60,7 +60,6 @@ export class UserComponent {
         }
       );
     }
-
   }
   checkRegistration(user: User) {
     if (!user.username || user.username.length == 0) {

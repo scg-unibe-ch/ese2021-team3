@@ -9,6 +9,7 @@ import {
     HasManyGetAssociationsMixin
 } from 'sequelize';
 import {Post} from './post.model';
+import {Order} from './order.model';
 
 export interface UserAttributes {
     userId: number;
@@ -100,6 +101,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
     public static createAssociations() {
         User.hasMany(Post, {
             as: 'Posts',
+            foreignKey: 'userId'
+        });
+        User.hasMany(Order, {
+            as: 'Orders',
             foreignKey: 'userId'
         });
     }
