@@ -4,20 +4,23 @@ import {User} from './user.model';
 
 export interface OrderAttributes {
     orderId: number;
-    adress: string;
+    address: string;
     userId: number;
     productId: number[];
     status: string;
+    paymentMethod: string;
 }
 
 export interface OrderCreationAttributes extends Optional<OrderAttributes, 'orderId'> {  }
 
 export class Order extends Model<OrderAttributes, OrderCreationAttributes> implements OrderAttributes {
     orderId: number;
-    adress: string;
+    address: string;
     userId: number;
     productId: number[];
     status: string;
+    paymentMethod: string;
+
     public static initialize(sequelize: Sequelize) {
         Order.init({
                 orderId: {
@@ -25,7 +28,7 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
                     autoIncrement: true,
                     primaryKey: true
                 },
-                adress: {
+                address: {
                     type: DataTypes.STRING,
                     allowNull: false
                 },
@@ -34,10 +37,14 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes> imple
                     allowNull: false
                 },
                 productId: {
-                    type: DataTypes.JSON,
+                    type: DataTypes.NUMBER,
                     allowNull: false
                 },
                 status: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                paymentMethod: {
                     type: DataTypes.STRING,
                     allowNull: false
                 },

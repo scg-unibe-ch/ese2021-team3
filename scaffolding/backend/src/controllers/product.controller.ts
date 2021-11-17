@@ -12,7 +12,6 @@ const productService = new ProductService();
 productController.post('/create', checkAdmin,
     (req: Request, res: Response) => {
         productService.create(req.body).then(post => res.send(post)).catch(err => {
-            console.log(err);
             res.status(500).send(err);
         });
     }

@@ -1,6 +1,88 @@
 # ESE2021 Backend Calls
 
 ## Endpoints
+### `/order`
+- POST `/create`
+  <details>
+      <summary>Request</summary>
+
+        Header: Authorization: Bearer  + `token`
+        Body:
+    ```json
+    {
+      "address":"test test",
+      "productId":1,
+      "paymentMethod":"invoice"
+     }
+
+    ```
+  </details>
+
+  <details>
+      <summary>Response</summary>
+
+      Code: 200 
+      Body:
+  ```json
+  {
+    "orderId": 2,
+    "address": "test test",
+    "productId": 1,
+    "paymentMethod": "invoice",
+    "userId": 1,
+    "status": "Pending",
+    "updatedAt": "2021-11-17T16:50:44.594Z",
+    "createdAt": "2021-11-17T16:50:44.594Z"
+   }
+  ```
+      Code: 403
+      Body:
+  ```json
+  {
+     "message": "Unauthorized"
+  }
+  ```
+  </details>
+- POST `/:id/changestatus`
+  <details>
+      <summary>Request</summary>
+
+        Header: Authorization: Bearer  + `token` 
+        Body: (Requires Adminrights)
+    ```json
+    {
+      "status":"NEWSTATUS"
+     }
+
+    ```
+  </details>
+
+  <details>
+      <summary>Response</summary>
+
+      Code: 200 
+      Body:
+  ```json
+  {
+    "orderId": 4,
+    "address": "test test",
+    "userId": 1,
+    "productId": 0,
+    "status": "NEWSTATUS",
+    "paymentMethod": "invoice",
+    "createdAt": "2021-11-17T16:53:58.312Z",
+    "updatedAt": "2021-11-17T17:15:26.230Z"
+  }
+  ```
+      Code: 403
+      Body:
+  ```json
+  {
+     "message": "Unauthorized"
+  }
+  ```
+  </details>
+
 ### `/post`
   - POST `/create`
     <details>
