@@ -33,6 +33,13 @@ productController.delete('/:id', verifyToken,
     }
 );
 
+productController.get('/:id/single', (req: Request, res: Response) => {
+    Product.findByPk(req.params.id).then(async product => {
+        res.status(200).send(product);
+    })
+        .catch(err => res.status(500).send(err));
+});
+
 productController.post('/getfiltered',
     (req: Request, res: Response) => {
         // tslint:disable-next-line:no-shadowed-variable
