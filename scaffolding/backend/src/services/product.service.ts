@@ -10,6 +10,36 @@ export class ProductService {
         return Product.create(product).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
     }
 
+    public addImage(req: MulterRequest): Promise<ProductAttributes> {
+        return Product.findByPk(req.params.id)
+            .then(found => {
+                if (!found) {
+                    return Promise.reject({error: 'Product_not_found', message: 'Cant find Product nr.' + req.params.id});
+                } else {
+                    console.log(found.userId + ' ' + req.body.userId);
+                    if (found.userId !== req.body.userId) {
+                        return Promise.reject({
+                            error: 'not_authorized',
+                            message: 'Youre not authorized to modify product: ' + req.params.id
+                        });
+                    }
+                    return new Promise<ProductAttributes>((resolve, reject) => {
+                        upload.single('image')(req, null, (error: any) => {
+                            if ((error === undefined) && (req.file !== undefined)) {
+                                found.image = 'images/' + req.file.filename;
+                                found.update({
+                                    image: found.image
+                                });
+                                resolve(found);
+                            } else {
+                                reject({error: 'Upload_Error', message: 'Cant upload image!'});
+                            }
+                        });
+                    });
+                }
+            });
+    }
+
     public delete(product: ProductAttributes): Promise<ProductAttributes> {
         return Product.findByPk(product.productId)
             .then(found => {
@@ -18,7 +48,7 @@ export class ProductService {
                 } else {
                     // @ts-ignore
                     return this.isAdmin(product.userId).then( isAdmin => {
-                        if (!isAdmin) { /*Check if user is owner of Post or Admin*/
+                        if (!isAdmin) {
                             // tslint:disable-next-line:max-line-length
                             return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify product: ' + product.productId});
                         }

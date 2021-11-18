@@ -4,6 +4,7 @@ import {checkAdmin} from '../middlewares/checkAdmin';
 import {ProductService} from '../services/product.service';
 import {Product} from '../models/product.model';
 import {Op} from 'sequelize';
+import {MulterRequest} from '../models/multerRequest.model';
 const productController: Router = express.Router();
 const productService = new ProductService();
 
@@ -21,6 +22,13 @@ productController.get('/get',
         Product.findAll()
             .then(list => res.status(200).send(list))
             .catch(err => res.status(500).send(err));
+    });
+
+productController.post('/:id/image', verifyToken,
+    // tslint:disable-next-line:no-shadowed-variable
+    (req: MulterRequest, res: Response) => {
+        req.body.userId = req.body.tokenPayload.userId;
+        productService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
     });
 
 productController.delete('/:id', verifyToken,
