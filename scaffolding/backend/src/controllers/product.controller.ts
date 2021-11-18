@@ -17,5 +17,15 @@ productController.post('/create', checkAdmin,
     }
 );
 
+productController.delete('/:id', verifyToken,
+    (req: Request, res: Response) => {
+        req.body.userId = req.body.tokenPayload.userId;
+        req.body.productId = req.params.id;
+        productService.delete(req.body).then(post => res.send(post)).catch(err => {
+            res.status(500).send(err);
+        });
+    }
+);
+
 
 export const ProductController: Router = productController;
