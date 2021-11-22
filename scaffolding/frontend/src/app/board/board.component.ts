@@ -17,6 +17,8 @@ export class BoardComponent implements OnInit {
   postingMsg = "";
   posts: Post[] = [];
   users: { [id: number]: string; } = {};
+  selectedCategory: string = "";
+  category: string[] = [];
   selectedFile?: File;
   target?: HTMLInputElement;
 
@@ -29,6 +31,7 @@ export class BoardComponent implements OnInit {
     public httpClient: HttpClient,
     public userService: UserService
   ) {
+
     userService.user$.subscribe(res => {
       this.user = res
       this.getPosts(); //Reload posts after user is logged in to get "myVote"
@@ -70,10 +73,13 @@ export class BoardComponent implements OnInit {
       text: this.newPost.text,
       image: ""
 
+
     }).subscribe((res: any) => {
       this.newPost.userId = this.user?.userId ?? 0;
       this.newPost.username = this.user?.username;
       this.newPost.postId = Number(res.postId);
+      this.category.push(this.selectedCategory);
+      this.newPost.category = this.category;
       this.newPost.vote = 0; //Vote Post for newly created Post
       if (this.selectedFile) {
         this.uploadImage(this.newPost.postId);
