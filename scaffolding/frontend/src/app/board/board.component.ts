@@ -142,12 +142,17 @@ export class BoardComponent implements OnInit {
       vote: 0
     }).subscribe((res: any) => {
         if (post.vote !== undefined) {
-          if (post.myVote === 1) {
-            post.vote -= 1; //If already Voted positiv, remove two from vote
-          } else {
-            post.vote += 1; //if not voted already remove one from vote
+          switch (post.myVote) {
+            case (1):
+              post.vote -= 1;
+              break;
+            case (-1):
+              post.vote += 1;
+              break;
+            default:
+              break;
           }
-          post.myVote = 0; //Update myVote Attribut
+          post.myVote = 0;
         }
       },
       (err) => {
