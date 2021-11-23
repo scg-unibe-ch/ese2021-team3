@@ -82,6 +82,107 @@
   }
   ```
   </details>
+- POST `/:id/cancel`
+  <details>
+      <summary>Request</summary>
+
+        Header: Authorization: Bearer  + `token` 
+        Body: 
+    ```json
+    { }
+
+    ```
+  </details>
+
+  <details>
+      <summary>Response</summary>
+
+      Code: 200 
+      Body:
+  ```json
+  {
+    "orderId": 2,
+    "address": "test test",
+    "userId": 1,
+    "productId": 1,
+    "status": "canceled",
+    "paymentMethod": "invoice",
+    "createdAt": "2021-11-17T16:50:44.594Z",
+    "updatedAt": "2021-11-20T14:01:23.322Z"
+  }
+  ```
+      Code: 403
+      Body:
+  ```json
+  {
+     "message": "Unauthorized"
+  }
+  ```
+      Code: 500
+      Body:
+  ```json
+  {
+        "error": "cant_find_order",
+        "message": "Cannot find order nr: xy"
+  }
+  ```
+      Code: 500
+      Body:
+  ```json
+  {
+        "error": "Unauthorized",
+        "message": "Youre not allowed to change order nr: xy"
+  }
+  ```
+  </details>
+
+- GET `/get`
+  <details>
+      <summary>Request</summary>
+
+        Header: Authorization: Bearer  + `token` 
+        Body: (adminrights needed)
+    ```json
+    { }
+
+    ```
+  </details>
+
+  <details>
+      <summary>Response</summary>
+
+      Code: 200 
+      Body:
+  ```json
+  {
+        "orderId": 1,
+        "address": "test test",
+        "userId": 1,
+        "productId": 1,
+        "status": "canceled",
+        "paymentMethod": "invoice",
+        "createdAt": "2021-11-17T16:47:36.644Z",
+        "updatedAt": "2021-11-20T14:00:28.933Z"
+    },
+    {
+        "orderId": 2,
+        "address": "test test",
+        "userId": 1,
+        "productId": 1,
+        "status": "canceled",
+        "paymentMethod": "invoice",
+        "createdAt": "2021-11-17T16:50:44.594Z",
+        "updatedAt": "2021-11-20T14:01:23.322Z"
+    }
+  ```
+      Code: 403
+      Body:
+  ```json
+  {
+     "message": "Unauthorized"
+  }
+  ```
+  </details>
 
 ### `/post`
   - POST `/create`

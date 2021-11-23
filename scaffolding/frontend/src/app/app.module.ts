@@ -23,6 +23,9 @@ import { BoardComponent } from './board/board.component';
 import { PostComponent } from './board/post/post.component';
 import { MatIconModule } from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatOptionModule } from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatCheckboxModule,
     AppRoutingModule,
     MatIconModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatOptionModule,
+    MatSelectModule
   ],
   providers: [
     {

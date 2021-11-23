@@ -2,6 +2,7 @@ import express, {Request, Response, Router} from 'express';
 import {verifyToken} from '../middlewares/checkAuth';
 import {OrderService} from '../services/order.service';
 import {checkAdmin} from '../middlewares/checkAdmin';
+import {Order} from '../models/order.model';
 
 const orderController: Router = express.Router();
 const orderService = new OrderService();
@@ -24,5 +25,18 @@ orderController.post('/:id/changeStatus', checkAdmin,
     }
 );
 
+orderController.post('/:id/cancel', verifyToken,
+    (req: Request, res: Response) => {
+        orderService.cancel(req.params.id, req.body.tokenPayload.userId).then(order => res.send(order)).catch(err => {
+            res.status(500).send(err);
+        });
+    }
+);
+
+orderController.get('/get', checkAdmin,
+    (req: Request, res: Response) => {
+        orderService.getAll().then(list => res.send(list)).catch(err => {console.log(err); res.status(500).send(err); });
+    }
+);
 
 export const OrderController: Router = orderController;
