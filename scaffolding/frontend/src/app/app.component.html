@@ -14,6 +14,19 @@
       <app-board [user]="user"></app-board>
     </div>
   </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>shop</mat-icon>
+    </ng-template>
+    <div style="box-sizing: border-box; display: flex; justify-content: center;">
+      <app-shop [user]="user"></app-shop>
+    </div>
+  </mat-tab>
+  <mat-tab label="Orders">
+    <div style="box-sizing: border-box; display: flex; justify-content: center;">
+      <app-dashboard></app-dashboard>
+    </div>
+  </mat-tab>
   <mat-tab label="Todo List">
     <mat-card>
       <mat-form-field>
@@ -25,6 +38,6 @@
     <app-todo-list *ngFor="let todoList of todoLists" [todoList]="todoList" (update)="updateList($event)"
       (delete)="deleteList($event)"></app-todo-list>
   </mat-tab>
-  <mat-tab *ngIf="user && user.isAdmin" label="Admin Zone">
+  <mat-tab *ngIf="user?.isAdmin" label="Admin Zone">
   </mat-tab>
 </mat-tab-group>
