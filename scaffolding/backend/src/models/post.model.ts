@@ -20,7 +20,7 @@ export interface PostAttributes {
     vote?: number;
     myVote?: number;
     userName?: string;
-    category: string[];
+    category: string;
 }
 
 export interface PostCreationAttributes extends Optional<PostAttributes, 'postId'> {  }
@@ -39,7 +39,7 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
     vote?: number;
     myVote?: number;
     userName?: string;
-    category: string[];
+    category: string;
 
     public getVotes!: HasManyGetAssociationsMixin<Vote>;
 
@@ -67,7 +67,7 @@ export class Post extends Model<PostAttributes, PostCreationAttributes> implemen
                 allowNull: true
             },
             category: {
-                type: DataTypes.JSON,
+                type: DataTypes.STRING,
                 allowNull: true
             }
         },
