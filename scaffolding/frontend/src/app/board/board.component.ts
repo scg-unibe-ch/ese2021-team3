@@ -13,12 +13,10 @@ import { UserService } from '../services/user.service';
 })
 export class BoardComponent implements OnInit {
 
-  newPost = new Post(0, 0, "", "", "", [], "");
+  newPost = new Post(0, 0, "", "", "", "", "");
   postingMsg = "";
   posts: Post[] = [];
   users: { [id: number]: string; } = {};
-  selectedCategory: string = "";
-  category: string[] = [];
   selectedFile?: File;
   target?: HTMLInputElement;
 
@@ -65,27 +63,30 @@ export class BoardComponent implements OnInit {
         }
       }
     )
+
   }
 
   createPost() {
     this.httpClient.post(environment.endpointURL + "post/create", {
       title: this.newPost.title,
       text: this.newPost.text,
-      image: ""
+      image: "",
+      category: this.newPost.category,
+
+
 
 
     }).subscribe((res: any) => {
       this.newPost.userId = this.user?.userId ?? 0;
       this.newPost.username = this.user?.username;
       this.newPost.postId = Number(res.postId);
-      this.category.push(this.selectedCategory);
-      this.newPost.category = this.category;
+      this.newPost.category = this.newPost.category;
       this.newPost.vote = 0; //Vote Post for newly created Post
       if (this.selectedFile) {
         this.uploadImage(this.newPost.postId);
       } else {
         this.posts.push(this.newPost);
-        this.newPost = new Post(0, 0, "", "", "", [], "");
+        this.newPost = new Post(0, 0, "", "", "","", "");
       }
     },
       (err) => {
@@ -107,7 +108,7 @@ export class BoardComponent implements OnInit {
     ).subscribe((res: any) => {
       this.newPost.image = res.image;
       this.posts.push(this.newPost);
-      this.newPost = new Post(0, 0, "", "", "", [], "");
+      this.newPost = new Post(0, 0, "", "", "", "", "");
     },
       (err) => {
         this.postingMsg = err.error.message;
