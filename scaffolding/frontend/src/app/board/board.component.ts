@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
+import {newArray} from "@angular/compiler/src/util";
 
 
 @Component({
@@ -13,7 +14,8 @@ import { UserService } from '../services/user.service';
 })
 export class BoardComponent implements OnInit {
 
-  newPost = new Post(0, 0, "", "", "", [], "");
+  newPost = new Post(0, 0, "", "", "", []);
+  editPost = new Post(0, 0, "", "", "", []);
   postingMsg = "";
   posts: Post[] = [];
   users: { [id: number]: string; } = {};
@@ -21,6 +23,7 @@ export class BoardComponent implements OnInit {
   category: string[] = [];
   selectedFile?: File;
   target?: HTMLInputElement;
+  editArray: Post[] = []
 
 
   @Input()
@@ -73,7 +76,6 @@ export class BoardComponent implements OnInit {
       text: this.newPost.text,
       image: ""
 
-
     }).subscribe((res: any) => {
       this.newPost.userId = this.user?.userId ?? 0;
       this.newPost.username = this.user?.username;
@@ -85,7 +87,7 @@ export class BoardComponent implements OnInit {
         this.uploadImage(this.newPost.postId);
       } else {
         this.posts.push(this.newPost);
-        this.newPost = new Post(0, 0, "", "", "", [], "");
+        this.newPost = new Post(0, 0, "", "", "", []);
       }
     },
       (err) => {
@@ -107,7 +109,7 @@ export class BoardComponent implements OnInit {
     ).subscribe((res: any) => {
       this.newPost.image = res.image;
       this.posts.push(this.newPost);
-      this.newPost = new Post(0, 0, "", "", "", [], "");
+      this.newPost = new Post(0, 0, "", "", "", []);
     },
       (err) => {
         this.postingMsg = err.error.message;
@@ -177,13 +179,40 @@ export class BoardComponent implements OnInit {
   }
 
   edit(post: Post) {
-    console.log(post);
+    this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/edit", {
+      title: post.title,
+      text: post.text,
+      category: post.category,
+      image: ""
+    }).subscribe((res: any) => {
+       this.editPost.title = post.title;
+       this.editPost.text = post.text;
+       this.editPost.category = post.category;
+        if (this.selectedFile) {
+          this.uploadImage(this.editPost.postId);
+        } else {
+        }
+        post.title = this.editPost.title;
+        post.text = this.editPost.text;
+        post.category = this.editPost.category;
+
+        this.editArray = [];
+        this.editPost = new Post(0,0, "", "", "", []);
+      },
+      (err) => {
+        this.postingMsg = err.error.message;
+      }
+    );
   }
 
   deletePost(post: Post): void {
     this.httpClient.delete(environment.endpointURL + "post/" + post.postId).subscribe(() => {
       this.posts.splice(this.posts.indexOf(post), 1);
     });
+  }
+
+  prepareEdit(post: Post) {
+    this.editArray[0] = post;
   }
 }
 

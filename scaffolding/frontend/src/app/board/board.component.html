@@ -100,13 +100,36 @@ width: 300px">
       <mat-icon>thumbs_up_down</mat-icon>
     </button>
     {{ post.vote }}
-    <button mat-icon-button (click)="edit(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
+    <button mat-icon-button (click)="prepareEdit(post)" *ngIf="(this.user?.isAdmin || post.userId == this.user?.userId)">
       <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="edit(post)" *ngIf="((this.user?.isAdmin || post.userId == this.user?.userId) && editArray[0] == post)">
+      <mat-icon>save</mat-icon>
     </button>
     <button mat-icon-button (click)="deletePost(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>
+  <mat-card-content *ngIf="editArray[0] == post">
+    <mat-form-field style="width: 100%;">
+      <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="post.title">
+    </mat-form-field>
+    <br>
+    <mat-form-field style="width: 100%;">
+      <textarea matInput type="text" placeholder="Text" name="text" [(ngModel)]="post.text"></textarea>
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="selectedCategory">
+        <mat-option value="Theory">Theory </mat-option>
+        <mat-option value="Proof">Proof </mat-option>
+        <mat-option value="Meme"> Meme </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>You selected: {{selectedCategory}}</p>
+
+  </mat-card-content>
 </mat-card>
 <mat-card *ngIf="posts.length === 0">
   No posts available.

@@ -18,4 +18,7 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  upvote(post: Post) {
+
+  }
 }
