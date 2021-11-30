@@ -77,8 +77,17 @@ postController.post('/getfiltered',
                     [Op.substring]: req.body.category
                  }
         }
+        }).then(async list => {
+            console.log(req.body.userId);
+            for (const post of list) {
+                post.setDataValue('vote', await voteService.calculateVotes(post.postId));
+                post.setDataValue('userName', await userService.getNameForUserID(post.userId));
+                if (req.body.userId !== undefined) {
+                    post.setDataValue('myVote', await voteService.voteOfUser(post.postId, req.body.userId));
+                }
+            }
+            res.status(200).send(list);
         })
-            .then(list => res.status(200).send(list))
             .catch(err => res.status(500).send(err));
     }
 );
