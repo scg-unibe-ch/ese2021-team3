@@ -1,4 +1,3 @@
-import {Post, PostAttributes} from '../models/post.model';
 import {MulterRequest} from '../models/multerRequest.model';
 import {upload} from '../middlewares/fileFilter';
 import {User} from '../models/user.model';
@@ -34,6 +33,27 @@ export class ProductService {
                             } else {
                                 reject({error: 'Upload_Error', message: 'Cant upload image!'});
                             }
+                        });
+                    });
+                }
+            });
+    }
+
+    public hide(product: ProductAttributes): Promise<ProductAttributes> {
+        return Product.findByPk(product.productId)
+            .then(found => {
+                if (!found) {
+                    return Promise.reject({error: 'Product_not_found', message: 'Cant find Product nr.' + product.productId});
+                } else {
+                    return this.isAdmin(product.userId).then( isAdmin => {
+                        if (!isAdmin) {
+                            // tslint:disable-next-line:max-line-length
+                            return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify product: ' + product.productId});
+                        }
+                        return new Promise<ProductAttributes>((resolve, reject) => {
+                            product.hidden = true;
+                            found.update(product);
+                            resolve(found);
                         });
                     });
                 }

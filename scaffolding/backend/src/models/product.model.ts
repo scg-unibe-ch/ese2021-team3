@@ -9,6 +9,7 @@ export interface ProductAttributes {
     price: number;
     category: string;
     userId: number;
+    hidden: boolean;
 }
 
 export interface ProductCreationAttributes extends Optional<ProductAttributes, 'productId'> {  }
@@ -21,6 +22,7 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
     price: number;
     category: string;
     userId: number;
+    hidden: boolean;
 
     public static initialize(sequelize: Sequelize) {
         Product.init({
@@ -52,6 +54,9 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
                 userId: {
                     type: DataTypes.INTEGER,
                     allowNull: false
+                },
+                hidden: {
+                    type: DataTypes.BOOLEAN
                 }
             },
             {

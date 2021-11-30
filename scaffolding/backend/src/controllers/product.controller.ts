@@ -31,11 +31,11 @@ productController.post('/:id/image', verifyToken,
         productService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
     });
 
-productController.delete('/:id', verifyToken,
+productController.post('/:id', verifyToken,
     (req: Request, res: Response) => {
         req.body.userId = req.body.tokenPayload.userId;
         req.body.productId = req.params.id;
-        productService.delete(req.body).then(product => res.send(product)).catch(err => {
+        productService.hide(req.body).then(product => res.send(product)).catch(err => {
             res.status(500).send(err);
         });
     }
