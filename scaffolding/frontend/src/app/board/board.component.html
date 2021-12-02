@@ -121,13 +121,13 @@ width: 300px">
 
     <mat-form-field style="width: 100%;">
       <mat-label>Category</mat-label>
-      <mat-select [(ngModel)]="selectedCategory">
+      <mat-select [(ngModel)]="post.category">
         <mat-option value="Theory">Theory </mat-option>
         <mat-option value="Proof">Proof </mat-option>
         <mat-option value="Meme"> Meme </mat-option>
       </mat-select>
     </mat-form-field>
-    <p>You selected: {{selectedCategory}}</p>
+    <p>You selected: {{post.category}}</p>
 
   </mat-card-content>
 </mat-card>
