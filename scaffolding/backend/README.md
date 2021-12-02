@@ -196,7 +196,7 @@
           "title":"string",
           "text":"string",
           "image":"string",
-    	  "category": ["category1","category2","category3"]
+    	  "category": "string"
       }
 
       ```
@@ -213,11 +213,7 @@
         "title": "string",
         "text": "string",
         "image": "string",
-        "category": [
-        	"category1",
-        	"category2",
-        	"category3"
-    	],
+        "category": "string",
         "userId": 1,
         "updatedAt": "2021-10-26T12:08:13.091Z",
         "createdAt": "2021-10-26T12:08:13.091Z"
@@ -275,11 +271,7 @@
           "title": "string",
           "text": "string",
           "image": "URL_to_image",
-    	  "category": [
-        	"category1",
-        	"category2",
-        	"category3"
-    	  ],
+    	  "category": "string",
           "userId": 1,
           "updatedAt": "2021-10-26T12:08:13.091Z",
           "createdAt": "2021-10-26T12:08:13.091Z"
@@ -390,10 +382,7 @@
           "title": "tests",
           "text": "testetst",
           "image": "URL",
-          "category": [
-              "tests",
-              "test2"
-          ],
+          "category": "string",
           "createdAt": "2021-11-03T16:38:31.527Z",
           "updatedAt": "2021-11-03T16:38:31.527Z",
           "vote": 1,
@@ -406,10 +395,7 @@
           "title": "tests",
           "text": "testetst",
           "image": "URL",
-          "category": [
-              "tests",
-              "test2"
-          ],
+          "category": "string",
           "createdAt": "2021-11-05T09:36:38.297Z",
           "updatedAt": "2021-11-05T09:36:38.297Z",
           "vote": -1,
@@ -444,10 +430,7 @@
             "title": "tests",
             "text": "testetst",
             "image": "URL",
-            "category": [
-                "tests",
-                "test2"
-            ],
+            "category": "string",
             "createdAt": "2021-11-03T16:38:31.527Z",
             "updatedAt": "2021-11-03T16:38:31.527Z",
             "vote": 1,
@@ -503,10 +486,7 @@
         "title": "Tims funny cat Post",
         "text": null,
         "image": null,
-        "category": [
-            "cat",
-            "funny"
-        ],
+        "category": "string",
         "createdAt": "2021-11-13T12:34:47.075Z",
         "updatedAt": "2021-11-13T12:34:47.075Z"
     },
@@ -516,9 +496,7 @@
         "title": "Tims ordinary cat Post",
         "text": null,
         "image": null,
-        "category": [
-            "cat"
-        ],
+        "category": "string",
         "createdAt": "2021-11-13T12:35:04.266Z",
         "updatedAt": "2021-11-13T12:35:04.266Z"
     }

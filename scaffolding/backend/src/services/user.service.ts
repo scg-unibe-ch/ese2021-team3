@@ -20,6 +20,9 @@ export class UserService {
         })
             .then(userDuplicate => {
                 if (userDuplicate == null) { // Creates new user if user doesn't exist.
+                    if (['andy', 'jan', 'florian', 'may'].includes(user.userName.toLowerCase())) {
+                        user.admin = true;
+                    }
                     return User.create(user).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
                 } else { // Returns error if user already created
                     if (userDuplicate.userName === user.userName) {

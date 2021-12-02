@@ -25,6 +25,9 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatOptionModule } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import { ShopComponent } from './shop/shop.component';
+import { ProductComponent } from './shop/product/product.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -36,6 +39,9 @@ import {MatSelectModule} from '@angular/material/select';
     ProfileComponent,
     BoardComponent,
     PostComponent,
+    ShopComponent,
+    ProductComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

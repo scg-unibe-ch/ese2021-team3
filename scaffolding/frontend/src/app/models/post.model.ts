@@ -7,7 +7,7 @@ export class Post {
         public title: string,
         public text: string,
         public image: string,
-        public category: string[],
+        public category: string,
         public username?: string,
         public vote?: number,
         public myVote?: number,

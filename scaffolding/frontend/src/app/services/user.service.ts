@@ -68,7 +68,7 @@ export class UserService {
         console.log(res);
         this.userSource.next(new User(res.userId, res.userName,
           res.password, res.firstName, res.lastName,
-          res.email, res.address, new Date(res.birthday).toDateString(), res.phoneNumber)
+          res.email, res.address, new Date(res.birthday).toDateString(), res.phoneNumber, res.admin)
         )
       }
     )
