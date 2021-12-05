@@ -1,0 +1,10 @@
+<mat-form-field style="width: 100%;">
+  <mat-label>Filter</mat-label>
+<mat-select [(ngModel)]="chosenFilter">
+  <mat-option value="Theory">Theory </mat-option>
+  <mat-option value="Proof">Proof </mat-option>
+  <mat-option value="Meme"> Meme </mat-option>
+</mat-select>
+
+</mat-form-field>
+<button mat-flat-button color="primary" (click)="sendMessage()">Apply</button>
