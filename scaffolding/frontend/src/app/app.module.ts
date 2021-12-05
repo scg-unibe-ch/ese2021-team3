@@ -30,8 +30,7 @@ import { ProductComponent } from './shop/product/product.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminDashboardComponent } from './adminDashboard/adminDashboard.component';
 import { MatGridListModule } from "@angular/material/grid-list";
-
-
+import { FilterComponent } from './filter/filter.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +44,7 @@ import { MatGridListModule } from "@angular/material/grid-list";
     ProductComponent,
     DashboardComponent,
     AdminDashboardComponent,
+    FilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +64,7 @@ import { MatGridListModule } from "@angular/material/grid-list";
     MatSidenavModule,
     MatOptionModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
   ],
   providers: [
     {
