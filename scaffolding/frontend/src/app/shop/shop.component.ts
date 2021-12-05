@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Product } from '../models/product.model';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
+import {emitDistinctChangesOnlyDefaultValue} from "@angular/compiler/src/core";
 
 @Component({
   selector: 'app-shop',
@@ -12,11 +13,20 @@ import { UserService } from '../services/user.service';
 })
 export class ShopComponent implements OnInit {
   newProduct = new Product(0,"", "", "", 0, "", 0);
+  productToEdit = new Product(0,"", "", "", 0, "", 0);
+  productToBuy = new Product(0,"", "", "", 0, "", 0);
+  edit = false;
+  buy = false;
+  origialProductIndex = 0;
+  adress = "";
   newProductMsg = "";
+  errorMessage = "";
+  test = "TEST";
   products: Product[] = [];
   // users: { [id: number]: string; } = {};
   selectedCategory: string = "";
   category: string[] = [];
+  imgsrc = environment.endpointURL;
   selectedFile?: File;
   target?: HTMLInputElement;
 
@@ -29,6 +39,7 @@ export class ShopComponent implements OnInit {
   ) {
     userService.user$.subscribe(res => {
       this.user = res;
+      this.getProducts()
     })
   }
 
@@ -37,13 +48,12 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts() {
-
-    this.httpClient.post(environment.endpointURL + "product/get", []
-    ).subscribe(
+    this.httpClient.get(environment.endpointURL + "product/get").subscribe(
       (res: any) => {
         try {
           this.products = [] //Reset products to avoid duplication if recalled
           for (let i = 0; i < res.length; i++) {
+            console.log(res[i].title);
             this.products.push(
               new Product(res[i].productId, res[i].title, res[i].description, res[i].image, res[i].price, res[i].category, res[i].userId)
             )
@@ -102,14 +112,95 @@ export class ShopComponent implements OnInit {
     );
   }
 
-  editProduct(product: Product) {
-    console.log(product);
+  uploadImageEdited(postId: number) {
+    const formData = new FormData();
+    formData.append('image', this.selectedFile ?? "");
+    this.httpClient.post(environment.endpointURL + "product/" + postId + "/image",
+      formData
+    ).subscribe((res: any) => {
+        this.productToEdit.image = res.image;
+        this.products.splice(this.origialProductIndex,1);
+        this.products.push(this.productToEdit);
+        this.edit = false;
+      },
+      (err) => {
+        this.newProductMsg = err.error.message;
+      }
+    );
   }
 
+  editProduct(product: Product) {
+    this.edit = true;
+    this.buy = false;
+    this.origialProductIndex = this.products.indexOf(product);
+    this.productToEdit = product;
+  }
+
+  updateProduct() {
+    this.httpClient.post(environment.endpointURL + "product/edit", {
+      title: this.productToEdit.title,
+      description: this.productToEdit.description,
+      productId: this.productToEdit.productId,
+      image: "",
+      price: this.productToEdit.price,
+      category: this.productToEdit.category,
+      userId: this.user?.userId ?? 0
+    }).subscribe((res: any) => {
+      if (this.selectedFile) {
+        this.uploadImageEdited(this.productToEdit.productId);
+      } else {
+        this.products.splice(this.origialProductIndex,1);
+        this.products.push(this.productToEdit);
+        this.edit = false;
+      }
+      },
+      (err) => {
+        this.newProductMsg = err.error.message;
+      }
+    );
+  }
+
+  buyProduct(product: Product) {
+    this.errorMessage = "";
+    this.newProductMsg = "";
+    this.productToBuy = product;
+    this.buy = true;
+    this.adress = this.user?.address ?? "";
+  }
+
+  finallyBuyProduct() {
+    this.errorMessage = "";
+    if (this.adress=="") {
+      this.errorMessage = "Please enter an address!"
+      return
+    }
+    this.httpClient.post(environment.endpointURL + "order/create", {
+      address: this.adress,
+      productId: this.productToBuy.productId,
+      paymentMethod: "invoice",
+    }).subscribe((res: any) => {
+        this.newProductMsg = "Order Created!";
+      },
+      (err) => {
+        this.errorMessage = err.error.message;
+      }
+    );
+  }
+
+  notBuyProduct() {
+    this.newProductMsg = "";
+    this.errorMessage = "";
+    this.buy = false;
+  }
+
+
   deleteProduct(product: Product): void {
-    this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {
+    this.httpClient.post(environment.endpointURL + "product/" + product.productId, []).subscribe(() => {
       this.products.splice(this.products.indexOf(product), 1);
-    });
+    },
+      (err) => {
+        console.log("Couldn't delete Product")
+      });
   }
 
 }

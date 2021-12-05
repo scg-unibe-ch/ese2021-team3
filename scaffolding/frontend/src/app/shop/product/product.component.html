@@ -1,19 +1,16 @@
 <div *ngIf="product">
-    <mat-card-header>
+    <mat-grid-tile-header>
         <mat-card-title>
-            {{ product.title }}
+            <h1 style="max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{ product.title }} &nbsp; </h1>
         </mat-card-title>
-        <mat-card-subtitle>
-            Price: {{ product.price }}
+        <mat-card-subtitle style="color: white">
+            <h4>CHF {{ product.price }}</h4>
         </mat-card-subtitle>
-    </mat-card-header>
-    <mat-divider inset></mat-divider>
+    </mat-grid-tile-header>
     <p></p>
-    <mat-card-content *ngIf="product.description!=''" style="text-overflow: ellipsis; overflow-x: hidden;" >
-        {{ product.description }}
-    </mat-card-content>
-    <mat-card-content *ngIf="product.image" style="padding: 12px;">
-        <p></p>
-        <img mat-card-image *ngIf="product.image" [src]="this.imgsrc+product.image">
+    <mat-card-content style="text-overflow: ellipsis; overflow-x: hidden; margin-top: 15px; margin-left: 10px; max-height: 205px" >
+         <p *ngIf="product.description!=''" > {{ product.description }} </p>
+         <br>
+         <img *ngIf="product.image" [src]="this.imgsrc+product.image" style="height: 120px; width: auto">
     </mat-card-content>
 </div>

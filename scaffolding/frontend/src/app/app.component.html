@@ -5,7 +5,7 @@
     </span>
   </mat-toolbar-row>
 </mat-toolbar>
-<mat-tab-group style="align-items: right;">
+<mat-tab-group style="align-items: center;">
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon>home</mat-icon>
@@ -39,5 +39,8 @@
       (delete)="deleteList($event)"></app-todo-list>
   </mat-tab>
   <mat-tab *ngIf="user?.isAdmin" label="Admin Zone">
+    <div style="box-sizing: border-box; display: flex; justify-content: center;">
+      <app-adminDashboard [user]="user"></app-adminDashboard>
+    </div>
   </mat-tab>
 </mat-tab-group>

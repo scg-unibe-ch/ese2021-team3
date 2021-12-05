@@ -28,6 +28,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { ShopComponent } from './shop/shop.component';
 import { ProductComponent } from './shop/product/product.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminDashboardComponent } from './adminDashboard/adminDashboard.component';
+import { MatGridListModule } from "@angular/material/grid-list";
 
 
 @NgModule({
@@ -42,6 +44,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ShopComponent,
     ProductComponent,
     DashboardComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatIconModule,
     MatSidenavModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatGridListModule
   ],
   providers: [
     {

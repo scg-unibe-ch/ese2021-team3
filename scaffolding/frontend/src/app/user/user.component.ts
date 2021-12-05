@@ -89,6 +89,7 @@ export class UserComponent {
       this.userService.setUser(new User(res.user.userId, res.user.userName,
         res.user.password, res.user.firstName, res.user.lastName,
         res.user.email, res.user.address, new Date(res.user.birthday).toDateString(), res.user.phoneNumber));
+      window.location.reload();
     },
       (err) => {
         this.loginMsg = err.error.message.message;
@@ -102,6 +103,8 @@ export class UserComponent {
 
     this.userService.setLoggedIn(false);
     this.userService.setUser(undefined);
+
+    window.location.reload();
   }
 
   accessUserEndpoint(): void {

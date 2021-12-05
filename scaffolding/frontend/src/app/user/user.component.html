@@ -46,7 +46,6 @@
     <mat-form-field>
       <input matInput type="tel" placeholder="Phone Number" name="phoneNumber" [(ngModel)]="userToRegister.phoneNumber">
     </mat-form-field>
-
     <button mat-flat-button color="primary" (click)="registerUser()">Register</button>
     <div *ngIf="registrationMsg !== ''" style="color:red">
       {{ registrationMsg }}

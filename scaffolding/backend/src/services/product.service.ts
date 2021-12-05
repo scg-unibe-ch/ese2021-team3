@@ -2,6 +2,7 @@ import {MulterRequest} from '../models/multerRequest.model';
 import {upload} from '../middlewares/fileFilter';
 import {User} from '../models/user.model';
 import {Product, ProductAttributes} from '../models/product.model';
+import {Post, PostAttributes} from '../models/post.model';
 
 export class ProductService {
     // CRUD Operations
@@ -51,10 +52,30 @@ export class ProductService {
                             return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify product: ' + product.productId});
                         }
                         return new Promise<ProductAttributes>((resolve, reject) => {
-                            product.hidden = true;
-                            found.update(product);
+                            found.update({
+                                hidden: true
+                            });
                             resolve(found);
                         });
+                    });
+                }
+            });
+    }
+
+    public edit(product: ProductAttributes): Promise<ProductAttributes> {
+
+        return Product.findByPk(product.productId)
+            .then(found => {
+                if (!found) {
+                    return Promise.reject({error: 'Product_not_found', message: 'Cant find Product no:' + product.productId});
+                } else {
+                    return new Promise<ProductAttributes>((resolve, reject) => {
+                        if (product.image !== undefined) {
+                            // tslint:disable-next-line:max-line-length
+                            product.image = null; /*Remove image URL if anything is changed in image attribut (Only backend is able to define URL's)*/
+                        }
+                        found.update(product);
+                        resolve(found);
                     });
                 }
             });

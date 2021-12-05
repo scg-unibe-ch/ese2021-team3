@@ -20,7 +20,15 @@ productController.post('/create', checkAdmin,
 productController.get('/get',
     (req: Request, res: Response) => {
         Product.findAll()
-            .then(list => res.status(200).send(list))
+            .then(list => {
+                const newList: Product[] = [];
+                for (let i = 0; i < list.length; i++) {
+                    if (!list[i].hidden) {
+                        newList.push(list[i]);
+                    }
+                }
+                res.status(200).send(newList);
+            })
             .catch(err => res.status(500).send(err));
     });
 
@@ -30,6 +38,16 @@ productController.post('/:id/image', verifyToken,
         req.body.userId = req.body.tokenPayload.userId;
         productService.addImage(req).then(created => res.send(created)).catch(err => res.status(500).send(err));
     });
+
+productController.post('/edit', checkAdmin,
+    (req: Request, res: Response) => {
+        console.log('test');
+        productService.edit(req.body).then(post => res.send(post)).catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    }
+);
 
 productController.post('/:id', verifyToken,
     (req: Request, res: Response) => {
@@ -47,6 +65,7 @@ productController.get('/:id/single', (req: Request, res: Response) => {
     })
         .catch(err => res.status(500).send(err));
 });
+
 
 productController.post('/getfiltered',
     (req: Request, res: Response) => {

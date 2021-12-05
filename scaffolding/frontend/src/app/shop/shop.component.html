@@ -3,7 +3,7 @@ position: absolute;
 top: 0px;
 bottom: 0px;
 left: 0;
-width: 300px">
+width: 300px;">
     <mat-sidenav #sidenav mode="side" opened="true" style="
   /* display: flex; */
   align-items: center;
@@ -12,12 +12,141 @@ width: 300px">
   ">
     </mat-sidenav>
     <mat-sidenav-content>
-        <mat-card>
+        <mat-card *ngIf="!edit&&!buy">
             <mat-card-content>
                 <span>
-                    Insert something useful here
+                  <mat-card *ngIf="this.user?.isAdmin" style="max-width: 600px;">
+                      <mat-card-header>
+                          <mat-card-title>
+                              New Product
+                          </mat-card-title>
+                      </mat-card-header>
+                      <mat-divider inset></mat-divider>
+                      <p></p>
+                      <mat-card-content>
+                          <mat-form-field style="width: 100%;">
+                              <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="newProduct.title">
+                          </mat-form-field>
+                          <br>
+                          <mat-form-field style="width: 100%;">
+                              <textarea matInput type="text" placeholder="Description" name="description"
+                                        [(ngModel)]="newProduct.description"></textarea>
+                          </mat-form-field>
+                          <mat-form-field style="width: 100%;">
+                              <textarea matInput type="number" placeholder="Price" name="price"
+                                        [(ngModel)]="newProduct.price"></textarea>
+                          </mat-form-field>
+
+                          <mat-form-field style="width: 100%;">
+                              <mat-label>Category</mat-label>
+                              <mat-select [(ngModel)]="newProduct.category">
+                                  <mat-option value="Theory">Theory </mat-option>
+                                  <mat-option value="Proof">Proof </mat-option>
+                                  <mat-option value="Meme"> Meme </mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                          <p>You selected: {{newProduct.category}}</p>
+                      </mat-card-content>
+
+                      <mat-card-actions style="text-align: right;">
+                          <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
+                          <button mat-icon-button (click)="fileInput.click()">
+                              <mat-icon>image</mat-icon>
+                          </button>
+                          <button mat-flat-button color="primary" (click)="createProduct()">Create</button>
+                      </mat-card-actions>
+                      <mat-card-content *ngIf="newProductMsg !== ''" style="color:red">
+                          {{ newProductMsg }}
+                      </mat-card-content>
+                  </mat-card>
                 </span>
             </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="edit&&!buy">
+          <mat-card-content>
+                  <span>
+                    <mat-card *ngIf="this.user?.isAdmin" style="max-width: 600px;">
+                        <mat-card-header>
+                            <mat-card-title>
+                                Edit Product
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-divider inset></mat-divider>
+                        <p></p>
+                        <mat-card-content>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="productToEdit.title">
+                            </mat-form-field>
+                            <br>
+                            <mat-form-field style="width: 100%;">
+                                <textarea matInput type="text" placeholder="Description" name="description"
+                                          [(ngModel)]="productToEdit.description"></textarea>
+                            </mat-form-field>
+                            <mat-form-field style="width: 100%;">
+                                <textarea matInput type="number" placeholder="Price" name="price"
+                                          [(ngModel)]="productToEdit.price"></textarea>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Category</mat-label>
+                                <mat-select [(ngModel)]="productToEdit.category">
+                                    <mat-option value="Theory">Theory </mat-option>
+                                    <mat-option value="Proof">Proof </mat-option>
+                                    <mat-option value="Meme"> Meme </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <p>You selected: {{productToEdit.category}}</p>
+                        </mat-card-content>
+
+                        <mat-card-actions style="text-align: right;">
+                            <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
+                            <button mat-icon-button (click)="fileInput.click()">
+                                <mat-icon>image</mat-icon>
+                            </button>
+                            <button mat-flat-button color="primary" (click)="updateProduct()">Done</button>
+                        </mat-card-actions>
+                        <mat-card-content *ngIf="newProductMsg !== ''" style="color:red">
+                            {{ newProductMsg }}
+                        </mat-card-content>
+                    </mat-card>
+                  </span>
+          </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="buy">
+          <mat-card-content>
+                    <span>
+                      <mat-card style="max-width: 600px;">
+                          <mat-card-header>
+                              <mat-card-title>
+                                  Buy Product
+                              </mat-card-title>
+                          </mat-card-header>
+                          <mat-divider inset></mat-divider>
+                          <p></p>
+                          <mat-card-content>
+                              <h2>{{ productToBuy.title }}</h2>
+                              <h3>{{ productToBuy.price }} CHF</h3>
+                              <p>{{ productToBuy.description }}</p>
+                              <img mat-card-image *ngIf="productToBuy.image" [src]="this.imgsrc+productToBuy.image" style="height: 120px; width: auto; alignment: center">
+                              <mat-form-field style="width: 100%;">
+                                <textarea matInput type="text" placeholder="Enter address" name="description"
+                                          [(ngModel)]="adress"></textarea>
+                               </mat-form-field>
+                          </mat-card-content>
+
+                          <mat-card-actions style="text-align: right;">
+                              <button mat-flat-button color="primary" (click)="finallyBuyProduct()">Buy</button>
+                              <button mat-flat-button color="secondary" (click)="notBuyProduct()">Cancel</button>
+                          </mat-card-actions>
+                          <mat-card-content *ngIf="newProductMsg !== ''" style="color:green">
+                              {{ newProductMsg }}
+                          </mat-card-content>
+                          <mat-card-content *ngIf="errorMessage !== ''" style="color:red">
+                              {{ errorMessage }}
+                          </mat-card-content>
+                      </mat-card>
+                    </span>
+          </mat-card-content>
         </mat-card>
     </mat-sidenav-content>
 </mat-sidenav-container>
@@ -40,62 +169,25 @@ width: 300px">
     </mat-sidenav-content>
 </mat-sidenav-container>
 
-<div style="min-height: 500px;">
-    <mat-card *ngIf="this.user?.isAdmin" style="max-width: 600px;">
-        <mat-card-header>
-            <mat-card-title>
-                New Product
-            </mat-card-title>
-        </mat-card-header>
-        <mat-divider inset></mat-divider>
-        <p></p>
-        <mat-card-content>
-            <mat-form-field style="width: 100%;">
-                <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="newProduct.title">
-            </mat-form-field>
-            <br>
-            <mat-form-field style="width: 100%;">
-                <textarea matInput type="text" placeholder="Description" name="description"
-                    [(ngModel)]="newProduct.description"></textarea>
-            </mat-form-field>
-            <mat-form-field style="width: 100%;">
-                <textarea matInput type="number" placeholder="Price" name="price"
-                    [(ngModel)]="newProduct.price"></textarea>
-            </mat-form-field>
 
-            <mat-form-field style="width: 100%;">
-                <mat-label>Category</mat-label>
-                <mat-select [(ngModel)]="newProduct.category">
-                    <mat-option value="Theory">Theory </mat-option>
-                    <mat-option value="Proof">Proof </mat-option>
-                    <mat-option value="Meme"> Meme </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <p>You selected: {{newProduct.category}}</p>
-        </mat-card-content>
 
-        <mat-card-actions style="text-align: right;">
-            <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
-            <button mat-icon-button (click)="fileInput.click()">
-                <mat-icon>image</mat-icon>
-            </button>
-            <button mat-flat-button color="primary" (click)="createProduct()">Create</button>
-        </mat-card-actions>
-        <mat-card-content *ngIf="newProductMsg !== ''" style="color:red">
-            {{ newProductMsg }}
-        </mat-card-content>
-    </mat-card>
-    <mat-card *ngFor="let product of products.reverse()" style="max-width: 600px;">
-        <app-product [product]="product"></app-product>
-        <mat-card-actions *ngIf="this.user?.isAdmin">
-            <button mat-icon-button (click)="editProduct(product)">
-                <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteProduct(product)">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </mat-card-actions>
-    </mat-card>
+<div style="min-height: 500px; margin-top: 50px;">
+  <mat-grid-list cols="2" rowHeight="300px" gutterSize="10px" style="width: 600px;">
+    <mat-grid-tile *ngFor="let product of products.reverse()">
+      <app-product [product]="product" style="alignment: left"></app-product>
+      <mat-grid-tile-footer>
+        <button *ngIf="this.user?.isAdmin" mat-icon-button (click)="editProduct(product)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button  *ngIf="this.user?.isAdmin" mat-icon-button (click)="deleteProduct(product)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button *ngIf="this.user" mat-icon-button (click)="buyProduct(product)">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </mat-grid-tile-footer>
+    </mat-grid-tile>
+  </mat-grid-list>
     <mat-card *ngIf="products.length === 0">
         No products available.
     </mat-card>

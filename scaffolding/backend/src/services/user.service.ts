@@ -38,7 +38,7 @@ export class UserService {
     }
 
     public login(loginRequestee: LoginRequest): Promise<User | LoginResponse> {
-        const secret = process.env.JWT_SECRET;
+        const secret = process.env.JWT_SECRET || 'not_secure';
         return User.findOne({
             where: {
                 userName: loginRequestee.userName
@@ -56,7 +56,9 @@ export class UserService {
                     return Promise.reject({ error: 'wrongPassword', message: 'Wrong password.' });
                 }
             })
-            .catch(err => Promise.reject({ message: err }));
+            .catch(err => {
+                return Promise.reject({ message: err });
+            });
     }
 
     public async getNameForUserID(userID: number): Promise<string> {
