@@ -127,7 +127,7 @@ width: 300px;">
                               <h2>{{ productToBuy.title }}</h2>
                               <h3>{{ productToBuy.price }} CHF</h3>
                               <p>{{ productToBuy.description }}</p>
-                              <img mat-card-image *ngIf="productToBuy.image" [src]="this.imgsrc+productToBuy.image" style="height: 120px; width: auto; alignment: center">
+                              <img *ngIf="productToBuy.image" [src]="this.imgsrc+productToBuy.image" style="height: 120px; width: auto; alignment: center">
                               <mat-form-field style="width: 100%;">
                                 <textarea matInput type="text" placeholder="Enter address" name="description"
                                           [(ngModel)]="adress"></textarea>

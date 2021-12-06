@@ -70,10 +70,6 @@ export class ProductService {
                     return Promise.reject({error: 'Product_not_found', message: 'Cant find Product no:' + product.productId});
                 } else {
                     return new Promise<ProductAttributes>((resolve, reject) => {
-                        if (product.image !== undefined) {
-                            // tslint:disable-next-line:max-line-length
-                            product.image = null; /*Remove image URL if anything is changed in image attribut (Only backend is able to define URL's)*/
-                        }
                         found.update(product);
                         resolve(found);
                     });

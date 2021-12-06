@@ -12,11 +12,44 @@ width: 300px">
   ">
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-card>
-      <mat-card-content>
-                <span>
-                    Insert something useful here
-                </span>
+    <mat-card style="max-width: 600px;">
+      <mat-card-header>
+        <mat-card-title>
+          Create User
+        </mat-card-title>
+      </mat-card-header>
+      <mat-divider inset></mat-divider>
+      <p></p>
+      <mat-form-field>
+        <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="newUser.username">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="newUser.password">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="First Name" name="firstName" [(ngModel)]="newUser.firstName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Last Name" name="lastName" [(ngModel)]="newUser.lastName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="email" placeholder="Email" name="email" [(ngModel)]="newUser.email">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Address" name="address" [(ngModel)]="newUser.address">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="date" placeholder="Birthdate" name="birthdate" [(ngModel)]="newUser.birthdate">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="tel" placeholder="Phone Number" name="phoneNumber" [(ngModel)]="newUser.phoneNumber">
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="createUser()">Create user</button>
+      <mat-card-content *ngIf="registrationMsg !== ''" style="color:green">
+        {{ registrationMsg }}
+      </mat-card-content>
+      <mat-card-content *ngIf="registrationError !== ''" style="color:red">
+        {{ registrationError }}
       </mat-card-content>
     </mat-card>
   </mat-sidenav-content>
@@ -41,57 +74,13 @@ width: 300px">
 </mat-sidenav-container>
 
 <div style="min-height: 500px;">
-  <mat-card *ngIf="this.user?.isAdmin" style="max-width: 600px;">
-    <mat-card-header>
-      <mat-card-title>
-        New Product
-      </mat-card-title>
-    </mat-card-header>
-    <mat-divider inset></mat-divider>
-    <p></p>
-    <mat-card-content>
-      <mat-form-field style="width: 100%;">
-        <input matInput type="text" placeholder="Title" name="title" [(ngModel)]="newProduct.title">
-      </mat-form-field>
-      <br>
-      <mat-form-field style="width: 100%;">
-                <textarea matInput type="text" placeholder="Description" name="description"
-                          [(ngModel)]="newProduct.description"></textarea>
-      </mat-form-field>
-      <mat-form-field style="width: 100%;">
-                <textarea matInput type="number" placeholder="Price" name="price"
-                          [(ngModel)]="newProduct.price"></textarea>
-      </mat-form-field>
-
-      <mat-form-field style="width: 100%;">
-        <mat-label>Category</mat-label>
-        <mat-select [(ngModel)]="newProduct.category">
-          <mat-option value="Theory">Theory </mat-option>
-          <mat-option value="Proof">Proof </mat-option>
-          <mat-option value="Meme"> Meme </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <p>You selected: {{newProduct.category}}</p>
-    </mat-card-content>
-
-    <mat-card-actions style="text-align: right;">
-      <input style="display: none" type="file" (change)="onFileSelected($event)" #fileInput>
-      <button mat-icon-button (click)="fileInput.click()">
-        <mat-icon>image</mat-icon>
-      </button>
-      <button mat-flat-button color="primary" (click)="createProduct()">Create</button>
-    </mat-card-actions>
-    <mat-card-content *ngIf="newProductMsg !== ''" style="color:red">
-      {{ newProductMsg }}
-    </mat-card-content>
-  </mat-card>
   <mat-card *ngFor="let product of products.reverse()" style="max-width: 600px;">
     <app-product [product]="product"></app-product>
     <mat-card-actions *ngIf="this.user?.isAdmin">
-      <button mat-icon-button (click)="editProduct(product)">
+      <button mat-icon-button (click)="createUser()">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="deleteProduct(product)">
+      <button mat-icon-button (click)="createUser()">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-actions>

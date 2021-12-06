@@ -12,7 +12,10 @@ import {environment} from "../../environments/environment";
 })
 export class AdminDashboardComponent implements OnInit {
   newProduct = new Product(0,"", "", "", 0, "", 0);
+  newUser = new User(0, '', '', '', '', '', '', '', '');
   newProductMsg = "";
+  registrationError = "";
+  registrationMsg = "";
   products: Product[] = [];
   // users: { [id: number]: string; } = {};
   selectedCategory: string = "";
@@ -31,7 +34,7 @@ export class AdminDashboardComponent implements OnInit {
     userService.user$.subscribe(res => {
       this.user = res;
       this.getProducts()
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -105,14 +108,24 @@ export class AdminDashboardComponent implements OnInit {
     );
   }
 
-  editProduct(product: Product) {
-    console.log(product);
+  createUser() {
+      this.httpClient.post(environment.endpointURL + "user/register", {
+        userName: this.newUser.username.toLowerCase(),
+        firstName: this.newUser.firstName,
+        lastName: this.newUser.lastName,
+        email: this.newUser.email,
+        address: this.newUser.address,
+        phone: String(this.newUser.phoneNumber),
+        birthday: this.newUser.birthdate.length == 0 ? 0 : Number(new Date(this.newUser.birthdate)),
+        password: this.newUser.password,
+      }).subscribe((res: any) => {
+          this.registrationError = ''
+          this.registrationMsg = this.newUser.username + " is now registered."
+        },
+        (err) => {
+          this.registrationMsg = ''
+          this.registrationError = err.error.message.message;
+        }
+      );
   }
-
-  deleteProduct(product: Product): void {
-    this.httpClient.delete(environment.endpointURL + "product/" + product.productId).subscribe(() => {
-      this.products.splice(this.products.indexOf(product), 1);
-    });
-  }
-
 }

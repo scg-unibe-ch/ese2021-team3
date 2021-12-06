@@ -141,7 +141,7 @@ export class ShopComponent implements OnInit {
       title: this.productToEdit.title,
       description: this.productToEdit.description,
       productId: this.productToEdit.productId,
-      image: "",
+      image: this.productToEdit.image,
       price: this.productToEdit.price,
       category: this.productToEdit.category,
       userId: this.user?.userId ?? 0
