@@ -19,7 +19,7 @@ userController.post('/login',
     }
 );
 
-userController.get('/all', verifyToken, checkAdmin, // you can add middleware on specific requests like that
+userController.get('/all', checkAdmin, // you can add middleware on specific requests like that
     (req: Request, res: Response) => {
         userService.getAll().then(users => res.send(users)).catch(err => res.status(500).send(err));
     }
