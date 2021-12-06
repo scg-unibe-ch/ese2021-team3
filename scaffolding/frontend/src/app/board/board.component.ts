@@ -23,13 +23,15 @@ export class BoardComponent implements OnInit {
   users: { [id: number]: string; } = {};
   selectedFile?: File;
   target?: HTMLInputElement;
-  editArray: Post[] = [];
   filter = '';
+  originalPostIndex = 0;
+  edit = false;
 
 
 
   @Input()
   user?: User;
+  private newPostMsg: any;
 
 
   constructor(
@@ -208,27 +210,38 @@ export class BoardComponent implements OnInit {
     );
   }
 
-  edit(post: Post) {
-    this.httpClient.post(environment.endpointURL + "post/" + post.postId + "/edit", {
-      title: post.title,
-      text: post.text,
-      category: post.category,
-      image: ""
-    }).subscribe((res: any) => {
-       this.editPost.title = post.title;
-       this.editPost.text = post.text;
-       this.editPost.category = post.category;
-        if (this.selectedFile) {
-          this.uploadImage(this.editPost.postId);
-        } else {
-        }
-        post.title = this.editPost.title;
-        post.text = this.editPost.text;
-        post.category = this.editPost.category;
-
-        this.editArray = [];
-        this.editPost = new Post(0,0, "", "", "", "");
+  uploadImageEdited(postId: number) {
+    const formData = new FormData();
+    formData.append('image', this.selectedFile ?? "");
+    this.httpClient.post(environment.endpointURL + "post/" + postId + "/image",
+      formData
+    ).subscribe((res: any) => {
+        this.editPost.image = res.image;
+        this.posts.splice(this.originalPostIndex,1);
+        this.posts.push(this.editPost);
+        this.edit = false;
       },
+      (err) => {
+        this.newPostMsg = err.error.message;
+      }
+    );
+  }
+
+  updatePost() {
+    this.httpClient.post(environment.endpointURL + "post/" + this.editPost.postId + "/edit", {
+      title: this.editPost.title,
+      text: this.editPost.text,
+      category: this.editPost.category,
+      image: this.editPost.image
+    }).subscribe((res: any) => {
+        if (this.selectedFile) {
+          this.uploadImageEdited(this.editPost.postId);
+        } else {
+          this.posts.splice(this.originalPostIndex,1);
+          this.posts.push(this.editPost);
+          this.edit = false;
+        }
+        },
       (err) => {
         this.postingMsg = err.error.message;
       }
@@ -242,7 +255,9 @@ export class BoardComponent implements OnInit {
   }
 
   prepareEdit(post: Post) {
-    this.editArray[0] = post;
+    this.edit = true;
+    this.originalPostIndex = this.posts.indexOf(post);
+    this.editPost = post;
   }
 
 

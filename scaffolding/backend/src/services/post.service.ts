@@ -30,10 +30,6 @@ export class PostService {
                             return Promise.reject({error: 'not_authorized', message: 'Youre not authorized to modify post: ' + post.postId});
                         }
                         return new Promise<PostAttributes>((resolve, reject) => {
-                            if (post.image !== undefined) {
-                                // tslint:disable-next-line:max-line-length
-                                post.image = null; /*Remove image URL if anything is changed in image attribut (Only backend is able to define URL's)*/
-                            }
                             post.userId = found.userId; /*To surpress overwrite of userid in case of an admin is editing the post*/
                             found.update(post);
                             resolve(found);

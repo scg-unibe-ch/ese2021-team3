@@ -112,10 +112,10 @@ export class ShopComponent implements OnInit {
     );
   }
 
-  uploadImageEdited(postId: number) {
+  uploadImageEdited(productId: number) {
     const formData = new FormData();
     formData.append('image', this.selectedFile ?? "");
-    this.httpClient.post(environment.endpointURL + "product/" + postId + "/image",
+    this.httpClient.post(environment.endpointURL + "product/" + productId + "/image",
       formData
     ).subscribe((res: any) => {
         this.productToEdit.image = res.image;
