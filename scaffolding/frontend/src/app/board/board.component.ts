@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit , EventEmitter, Output} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import {newArray} from "@angular/compiler/src/util";
+
 
 
 @Component({
@@ -22,7 +23,9 @@ export class BoardComponent implements OnInit {
   users: { [id: number]: string; } = {};
   selectedFile?: File;
   target?: HTMLInputElement;
-  editArray: Post[] = []
+  editArray: Post[] = [];
+  filter = '';
+
 
 
   @Input()
@@ -51,8 +54,7 @@ export class BoardComponent implements OnInit {
         userId: this.user?.userId! //Add userid to body if user is already logged in.
       }
     }
-
-    this.httpClient.post(environment.endpointURL + "post/get", body
+      this.httpClient.post(environment.endpointURL + "post/get", body
     ).subscribe(
       (res: any) => {
         try {
@@ -67,7 +69,27 @@ export class BoardComponent implements OnInit {
         }
       }
     )
+  }
 
+  getFilteredPosts(){
+
+    console.log(this.filter);
+
+      this.httpClient.post(environment.endpointURL + "post/getfiltered", {"category" : this.filter}
+    ).subscribe(
+      (res: any) => {
+        try {
+          this.posts = [] //Reset posts (to ensure not to duplicate post if recalled)
+          for (let i = 0; i < res.length; i++) {
+            this.posts.push(
+              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, res[i].userName, res[i].vote, res[i].myVote)
+            )
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    )
   }
 
   createPost() {
@@ -221,6 +243,12 @@ export class BoardComponent implements OnInit {
 
   prepareEdit(post: Post) {
     this.editArray[0] = post;
+  }
+
+
+  receiveMessage($event: string){
+    this.filter = $event;
+    this.getFilteredPosts();
   }
 }
 

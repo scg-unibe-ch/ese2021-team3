@@ -77,7 +77,7 @@ export class UserComponent {
   loginUser(): void {
     this.resetErrorMsg();
     this.httpClient.post(environment.endpointURL + "user/login", {
-      userName: this.userToLogin.username,
+      userName: this.userToLogin.username.toLowerCase(),
       password: this.userToLogin.password
     }).subscribe((res: any) => {
       this.userToLogin.username = this.userToLogin.password = '';

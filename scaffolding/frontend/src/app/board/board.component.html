@@ -15,8 +15,9 @@ width: 300px">
     <mat-card>
       <mat-card-content>
         <span>
-          Insert something useful here
+          <app-filter (messageEvent)="receiveMessage($event)"></app-filter>
         </span>
+        {{filter}}
       </mat-card-content>
     </mat-card>
   </mat-sidenav-content>
