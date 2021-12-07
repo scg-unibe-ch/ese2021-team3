@@ -31,6 +31,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminDashboardComponent } from './adminDashboard/adminDashboard.component';
 import { MatGridListModule } from "@angular/material/grid-list";
 import { FilterComponent } from './filter/filter.component';
+import { OrderComponent } from './dashboard/order/order.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import { FilterComponent } from './filter/filter.component';
     DashboardComponent,
     AdminDashboardComponent,
     FilterComponent,
+    OrderComponent,
   ],
   imports: [
     BrowserModule,

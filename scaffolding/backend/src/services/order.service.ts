@@ -39,7 +39,15 @@ export class OrderService {
             });
     }
 
-    public getAll(): Promise<Order[]> {
-        return Order.findAll();
+    public getAll(userId: string): Promise<Order[]> {
+        if (userId.length == 0) {
+            return Order.findAll();
+        } else {
+            return Order.findAll({
+                where: {
+                    userId: userId
+                }
+            });
+        }
     }
 }
