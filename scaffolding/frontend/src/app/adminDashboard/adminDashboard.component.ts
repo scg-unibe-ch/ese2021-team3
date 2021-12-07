@@ -4,6 +4,7 @@ import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../services/user.service";
 import {environment} from "../../environments/environment";
+import {Post} from "../models/post.model";
 
 @Component({
   selector: 'app-adminDashboard',
@@ -11,7 +12,7 @@ import {environment} from "../../environments/environment";
   styleUrls: ['./adminDashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
-  newUser = new User(0, '', '', '', '', '', '', '', '');
+  newUser = new User(0, '', '', '', '', '', '', '', '', false);
   registrationError = "";
   registrationMsg = "";
   products: Product[] = [];
@@ -47,10 +48,11 @@ export class AdminDashboardComponent implements OnInit {
         phone: String(this.newUser.phoneNumber),
         birthday: this.newUser.birthdate.length == 0 ? 0 : Number(new Date(this.newUser.birthdate)),
         password: this.newUser.password,
+        admin: this.newUser.isAdmin
       }).subscribe((res: any) => {
           this.registrationError = ''
           this.registrationMsg = this.newUser.username + " is now registered."
-          this.users.push(new User(0,this.newUser.username.toLowerCase(),this.newUser.password,this.newUser.firstName,this.newUser.lastName,this.newUser.email,this.newUser.address,this.newUser.birthdate,this.newUser.phoneNumber));
+          this.users.push(new User(0,this.newUser.username.toLowerCase(),this.newUser.password,this.newUser.firstName,this.newUser.lastName,this.newUser.email,this.newUser.address,this.newUser.birthdate,this.newUser.phoneNumber, this.newUser.isAdmin));
         },
         (err) => {
           this.registrationMsg = ''
@@ -65,7 +67,7 @@ export class AdminDashboardComponent implements OnInit {
       (res: any) => {
         this.users = [];
         for (let i = 0; i < res.length; i++) {
-          this.users.push(new User(res[i].userId,res[i].userName,res[i].password,res[i].firstName,res[i].lastName,res[i].email,res[i].address,res[i].birthday,res[i].phone));
+          this.users.push(new User(res[i].userId,res[i].userName,res[i].password,res[i].firstName,res[i].lastName,res[i].email,res[i].address,res[i].birthday,res[i].phone, res[i].admin));
         }
       }
     )
