@@ -11,16 +11,12 @@ import {environment} from "../../environments/environment";
   styleUrls: ['./adminDashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
-  newProduct = new Product(0,"", "", "", 0, "", 0);
   newUser = new User(0, '', '', '', '', '', '', '', '');
-  newProductMsg = "";
   registrationError = "";
   registrationMsg = "";
   products: Product[] = [];
-  // users: { [id: number]: string; } = {};
-  selectedCategory: string = "";
+  users: User[] = [];
   category: string[] = [];
-  selectedFile?: File;
   target?: HTMLInputElement;
 
   @Input()
@@ -33,79 +29,12 @@ export class AdminDashboardComponent implements OnInit {
 
     userService.user$.subscribe(res => {
       this.user = res;
-      this.getProducts()
+      this.getUser()
     });
   }
 
   ngOnInit(): void {
-    this.getProducts()
-  }
-
-  getProducts() {
-    console.log("TEST")
-    console.log(this.user)
-    this.httpClient.get(environment.endpointURL + "product/get",
-    ).subscribe(
-      (res: any) => {
-        try {
-          this.products = [] //Reset products to avoid duplication if recalled
-          for (let i = 0; i < res.length; i++) {
-            this.products.push(
-              new Product(res[i].productId, res[i].title, res[i].description, res[i].image, res[i].price, res[i].category, res[i].userId)
-            )
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    )
-  }
-
-  createProduct() {
-    this.httpClient.post(environment.endpointURL + "product/create", {
-      title: this.newProduct.title,
-      description: this.newProduct.description,
-      image: "",
-      price: this.newProduct.price,
-      category: this.newProduct.category,
-      userId: this.user?.userId ?? 0
-
-    }).subscribe((res: any) => {
-        this.newProduct.userId = Number(res.userId);
-        this.newProduct.productId = Number(res.productId);
-        this.newProduct.category = res.category;
-        if (this.selectedFile) {
-          this.uploadImage(this.newProduct.productId);
-        } else {
-          this.products.push(this.newProduct);
-          this.newProduct = new Product(0,"", "", "", 0, "", 0);
-        }
-      },
-      (err) => {
-        this.newProductMsg = err.error.message;
-      }
-    );
-  }
-
-  onFileSelected(event: any) {
-    this.target = event.target;
-    this.selectedFile = event.target.files[0];
-  }
-
-  uploadImage(postId: number) {
-    const formData = new FormData();
-    formData.append('image', this.selectedFile ?? "");
-    this.httpClient.post(environment.endpointURL + "product/" + postId + "/image",
-      formData
-    ).subscribe((res: any) => {
-        this.newProduct.image = res.image;
-        this.products.push(this.newProduct);
-        this.newProduct = new Product(0,"", "", "", 0, "", 0);
-      },
-      (err) => {
-        this.newProductMsg = err.error.message;
-      }
-    );
+    this.getUser()
   }
 
   createUser() {
@@ -121,11 +50,24 @@ export class AdminDashboardComponent implements OnInit {
       }).subscribe((res: any) => {
           this.registrationError = ''
           this.registrationMsg = this.newUser.username + " is now registered."
+          this.users.push(new User(0,this.newUser.username.toLowerCase(),this.newUser.password,this.newUser.firstName,this.newUser.lastName,this.newUser.email,this.newUser.address,this.newUser.birthdate,this.newUser.phoneNumber));
         },
         (err) => {
           this.registrationMsg = ''
           this.registrationError = err.error.message.message;
         }
       );
+  }
+
+  getUser() {
+    this.httpClient.get(environment.endpointURL + "user/all"
+    ).subscribe(
+      (res: any) => {
+        this.users = [];
+        for (let i = 0; i < res.length; i++) {
+          this.users.push(new User(res[i].userId,res[i].userName,res[i].password,res[i].firstName,res[i].lastName,res[i].email,res[i].address,res[i].birthday,res[i].phone));
+        }
+      }
+    )
   }
 }

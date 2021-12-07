@@ -74,18 +74,25 @@ width: 300px">
 </mat-sidenav-container>
 
 <div style="min-height: 500px;">
-  <mat-card *ngFor="let product of products.reverse()" style="max-width: 600px;">
-    <app-product [product]="product"></app-product>
-    <mat-card-actions *ngIf="this.user?.isAdmin">
-      <button mat-icon-button (click)="createUser()">
-        <mat-icon>edit</mat-icon>
-      </button>
+  <mat-card *ngFor="let userResponse of users.reverse()" style="min-width: 600px;">
+    <mat-card-header>
+      <mat-card-title>
+        {{ userResponse.username }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ userResponse.firstName + " " + userResponse.lastName }}
+      </mat-card-subtitle>
+    </mat-card-header>
+      {{ "eMail: " + userResponse.email }} <br>
+      {{ "phone: " + userResponse.phoneNumber }} <br>
+      {{ "adresse: " + userResponse.address }}
+    <mat-card-actions>
       <button mat-icon-button (click)="createUser()">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>
-  <mat-card *ngIf="products.length === 0">
-    No products available.
+  <mat-card *ngIf="users.length === 0">
+    No users created yet.
   </mat-card>
 </div>
