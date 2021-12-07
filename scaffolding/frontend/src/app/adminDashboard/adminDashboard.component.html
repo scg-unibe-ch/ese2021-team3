@@ -44,6 +44,13 @@ width: 300px">
       <mat-form-field>
         <input matInput type="tel" placeholder="Phone Number" name="phoneNumber" [(ngModel)]="newUser.phoneNumber">
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select [(ngModel)]="this.newUser.isAdmin">
+          <mat-option value="false">User </mat-option>
+          <mat-option value="true">Admin </mat-option>
+        </mat-select>
+      </mat-form-field>
       <button mat-flat-button color="primary" (click)="createUser()">Create user</button>
       <mat-card-content *ngIf="registrationMsg !== ''" style="color:green">
         {{ registrationMsg }}
@@ -85,7 +92,8 @@ width: 300px">
     </mat-card-header>
       {{ "eMail: " + userResponse.email }} <br>
       {{ "phone: " + userResponse.phoneNumber }} <br>
-      {{ "adresse: " + userResponse.address }}
+      {{ "adresse: " + userResponse.address }} <br>
+      {{ "admin: " + userResponse.isAdmin }}
     <mat-card-actions>
       <button mat-icon-button (click)="createUser()">
         <mat-icon>delete</mat-icon>

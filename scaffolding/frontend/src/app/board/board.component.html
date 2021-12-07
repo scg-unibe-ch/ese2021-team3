@@ -150,9 +150,6 @@ width: 300px">
     <button mat-icon-button (click)="prepareEdit(post)" *ngIf="(this.user?.isAdmin || post.userId == this.user?.userId)">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="updatePost()" *ngIf="((this.user?.isAdmin || post.userId == this.user?.userId) && editPost == post)">
-      <mat-icon>save</mat-icon>
-    </button>
     <button mat-icon-button (click)="deletePost(post)" *ngIf="this.user?.isAdmin || post.userId == this.user?.userId">
       <mat-icon>delete</mat-icon>
     </button>
