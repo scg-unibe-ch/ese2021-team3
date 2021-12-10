@@ -195,7 +195,7 @@ export class ShopComponent implements OnInit {
 
 
   deleteProduct(product: Product): void {
-    this.httpClient.post(environment.endpointURL + "product/" + product.productId, []).subscribe(() => {
+    this.httpClient.post(environment.endpointURL + "product/" + product.productId + "/delete", []).subscribe(() => {
       this.products.splice(this.products.indexOf(product), 1);
     },
       (err) => {
