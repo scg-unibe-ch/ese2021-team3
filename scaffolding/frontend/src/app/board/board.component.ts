@@ -49,31 +49,9 @@ export class BoardComponent implements OnInit {
     this.getPosts()
   }
 
-  getPosts() {
-    var body = {}
-    if (this.user !== undefined) {
-      body = {
-        userId: this.user?.userId! //Add userid to body if user is already logged in.
-      }
-    }
-      this.httpClient.post(environment.endpointURL + "post/get", body
-    ).subscribe(
-      (res: any) => {
-        try {
-          this.posts = [] //Reset posts (to ensure not to duplicate post if recalled)
-          for (let i = 0; i < res.length; i++) {
-            this.posts.push(
-              new Post(res[i].postId, res[i].userId, res[i].title, res[i].text, res[i].image, res[i].category, res[i].userName, res[i].vote, res[i].myVote)
-            )
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    )
-  }
 
-  getFilteredPosts(){
+
+  getPosts(){
 
     console.log(this.filter);
 
@@ -261,9 +239,9 @@ export class BoardComponent implements OnInit {
   }
 
 
-  receiveMessage($event: string){
+  receiveFilterMessage($event: string){
     this.filter = $event;
-    this.getFilteredPosts();
+    this.getPosts();
   }
 }
 
