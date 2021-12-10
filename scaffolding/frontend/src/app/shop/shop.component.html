@@ -13,6 +13,14 @@ width: 300px;">
   ">
     </mat-sidenav>
     <mat-sidenav-content>
+      <mat-card>
+        <mat-card-content>
+          <span>
+            <app-product-filter (messageEvent)="receiveProductFilterMessage($event)"></app-product-filter>
+          </span>
+
+        </mat-card-content>
+      </mat-card>
         <mat-card *ngIf="!edit&&!buy">
             <mat-card-content>
                 <span>
@@ -41,9 +49,9 @@ width: 300px;">
                           <mat-form-field style="width: 100%;">
                               <mat-label>Category</mat-label>
                               <mat-select [(ngModel)]="newProduct.category">
-                                  <mat-option value="Theory">Theory </mat-option>
-                                  <mat-option value="Proof">Proof </mat-option>
-                                  <mat-option value="Meme"> Meme </mat-option>
+                                  <mat-option value="Books">Books </mat-option>
+                                  <mat-option value="Merchandise">Merchandise </mat-option>
+                                  <mat-option value="Models"> Models </mat-option>
                               </mat-select>
                           </mat-form-field>
                           <p>You selected: {{newProduct.category}}</p>
