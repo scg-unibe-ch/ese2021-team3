@@ -1,1 +1,14 @@
-<p>dashboard works!</p>
+<mat-card *ngFor="let order of orders.reverse()" style="max-width: 600px;">
+    <app-order [order]="order"></app-order>
+    <mat-card-actions>
+      <button mat-icon-button *ngIf="user?.isAdmin" (click)="accept(order)">
+        <mat-icon>accept</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="!user?.isAdmin" (click)="cancel(order)">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card *ngIf="orders.length === 0">
+    No orders available.
+  </mat-card>

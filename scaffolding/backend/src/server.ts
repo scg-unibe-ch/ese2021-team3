@@ -24,13 +24,13 @@ import {OrderController} from './controllers/order.controller';
 
 
 export class Server {
-    private server: Application;
-    private sequelize: Sequelize;
+    public server: Application;
+    public sequelize: Sequelize;
     private port = process.env.PORT || 3000;
 
-    constructor() {
+    constructor(testing: boolean) {
         this.server = this.configureServer();
-        this.sequelize = this.configureSequelize();
+        this.sequelize = this.configureSequelize(testing);
 
         TodoItem.initialize(this.sequelize); // creates the tables if they dont exist
         TodoList.initialize(this.sequelize);
@@ -97,13 +97,17 @@ export class Server {
             .get('/', (req, res) => res.send('<h1>Welcome to the ESE-2021 Backend Scaffolding <span style="font-size:50px">&#127881;</span></h1>'));
     }
 
-    private configureSequelize(): Sequelize {
+    private configureSequelize(testing: boolean): Sequelize {
+        let database = 'db.sqlite';
+        if (testing) {
+            database = 'dbTest.sqlite';
+        }
         return new Sequelize({
             dialect: 'sqlite',
-            storage: 'db.sqlite',
+            storage: database,
             logging: false // can be set to true for debugging
         });
     }
 }
 
-const server = new Server(); // starts the server
+const server = new Server(false); // starts the server

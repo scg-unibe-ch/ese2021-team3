@@ -1,5 +1,10 @@
 body {
   margin: 30px;
+  height: 100%;
+}
+
+html {
+  height: 100%;
 }
 
 .mat-card {
@@ -15,3 +20,5 @@ button, input {
 .mat-form-field-wrapper {
   margin-right: 25px !important;
 }
+
+

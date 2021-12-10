@@ -15,7 +15,7 @@ export class FilterComponent implements OnInit {
 
   constructor() { }
 
-  sendMessage(){
+  sendFilterMessage(){
     this.messageEvent.emit(this.chosenFilter)
   }
 

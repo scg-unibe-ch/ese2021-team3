@@ -29,6 +29,7 @@ export class ShopComponent implements OnInit {
   imgsrc = environment.endpointURL;
   selectedFile?: File;
   target?: HTMLInputElement;
+  filter = '';
 
   @Input()
   user?: User;
@@ -48,7 +49,8 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts() {
-    this.httpClient.get(environment.endpointURL + "product/get").subscribe(
+    console.log(this.filter)
+    this.httpClient.post(environment.endpointURL + "product/getfiltered", {"category" : this.filter}).subscribe(
       (res: any) => {
         try {
           this.products = [] //Reset products to avoid duplication if recalled
@@ -195,12 +197,16 @@ export class ShopComponent implements OnInit {
 
 
   deleteProduct(product: Product): void {
-    this.httpClient.post(environment.endpointURL + "product/" + product.productId, []).subscribe(() => {
+    this.httpClient.post(environment.endpointURL + "product/" + product.productId + "/delete", []).subscribe(() => {
       this.products.splice(this.products.indexOf(product), 1);
     },
       (err) => {
         console.log("Couldn't delete Product")
       });
+  }
+  receiveProductFilterMessage($event: string){
+    this.filter = $event;
+    this.getProducts();
   }
 
 }

@@ -10,6 +10,8 @@ export class PostService {
             if (!isAdmin) { /*Reject request if user is admin*/
                 if ((post.title == null) || (post.title === '')) {
                     return Promise.reject({error: 'titleIsEmpty', message: 'Title cannot be emtpy' });
+                } else if ((post.category == null) || (post.category === '')) {
+                    return Promise.reject({error: 'categoryEmpty', message: 'Category cannot be emtpy' });
                 } else {
                     return Post.create(post).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
                 }

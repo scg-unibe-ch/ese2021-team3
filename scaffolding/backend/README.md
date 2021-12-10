@@ -464,7 +464,7 @@
 
 </details>
   
-  - GET `post/getfiltered`
+  - post `post/getfiltered`
     <details>
     <summary>Request</summary>
 

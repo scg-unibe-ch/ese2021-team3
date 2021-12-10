@@ -49,7 +49,7 @@ productController.post('/edit', checkAdmin,
     }
 );
 
-productController.post('/:id', verifyToken,
+productController.post('/:id/delete', verifyToken,
     (req: Request, res: Response) => {
         req.body.userId = req.body.tokenPayload.userId;
         req.body.productId = req.params.id;
