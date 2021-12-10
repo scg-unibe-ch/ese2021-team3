@@ -95,7 +95,7 @@ width: 300px">
       {{ "adresse: " + userResponse.address }} <br>
       {{ "admin: " + userResponse.isAdmin }}
     <mat-card-actions>
-      <button mat-icon-button (click)="createUser()">
+      <button mat-icon-button (click)="deleteUser(userResponse)">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-actions>
