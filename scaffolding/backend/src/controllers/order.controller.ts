@@ -41,7 +41,8 @@ orderController.get('/getAll', checkAdmin,
 
 orderController.get('/get', verifyToken,
     (req: Request, res: Response) => {
-        orderService.getAll(req.body.tokenPayload.userId).then(list => res.send(list)).catch(err => {console.log(err); res.status(500).send(err); });
+        orderService.getAll(req.body.tokenPayload.userId).then(list => res.send(list)).
+        catch(err => {console.log(err); res.status(500).send(err); });
     }
 );
 
