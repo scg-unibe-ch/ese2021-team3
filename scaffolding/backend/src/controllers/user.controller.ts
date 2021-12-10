@@ -25,6 +25,18 @@ userController.get('/all', checkAdmin, // you can add middleware on specific req
     }
 );
 
+userController.delete('/:id', verifyToken,
+    (req: Request, res: Response) => {
+         // req.body.userId = req.body.tokenPayload.userId;
+         req.body.userId = req.params.id;
+         userService.deleteUser(req.body)
+            .then(user => res.send(user))
+            .catch(err => {
+            res.status(500).send(err);
+        });
+    }
+);
+
 userController.get('/', verifyToken,
     (req: Request, res: Response) => {
         userService.getUser(req.body.tokenPayload.userId)
