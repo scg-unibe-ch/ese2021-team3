@@ -13,6 +13,8 @@ import {Post} from "../models/post.model";
 })
 export class AdminDashboardComponent implements OnInit {
   newUser = new User(0, '', '', '', '', '', '', '', '', false);
+  editedUser = new User(0, '', '', '', '', '', '', '', '', false);
+  isEditing = false;
   registrationError = "";
   registrationMsg = "";
   products: Product[] = [];
@@ -60,6 +62,39 @@ export class AdminDashboardComponent implements OnInit {
         }
       );
   }
+
+  editUser(user: User) {
+    this.editedUser = user;
+    this.isEditing = true;
+  }
+
+  saveChangesOnUser() {
+    this.httpClient.post(environment.endpointURL + "user/edit", {
+      userId: this.editedUser.userId,
+      userName: this.editedUser.username.toLowerCase(),
+      firstName: this.editedUser.firstName,
+      lastName: this.editedUser.lastName,
+      email: this.editedUser.email,
+      address: this.editedUser.address,
+      phone: String(this.editedUser.phoneNumber),
+      birthday: this.editedUser.birthdate.length == 0 ? 0 : Number(new Date(this.editedUser.birthdate)),
+      password: this.editedUser.password,
+      admin: this.editedUser.isAdmin
+    }).subscribe((res: any) => {
+        this.registrationError = ''
+        this.registrationMsg = "User: " + this.editedUser.username + " has been edited."
+        this.isEditing = false;
+      },
+      (err) => {
+        this.registrationMsg = ''
+        this.registrationError = err.error.message.message;
+        this.isEditing = false;
+        this.getUser();
+      }
+    );
+  }
+
+
 
   deleteUser(user: User): void {
     this.httpClient.delete(environment.endpointURL + "user/" + user.userId).subscribe(() => {

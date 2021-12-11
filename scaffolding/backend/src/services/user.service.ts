@@ -36,6 +36,18 @@ export class UserService {
             .catch(err => Promise.reject({ message: err }));
     }
 
+    public editUser(user: UserAttributes): Promise<UserAttributes> {
+        const saltRounds = 12;
+        return User.findByPk(user.userId)
+            .then(userFromDB => {
+                if (userFromDB.password !== user.password) {
+                    user.password = bcrypt.hashSync(user.password, saltRounds);
+                }
+                return userFromDB.update(user);
+            })
+            .catch(err => Promise.reject({ message: err }));
+    }
+
     public login(loginRequestee: LoginRequest): Promise<User | LoginResponse> {
         const secret = process.env.JWT_SECRET || 'not_secure';
         return User.findOne({
