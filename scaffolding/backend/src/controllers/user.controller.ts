@@ -13,6 +13,14 @@ userController.post('/register',
     }
 );
 
+userController.post('/edit', checkAdmin,
+    (req: Request, res: Response) => {
+        userService.editUser(req.body).then(registered => res.send(registered)).catch(err => {
+            res.status(500).send(err);
+        });
+    }
+);
+
 userController.post('/login',
     (req: Request, res: Response) => {
         userService.login(req.body).then(login => res.send(login)).catch(err => res.status(500).send(err));
@@ -22,6 +30,18 @@ userController.post('/login',
 userController.get('/all', checkAdmin, // you can add middleware on specific requests like that
     (req: Request, res: Response) => {
         userService.getAll().then(users => res.send(users)).catch(err => res.status(500).send(err));
+    }
+);
+
+userController.delete('/:id', verifyToken,
+    (req: Request, res: Response) => {
+         // req.body.userId = req.body.tokenPayload.userId;
+         req.body.userId = req.params.id;
+         userService.deleteUser(req.body)
+            .then(user => res.send(user))
+            .catch(err => {
+            res.status(500).send(err);
+        });
     }
 );
 

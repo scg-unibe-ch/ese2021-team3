@@ -3,7 +3,6 @@ import { LoginResponse, LoginRequest } from '../models/login.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
-import { Vote } from '../models/vote.model';
 
 export class UserService {
 
@@ -33,6 +32,18 @@ export class UserService {
                             { error: 'email_already_exists', message: 'Email ' + userDuplicate.email + ' already in use.' });
                     }
                 }
+            })
+            .catch(err => Promise.reject({ message: err }));
+    }
+
+    public editUser(user: UserAttributes): Promise<UserAttributes> {
+        const saltRounds = 12;
+        return User.findByPk(user.userId)
+            .then(userFromDB => {
+                if (userFromDB.password !== user.password) {
+                    user.password = bcrypt.hashSync(user.password, saltRounds);
+                }
+                return userFromDB.update(user);
             })
             .catch(err => Promise.reject({ message: err }));
     }
@@ -80,5 +91,33 @@ export class UserService {
         return User.findByPk(userId)
             .then(user => Promise.resolve(user))
             .catch(err => Promise.reject({ message: err }));
+    }
+
+    public deleteUser(userToDelete: UserAttributes): Promise<UserAttributes> {
+        return User.findByPk(userToDelete.userId)
+            .then(found => {
+                if (!found) {
+                    return Promise.reject({error: 'User_not_found', message: 'Cant find User nr.' + userToDelete.userId});
+                } else {
+                  //  if (userToDelete.userId === requesteeId) {
+                        // tslint:disable-next-line:max-line-length
+                  //      return Promise.reject({error: 'Cant_delete_oneself', message: 'You cannot delete yourself, User nr. ' + 5});
+                  //  }
+                    return new Promise<UserAttributes>((resolve, reject) => {
+                            found.destroy();
+                            resolve(found);
+                        });
+                }
+            });
+    }
+
+    private async isAdmin(userId: number): Promise<boolean> {
+        return User.findByPk(userId).then(found => {
+            if (!found) {
+                return false;
+            } else {
+                return found.admin;
+            }
+        });
     }
 }

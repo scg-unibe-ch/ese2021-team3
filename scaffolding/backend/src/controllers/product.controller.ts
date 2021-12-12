@@ -77,7 +77,15 @@ productController.post('/getfiltered',
                 }
             }
         })
-            .then(list => res.status(200).send(list))
+            .then(list => {
+                const newList: Product[] = [];
+                for (let i = 0; i < list.length; i++) {
+                    if (!list[i].hidden) {
+                        newList.push(list[i]);
+                    }
+                }
+                res.status(200).send(newList);
+            })
             .catch(err => res.status(500).send(err));
     }
 );

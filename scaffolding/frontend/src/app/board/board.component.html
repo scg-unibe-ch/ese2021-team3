@@ -1,3 +1,4 @@
+<div style="min-height: 1200px; margin-top: 50px;">
 <mat-sidenav-container style="
 position: absolute;
 top: 0px;
@@ -143,7 +144,7 @@ width: 300px">
     <button mat-icon-button (click)="downvote(post)" *ngIf="this.user && post.myVote !== -1">
       <mat-icon>thumb_down</mat-icon>
     </button>
-    <button mat-icon-button (click)="neutralvote(post)" *ngIf="this.user && post.myVote !== 0">
+    <button mat-icon-button (click)="neutralvote(post)" *ngIf="post.myVote !== 0">
       <mat-icon>thumbs_up_down</mat-icon>
     </button>
     {{ post.vote }}
@@ -158,4 +159,5 @@ width: 300px">
 <mat-card *ngIf="posts.length === 0">
   No posts available.
 </mat-card>
+</div>
 </div>

@@ -1,3 +1,4 @@
+<div style="min-height: 1200px; margin-top: 50px;">
 <mat-sidenav-container style="
 position: absolute;
 top: 0px;
@@ -12,7 +13,7 @@ width: 300px">
   ">
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-card style="max-width: 600px;">
+    <mat-card *ngIf="!isEditing" style="max-width: 600px;">
       <mat-card-header>
         <mat-card-title>
           Create User
@@ -59,6 +60,53 @@ width: 300px">
         {{ registrationError }}
       </mat-card-content>
     </mat-card>
+    <mat-card *ngIf="isEditing" style="max-width: 600px;">
+      <mat-card-header>
+        <mat-card-title>
+          Edit User
+        </mat-card-title>
+      </mat-card-header>
+      <mat-divider inset></mat-divider>
+      <p></p>
+      <mat-form-field>
+        <input matInput type="text" placeholder="User Name" name="name" [(ngModel)]="editedUser.username">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="editedUser.password">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="First Name" name="firstName" [(ngModel)]="editedUser.firstName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Last Name" name="lastName" [(ngModel)]="editedUser.lastName">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="email" placeholder="Email" name="email" [(ngModel)]="editedUser.email">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Address" name="address" [(ngModel)]="editedUser.address">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="date" placeholder="Birthdate" name="birthdate" [(ngModel)]="editedUser.birthdate">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="tel" placeholder="Phone Number" name="phoneNumber" [(ngModel)]="editedUser.phoneNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select [(ngModel)]="this.editedUser.isAdmin">
+          <mat-option value="false">User </mat-option>
+          <mat-option value="true">Admin </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="saveChangesOnUser()">Save changes</button>
+      <mat-card-content *ngIf="registrationMsg !== ''" style="color:green">
+        {{ registrationMsg }}
+      </mat-card-content>
+      <mat-card-content *ngIf="registrationError !== ''" style="color:red">
+        {{ registrationError }}
+      </mat-card-content>
+    </mat-card>
   </mat-sidenav-content>
 </mat-sidenav-container>
 
@@ -90,17 +138,21 @@ width: 300px">
         {{ userResponse.firstName + " " + userResponse.lastName }}
       </mat-card-subtitle>
     </mat-card-header>
-      {{ "eMail: " + userResponse.email }} <br>
-      {{ "phone: " + userResponse.phoneNumber }} <br>
-      {{ "adresse: " + userResponse.address }} <br>
-      {{ "admin: " + userResponse.isAdmin }}
+    <b>eMail: </b>{{ userResponse.email }} <br>
+    <b>phone: </b>{{ userResponse.phoneNumber }} <br>
+    <b>addresse: </b>{{  userResponse.address }} <br>
+    <b>isAdmin: </b>{{ userResponse.isAdmin }}
     <mat-card-actions>
-      <button mat-icon-button (click)="createUser()">
+      <button mat-icon-button (click)="deleteUser(userResponse)">
         <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button (click)="editUser(userResponse)">
+        <mat-icon>edit</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>
   <mat-card *ngIf="users.length === 0">
     No users created yet.
   </mat-card>
+</div>
 </div>
