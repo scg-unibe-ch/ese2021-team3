@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <span>
-      <h1>Insert Title Here</h1>
+      <h1>Triangle Earth Society</h1>
     </span>
   </mat-toolbar-row>
 </mat-toolbar>
@@ -26,17 +26,6 @@
     <div style="box-sizing: border-box; display: flex; justify-content: center;">
       <app-dashboard></app-dashboard>
     </div>
-  </mat-tab>
-  <mat-tab label="Todo List">
-    <mat-card>
-      <mat-form-field>
-        <input matInput placeholder="List Name" [(ngModel)]="newTodoListName" name="name">
-      </mat-form-field>
-      <button mat-flat-button color="primary" (click)="createList()" [disabled]="newTodoListName === ''">Create new
-        list</button>
-    </mat-card>
-    <app-todo-list *ngFor="let todoList of todoLists" [todoList]="todoList" (update)="updateList($event)"
-      (delete)="deleteList($event)"></app-todo-list>
   </mat-tab>
   <mat-tab *ngIf="user?.isAdmin" label="Admin Zone">
     <div style="box-sizing: border-box; display: flex; justify-content: center;">

@@ -3,6 +3,8 @@ import {verifyToken} from '../middlewares/checkAuth';
 import {OrderService} from '../services/order.service';
 import {checkAdmin} from '../middlewares/checkAdmin';
 import {Order} from '../models/order.model';
+import {Post} from '../models/post.model';
+import {Op} from 'sequelize';
 
 const orderController: Router = express.Router();
 const orderService = new OrderService();
@@ -38,6 +40,7 @@ orderController.get('/getAll', checkAdmin,
         orderService.getAll('').then(list => res.send(list)).catch(err => {console.log(err); res.status(500).send(err); });
     }
 );
+
 
 orderController.get('/get', verifyToken,
     (req: Request, res: Response) => {

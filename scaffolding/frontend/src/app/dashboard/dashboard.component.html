@@ -1,11 +1,11 @@
 <mat-card *ngFor="let order of orders.reverse()" style="max-width: 600px;">
-    <app-order [order]="order"></app-order>
+    <app-order [order]="order" [user]="getUserForSpezificOrder(order)" [product]="getProductForSpezificOrder(order)"></app-order>
     <mat-card-actions>
-      <button mat-icon-button *ngIf="user?.isAdmin" (click)="accept(order)">
-        <mat-icon>accept</mat-icon>
+      <button mat-flat-button color="primary" *ngIf="user?.isAdmin && order.status != 'Shipped/Done' && order.status != 'canceled'" (click)="accept(order)">
+        Shipped/Done
       </button>
-      <button mat-icon-button *ngIf="!user?.isAdmin" (click)="cancel(order)">
-        <mat-icon>cancel</mat-icon>
+      <button mat-flat-button color="primary" *ngIf="order.status != 'Shipped/Done' && order.status != 'canceled'"(click)="cancel(order)">
+        Cancel Order
       </button>
     </mat-card-actions>
   </mat-card>

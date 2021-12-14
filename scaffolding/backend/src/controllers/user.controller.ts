@@ -53,4 +53,16 @@ userController.get('/', verifyToken,
     }
 );
 
+userController.get('/single/:id', checkAdmin,
+    (req: Request, res: Response) => {
+        userService.getUser(+req.params.id)
+            .then(user => {
+                res.send(user);
+            })
+            .catch(err => {
+                res.status(500).send(err);
+            });
+    }
+);
+
 export const UserController: Router = userController;

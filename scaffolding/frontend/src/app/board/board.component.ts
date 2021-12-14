@@ -14,7 +14,7 @@ import {newArray} from "@angular/compiler/src/util";
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-
+  imgsrc = environment.endpointURL;
   newPost = new Post(0, 0, "", "", "", "", "");
   // newPost = new Post(0, 0, "", "", "", []);
   editPost = new Post(0, 0, "", "", "", "");
